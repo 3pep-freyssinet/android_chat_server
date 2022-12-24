@@ -35,16 +35,16 @@ const utf8     = require('utf8');
 const crypto   = require('crypto');
 
 
-const mysql = require('mysql2')
-console.log('process.env.DATABASE_URL = ' + process.env.DATABASE_URL)
-const connection = mysql.createConnection(process.env.DATABASE_URL)
-console.log('Connected to PlanetScale!')
-connection.end();
+///const mysql = require('mysql2')
+//console.log('process.env.DATABASE_URL = ' + process.env.DATABASE_URL)
+//const connection = mysql.createConnection(process.env.DATABASE_URL)
+//console.log('Connected to PlanetScale!')
+//connection.end();
 
 //Sequelize-pgsql
 //io.use(sequelize('pgsql', 'postgres', 'tomcat14200', { host: 'localhost' }, 'D:\node-pg-sequelize\models'));
 
-//const { Pool } = require('pg');
+const { Pool } = require('pg');
 
 /*
 const pool = new Pool({
@@ -54,9 +54,9 @@ const pool = new Pool({
   }
 });
 */
-const Pool = require('pg').Pool
+//const Pool = require('pg').Pool
 
-
+/*
 //localhost
 const pool = new Pool({
   user: 'postgres',
@@ -70,7 +70,7 @@ const pool = new Pool({
   min: 1,
   idleTimeoutMillis: 1000,
 })
-
+*/
 
 /*
 //Heroku
@@ -92,6 +92,19 @@ const pool = new Pool({
 });
 */
 
+//Render
+const pool = new Pool({
+  //connectionString: DATABASE_URL,
+   connectionString:process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
+console.log('process.env.DATABASE_URL = ' + process.env.DATABASE_URL)
+console.log('pool = ' + pool)
+
+/*
 //const controllers = require('D:/node-pg-sequelize/controllers');
 const routes = require('D:/node-pg-sequelize/routes');
 app.use(express.json()); //'server.use is not a function'
@@ -100,7 +113,7 @@ app
   .get('/', (req, res) => {
 	res.send('Hello World from express listening on '+PORT)
   });
-
+*/
 
 // insert into pgsql table : insert into users (nickname, status, notseenmessages, connectedwith) values
 //('mardi', CAST(000 AS bit(3)), 0, '{"xcv":123000}');

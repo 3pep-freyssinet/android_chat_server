@@ -101,6 +101,9 @@ const pool = new Pool({
   }
 });
 
+console.log('process.env.DATABASE_URL = ' + process.env.DATABASE_URL);
+console.log('pool = ' + pool);
+
 /*
 //const controllers = require('D:/node-pg-sequelize/controllers');
 const routes = require('D:/node-pg-sequelize/routes');
