@@ -341,13 +341,13 @@ pool.connect(async (err, connection) => {
 		if (messages.rowCount > 0) {
 			let notSeenMessages = await executeQuery(pool, query2, [nickname_]);
 			let lastContacts    = await executeQuery(pool, query3, [nickname_]);
-			//let users 			= await executeQuery(pool, query4, [nickname_]);
+			//let users 		= await executeQuery(pool, query4, [nickname_]);
 			
 			result["messages"] 		  = messages.rows;
 			result["notSeenMessages"] = notSeenMessages.rows;
 			result["lastContacts"]    = lastContacts.rows;
 			
-			//result["users"]    		  = users.rows;
+			//result["users"]    	  = users.rows;
 			
 			//console.log('************************************************ Object.keys(result) = ' + Object.keys(result.messages));
 			console.log('******************** result.messages = ' + result.messages + ' result.lastContacts = ' + result.lastContacts);
@@ -1209,9 +1209,9 @@ io.on('connection', (socket) => {
 						' message = '+value.rows[0].message +
 						' time = '+value.rows[0].time);
 				*/
-				
-			  var res = (results.rowCount == 1) ? "success" : "failure" ;
-			  //callback(res);
+				var res1;
+			  if(results)res1 = (results.rowCount == 1) ? "success" : "failure" ;
+			  //callback(res1);
 			  
 			}).catch((error) =>{
 				console.log("promise 'INSERT into users' error : " + error.message);
