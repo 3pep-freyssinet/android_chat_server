@@ -1209,9 +1209,9 @@ io.on('connection', (socket) => {
 						' message = '+value.rows[0].message +
 						' time = '+value.rows[0].time);
 				*/
-				
-			  var res = (results.rowCount == 1) ? "success" : "failure" ;
-			  //callback(res);
+				var res1;
+			  if(results)res1 = (results.rowCount == 1) ? "success" : "failure" ;
+			  //callback(res1);
 			  
 			}).catch((error) =>{
 				console.log("promise 'INSERT into users' error : " + error.message);
@@ -2719,7 +2719,7 @@ io.on('connection', (socket) => {
 		result["not_registered_users"] = not_registered_users;
 		
 		if(notSeenMessages.rowCount == 0) {
-			release();
+			//release();
 		}
 		
 		//console.log('notSeenMessages = ' + notSeenMessages.rowCount);
