@@ -2719,7 +2719,8 @@ io.on('connection', (socket) => {
 		result["not_registered_users"] = not_registered_users;
 		
 		if(notSeenMessages.rowCount == 0) {
-			//release();
+			//release(); //there is error here "Error: Release called on client which has already been released to the pool.d:
+			"
 		}
 		
 		//console.log('notSeenMessages = ' + notSeenMessages.rowCount);
