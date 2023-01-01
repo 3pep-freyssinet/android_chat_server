@@ -101,8 +101,8 @@ const pool = new Pool({
   }
 });
 
-console.log('process.env.DATABASE_URL = ' + process.env.DATABASE_URL);
-console.log('pool = ' + pool);
+//console.log('process.env.DATABASE_URL = ' + process.env.DATABASE_URL);
+//console.log('pool = ' + pool);
 
 /*
 //const controllers = require('D:/node-pg-sequelize/controllers');
@@ -296,9 +296,9 @@ pool.query(query, (error, results, fields) => {
 	*/
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var nickname_ = 'xcv2';
-console.log('testing, testing :  nickname_ = ' + nickname_);
+//console.log('testing, testing :  nickname_ = ' + nickname_);
 pool.connect(async (err, connection) => {
-		console.log('nickname_ = ' + nickname_);
+		//console.log('nickname_ = ' + nickname_);
 		var query1 = "SELECT " + 
 		' messages.fromnickname as "fromNickname", messages.tonickname as "toNickname",  messages.message, messages.time, messages.extra, ' + 
 		' messages.extraname as "extraName", messages.ref, messages.mime as "mimeType", messages.seen, messages.deletedto as "deletedTo", messages.deletedfrom as "deletedFrom" ' +
@@ -350,14 +350,14 @@ pool.connect(async (err, connection) => {
 			//result["users"]    	  = users.rows;
 			
 			//console.log('************************************************ Object.keys(result) = ' + Object.keys(result.messages));
-			console.log('******************** result.messages = ' + result.messages + ' result.lastContacts = ' + result.lastContacts);
+			//console.log('******************** result.messages = ' + result.messages + ' result.lastContacts = ' + result.lastContacts);
 			
 			//send the result to client
 		    //io.to(socket.id).emit('get_all_not_seen_messages_res', result);	
 			
 		} else {
-			console.log('nickname_ = ' + nickname_);
-			console.log({
+			//console.log('nickname_ = ' + nickname_);
+			//console.log({
 				status: false,
 				message: "Messages are not not found for : " + nickname_,
 			});

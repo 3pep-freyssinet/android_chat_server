@@ -358,9 +358,9 @@ pool.connect(async (err, connection) => {
 		} else {
 			//console.log('nickname_ = ' + nickname_);
 			//console.log({
-				status: false,
-				message: "Messages are not not found for : " + nickname_,
-			});
+				//status: false,
+				//message: "Messages are not not found for : " + nickname_,
+			//});
 			//io.to(socket.id).emit('get_all_not_seen_messages_res', null);
 		}
 		//io.to(socket.id).emit('get_all_not_seen_messages_res', result);
