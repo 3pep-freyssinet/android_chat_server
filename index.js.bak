@@ -92,6 +92,7 @@ const pool = new Pool({
 });
 */
 
+/*
 //Render
 const pool = new Pool({
   //connectionString: DATABASE_URL,
@@ -100,9 +101,24 @@ const pool = new Pool({
     rejectUnauthorized: false
   }
 });
+*/
 
-//console.log('process.env.DATABASE_URL = ' + process.env.DATABASE_URL);
-//console.log('pool = ' + pool);
+//HelioHost
+const pool = new Pool({
+  user: 'tomcaty_tomatish',
+  host: 'johnny.heliohost.org',
+  database: 'tomcaty_Supabase_pgsql',
+  password: 'tomcat14200',
+  port: 5432,
+  client_encoding: 'utf8',
+  //ssl: true,
+  max: 20,
+  min: 1,
+  idleTimeoutMillis: 1000,
+})
+
+console.log('process.env.DATABASE_URL = ' + process.env.DATABASE_URL);
+console.log('pool = ' + pool);
 
 /*
 //const controllers = require('D:/node-pg-sequelize/controllers');
@@ -296,9 +312,9 @@ pool.query(query, (error, results, fields) => {
 	*/
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var nickname_ = 'xcv2';
-//console.log('testing, testing :  nickname_ = ' + nickname_);
+console.log('testing, testing :  nickname_ = ' + nickname_);
 pool.connect(async (err, connection) => {
-		//console.log('nickname_ = ' + nickname_);
+		console.log('nickname_ = ' + nickname_);
 		var query1 = "SELECT " + 
 		' messages.fromnickname as "fromNickname", messages.tonickname as "toNickname",  messages.message, messages.time, messages.extra, ' + 
 		' messages.extraname as "extraName", messages.ref, messages.mime as "mimeType", messages.seen, messages.deletedto as "deletedTo", messages.deletedfrom as "deletedFrom" ' +
@@ -350,17 +366,17 @@ pool.connect(async (err, connection) => {
 			//result["users"]    	  = users.rows;
 			
 			//console.log('************************************************ Object.keys(result) = ' + Object.keys(result.messages));
-			//console.log('******************** result.messages = ' + result.messages + ' result.lastContacts = ' + result.lastContacts);
+			console.log('******************** result.messages = ' + result.messages + ' result.lastContacts = ' + result.lastContacts);
 			
 			//send the result to client
 		    //io.to(socket.id).emit('get_all_not_seen_messages_res', result);	
 			
 		} else {
-			//console.log('nickname_ = ' + nickname_);
-			//console.log({
-				//status: false,
-				//message: "Messages are not not found for : " + nickname_,
-			//});
+			console.log('nickname_ = ' + nickname_);
+			console.log({
+				status: false,
+				message: "Messages are not not found for : " + nickname_,
+			});
 			//io.to(socket.id).emit('get_all_not_seen_messages_res', null);
 		}
 		//io.to(socket.id).emit('get_all_not_seen_messages_res', result);
@@ -2719,8 +2735,7 @@ io.on('connection', (socket) => {
 		result["not_registered_users"] = not_registered_users;
 		
 		if(notSeenMessages.rowCount == 0) {
-			//release(); //there is error here "Error: Release called on client which has already been released to the pool.d:
-			"
+			//release(); //there is error here "Error: Release called on client which has already been released to the pool.d:"
 		}
 		
 		//console.log('notSeenMessages = ' + notSeenMessages.rowCount);

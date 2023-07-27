@@ -92,6 +92,7 @@ const pool = new Pool({
 });
 */
 
+/*
 //Render
 const pool = new Pool({
   //connectionString: DATABASE_URL,
@@ -100,8 +101,23 @@ const pool = new Pool({
     rejectUnauthorized: false
   }
 });
+*/
 
-console.log('process.env.DATABASE_URL = ' + process.env.DATABASE_URL);
+//HelioHost
+const pool = new Pool({
+  user: 'tomcaty_tomatish',
+  host: 'johnny.heliohost.org',
+  database: 'tomcaty_Supabase_pgsql',
+  password: 'tomcat14200',
+  port: 5432,
+  client_encoding: 'utf8',
+  //ssl: true,
+  max: 20,
+  min: 1,
+  idleTimeoutMillis: 1000,
+})
+
+//console.log('process.env.DATABASE_URL = ' + process.env.DATABASE_URL);
 console.log('pool = ' + pool);
 
 /*
