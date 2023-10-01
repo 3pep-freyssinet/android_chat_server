@@ -56,13 +56,13 @@ const pool = new Pool({
 */
 //const Pool = require('pg').Pool
 
-/*
+
 //localhost
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
   database: 'postgres',
-  password: 'tomcat14200',
+  password: 'tomcat@14200',
   port: 5432,
   client_encoding: 'utf8',
   //ssl: true,
@@ -70,7 +70,7 @@ const pool = new Pool({
   min: 1,
   idleTimeoutMillis: 1000,
 })
-*/
+
 
 /*
 //Heroku
@@ -103,6 +103,7 @@ const pool = new Pool({
 });
 */
 
+/*
 //HelioHost
 const pool = new Pool({
   user: 'tomcaty_tomatish',
@@ -116,6 +117,7 @@ const pool = new Pool({
   min: 1,
   idleTimeoutMillis: 1000,
 })
+*/
 
 //console.log('process.env.DATABASE_URL = ' + process.env.DATABASE_URL);
 console.log('pool = ' + pool);
@@ -712,7 +714,7 @@ app.delete('/users/:id', pgsqldb.deleteUser)
 
 app
   .get('/', (req, res) => {
-	res.send('Hello World from express listening on '+PORT)
+	var response = 'Hello World from express listening on '+PORT;
   })
   .get('/db', async (req, res) => {
     try {
@@ -732,7 +734,7 @@ app
 	  
 	  //console.log("results.results[0].id = "+results.results[0].id);			// même chose que ci-dessus.
 				  
-	  res.send("id = "+results["results"][0]["id"]);
+	  res.send(response + obj);
 	  
 	  //res.send("results obj = "+obj);	
 	  //res.send("obj.['results'] = "+obj['results']);	
@@ -1017,6 +1019,7 @@ io.on('connection', (socket) => {
 				let res = await promise;
 				promise.then((value) => {	// value et result la même chose
 				  console.log("promise then 'INSERT into imageprofileuri'  results = " + results.rowCount); //JSON.stringify(results.rowCount));
+				//error cannot read property 'rowCount()' of undefined
 				
 					/*
 					console.log('value keys = '+Object.keys(value));
@@ -1158,6 +1161,9 @@ io.on('connection', (socket) => {
 		//Save the user in db. The table column 'nickname' must have a 'UNIQUE' constraint. See the above statement how to make a 'UNIQUE' constraint. 
 		
 		/*
+		//example : insert into users (nickname, status, notseenmessages, connectedwith ) 
+        //values ('ramzi89',cast(0 AS bit(3)), 0, '{}');
+		
 		var query  = "INSERT INTO users (nickname, imageprofile, status, connected, lastconnected)" +
 		"VALUES($1, $2, cast("+status+" AS bit(2)), $3, $4)" 	+ 
 		"ON CONFLICT (nickname)" 								+ 
@@ -1298,11 +1304,95 @@ io.on('connection', (socket) => {
 		
 	});
 	
+	//register user in 'credentials' db
+	socket.on('register_user_in_db', (name, pwd, callback) => {
+	console.log("register_user_in_db:  username= %s  pwd = %s", name, pwd);
+	
+	pool.connect(async (err, connection, release) => {
+		
+		var date = 0;
+		
+		
+		var query_  = "SELECT EXTRACT (EPOCH from now()) AS dateregister";
+		var query   = "INSERT INTO credentials (username, password, date, pwdhistory, datehistory) VALUES($1, $2, $3, $4, $5)";
+		
+		//get the object 'date__', without 'release'
+		let date__  = await executeQuery(pool, query_, [], release);  
+		
+		date     = date__.rows[0].dateregister;
+	    console.log("promise 'register_user_in_db' : date rgister = %s ", date);
+		
+		var date_ = '{' + date + '}';
+		var pwd_  = '{' + pwd + '}';
+		
+	   console.log("promise 'register_user_in_db' : name = %s pwd = %s date = %s pwdhistory = %s datehistory = %s", name, pwd, date, pwd_, date_);
+	   
+	   
+	   // with release
+		let register  = await executeQuery_(pool, query, [name, pwd, date, pwd_, date_], release);  
+	
+	    var insert = false;
+		var inserts = {"insert": insert};
+		
+	    if(register.rowCount == 0) {
+			 console.log("promise 'register_user_in_db rowCount == 0 : " + inserts["insert"]); //valeur de la cle 'insert' du json 'inserts'.
+			 inserts = {"insert": insert};
+			 //callback(inserts);
+			 return;
+	    }
+	    insert = true;
+	    inserts = {"insert": insert};
+	  
+	    console.log("promise 'register_user_in_db : rowCount == 1 : " + inserts["insert"]); //valeur de la cle 'insert' du json 'inserts'.
+	  
+	    callback(inserts);
+		
+		
+		//without 'release' function.
+		async function executeQuery(connection, query, parameters) {
+			//console.log('connection = ' + connection);
+			//console.log('query = ' + query);
+			//console.log('parameters = ' + parameters);
+			return new Promise((resolve, reject) => {
+				connection.query(query, parameters, (error, response) => {
+					if(error){
+						console.log('error in "executeQuery" = ' + error.message);
+						return reject(error);
+					}
+					//release();
+					//connection.release()	//the next time, there is exception : "the pool had been released"
+					//connection.destroy();	//exception = it is not a function
+					return resolve(response);
+				})
+			});
+		}
+	
+		//with 'release' function.
+		async function executeQuery_(connection, query, parameters, release) {
+			//console.log('connection = ' + connection);
+			//console.log('query = ' + query);
+			//console.log('parameters = ' + parameters);
+			return new Promise((resolve, reject) => {
+				connection.query(query, parameters, (error, response) => {
+					if(error){
+						console.log('error in "executeQuery_" = ' + error.message);
+						return reject(error);
+					}
+					release();
+					//connection.release()	//the next time, there is exception : "the pool had been released"
+					//connection.destroy();	//exception = it is not a function
+					return resolve(response);
+				})
+			});
+		};
+	});//end pool
+	});//socket.on
+	
 	//query if the user exists in db
 	socket.on('is_user_registered_in_db', (name, callback) => {
-		console.log("is_user_registered_in_db,  nickname= " + name);
+		console.log("is_user_registered_in_db:  username= %s ", name);
 		
-		var query = "SELECT COUNT(nickname) FROM users WHERE nickname = $1";
+		var query = "SELECT COUNT(username) FROM credentials WHERE (username = $1)";
 		
 		pool.query(query,[name], async(error, results) =>{
 		
@@ -1326,9 +1416,13 @@ io.on('connection', (socket) => {
 			  //console.log('value.rows[0] keys = '+Object.keys(value.rows[0]));
 			  //console.log('value.rows[0].count = '+value.rows[0].count);
 			  
+			if(results.rowCount == 0) {error.message; return;}
+			  
 			  var exist = false;
 			  if (value.rows[0].count == 1)exist = true;
 			  var exists = {"exists": exist};
+			  
+			  console.log("promise 'is_user_registered_in_db : " + exists["exists"]); //valeur de la cle 'exists' du json 'exists'.
 			  
 			  callback(exists);
 			  
@@ -2618,6 +2712,11 @@ io.on('connection', (socket) => {
 		let result = {};
 		//get disconnect time of target user who receive not seen messages
 		let disconnectTime         = await executeQuery_(pool, query22, [nickname], release);  
+		
+		console.log('rowCount of disconnectTime = ' + disconnectTime.rowCount);
+		
+		if (disconnectTime.rowCount == 0)return;
+		
 		var time_disconnection     = disconnectTime.rows[0].disconnectedAt;
 		//time_disconnection       = 1657664183381; // test
 		console.log('disconnect time $nickname = ' +  disconnectTime.rows[0].nickname + ' disconnectTime = ' + time_disconnection);
