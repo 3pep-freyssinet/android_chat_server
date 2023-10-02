@@ -56,7 +56,7 @@ const pool = new Pool({
 */
 //const Pool = require('pg').Pool
 
-
+/*
 //localhost
 const pool = new Pool({
   user: 'postgres',
@@ -70,7 +70,7 @@ const pool = new Pool({
   min: 1,
   idleTimeoutMillis: 1000,
 })
-
+*/
 
 /*
 //Heroku
@@ -92,7 +92,7 @@ const pool = new Pool({
 });
 */
 
-/*
+
 //Render
 const pool = new Pool({
   //connectionString: DATABASE_URL,
@@ -101,7 +101,7 @@ const pool = new Pool({
     rejectUnauthorized: false
   }
 });
-*/
+
 
 /*
 //HelioHost
@@ -1647,7 +1647,7 @@ io.on('connection', (socket) => {
 	//get user data
 	//socket.on('get_user', (nickname, callback) => {
 	socket.on('get_user', (nickname) => {
-		//console.log("get_user : nickname = " + nickname +  "**************************************");
+		console.log("get_user : nickname = " + nickname +  "**************************************");
 		
 		var query = "SELECT nickname, imageprofile, status, connected, lastconnected, disconnected, blacklistauthor, notseenmessages, connectedwith FROM users WHERE nickname = $1";
 		pool.query(query,[nickname], async(error, results) =>{
@@ -1671,8 +1671,12 @@ io.on('connection', (socket) => {
 			var notSeenMessages = 0;
 			var connectedWith   = JSON.parse('{}');
 			
-			var json = null; //{};
+			imageProfile = (results.rowCount != 0) ? results.rows[0].imageprofile : null;
 			
+			console.log("'get_user' imageProfile = " + imageProfile);
+			
+			var json = null; //{};
+				
 		    if(results.rowCount != 0){
 				nickname		= results.rows[0].nickname;
 				imageProfile	= results.rows[0].imageprofile;
@@ -1686,8 +1690,10 @@ io.on('connection', (socket) => {
 				
 				//console.log("typeof  lastConnectedAt = " + typeof(lastConnectedAt));
 				
+				console.log("(imageProfile == null) = " + (imageProfile == null));
+				
 				/*
-				console.log('get_user' 										+	"\n" +
+				console.log('get_user' 									+	"\n" +
 					' nickname = ' 				+ nickname 				+ 	"\n" +
 					' imageProfile = ' 		    + (imageProfile == null) + ' ' + (imageProfile == 'null')	+	"\n" +
 					' status = ' 				+ status 				+	"\n" +
@@ -1714,8 +1720,6 @@ io.on('connection', (socket) => {
 				};
 			}
 			
-			
-			
 			//var json = {"hello":"theworld"};
 				
 			//callback((imageProfile == null) ? null : imageProfile.toString(), status, connectedAt, lastConnectedAt, disconnectedAt, blacklistAuthor, notSeenMessages, connectedWith);
@@ -1724,11 +1728,14 @@ io.on('connection', (socket) => {
 			//socket.to(socket.id).emit('get_user_back', json);
 			
 			console.log("json = " + json);
+			
 		    io.to(socket.id).emit('get_user_back', json); 
+			//socket.to(socket.id).emit('get_user_back', json);//ne marche pas
+			
 			}).catch((error) =>{
-				//console.log("get_user : promise 'get_user, ...' error.message : " + error.message);
-				//console.log("get_user : promise 'get_user, ...' error.stack : "   + error.stack);
-				//console.error(error);
+				console.log("get_user : promise 'get_user, ...' error.message : " + error.message);
+				console.log("get_user : promise 'get_user, ...' error.stack : "   + error.stack);
+				console.error(error);
 			});
 		});
 		
