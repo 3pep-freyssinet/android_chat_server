@@ -1416,15 +1416,20 @@ io.on('connection', (socket) => {
 			  //console.log('value.rows[0] keys = '+Object.keys(value.rows[0]));
 			  //console.log('value.rows[0].count = '+value.rows[0].count);
 			  
+			var exists = {"exists": false};
+			
+			if(results == null){
+				callback(exists);
+				return;
+			}
 			if(results.rowCount == 0) {error.message; return;}
 			  
-			  var exist = false;
-			  if (value.rows[0].count == 1)exist = true;
-			  var exists = {"exists": exist};
-			  
-			  console.log("promise 'is_user_registered_in_db : " + exists["exists"]); //valeur de la cle 'exists' du json 'exists'.
-			  
-			  callback(exists);
+		    if (value.rows[0].count == 1)exists = {"exists": true};;
+		  
+		  
+		    console.log("promise 'is_user_registered_in_db : " + exists["exists"]); //valeur de la cle 'exists' du json 'exists'.
+		  
+		    callback(exists);
 			  
 			  //io.to(socket.id).emit('get_image_profile_uri_back', results.rows); 
 			  

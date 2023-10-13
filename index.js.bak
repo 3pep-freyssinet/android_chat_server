@@ -3718,10 +3718,10 @@ io.on('connection', (socket) => {
 		var applicationId = banInfo["applicationId"];
 		var startBanTime  = banInfo["startBanTime"];
 		
-		var query  = "INSERT INTO ban (packageid, startbantime) VALUES ('applicationId', 'startBanTi')"; //The id is automatically added if it is auto increment
+		var query  = "INSERT INTO ban (packageid, startbantime) VALUES ($1, $2)"; //The id is automatically added if it is auto increment
 		
-		//pool.query(query, [applicationId, startBanTime], async(error, results) =>{
-		pool.query(query, [], async(error, results) =>{
+		pool.query(query, [applicationId, startBanTime], async(error, results) =>{
+		
 			const promise = new Promise((resolve, reject) => {
 				 resolve(results); 
 			});
