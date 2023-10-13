@@ -3738,8 +3738,8 @@ io.on('connection', (socket) => {
 			  var ban = {}
 			  if(results == null){
 				  console.log('promise then INSERT into ban  results = null');
-				  //callback(null);
-				  //return;
+				  callback(null);
+				  return;
 			  }
 			  console.log('promise then INSERT into ban  results = ' + JSON.stringify(results.rowCount));
 			  if(results.rowCount == 0 )ban = {"status":"fail"};
