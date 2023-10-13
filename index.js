@@ -56,7 +56,7 @@ const pool = new Pool({
 */
 //const Pool = require('pg').Pool
 
-/*
+
 //localhost
 const pool = new Pool({
   user: 'postgres',
@@ -70,7 +70,7 @@ const pool = new Pool({
   min: 1,
   idleTimeoutMillis: 1000,
 })
-*/
+
 
 /*
 //Heroku
@@ -92,7 +92,7 @@ const pool = new Pool({
 });
 */
 
-
+/*
 //Render
 const pool = new Pool({
   //connectionString: DATABASE_URL,
@@ -101,7 +101,7 @@ const pool = new Pool({
     rejectUnauthorized: false
   }
 });
-
+*/
 
 /*
 //HelioHost
@@ -1671,9 +1671,8 @@ io.on('connection', (socket) => {
 			var notSeenMessages = 0;
 			var connectedWith   = JSON.parse('{}');
 			
-			imageProfile = (results.rowCount != 0) ? results.rows[0].imageprofile : null;
-			
-			console.log("'get_user' imageProfile = " + imageProfile);
+			//imageProfile = (results.rowCount != 0) ? results.rows[0].imageprofile : null;
+			//console.log("'get_user' imageProfile = " + imageProfile);
 			
 			var json = null; //{};
 				
@@ -2499,7 +2498,9 @@ io.on('connection', (socket) => {
      
    ///////////////////////////////////////////////////////////////////////////////////////////////////
    socket.on('get_all_not_seen_messages$', function(nickname){	
+	
 	console.log('get_all_not_seen_messages, nickname : %s ', nickname);
+	
 	pool.connect((err, client, release) => {
 		var query1 = "SELECT " + 
 		' messages.fromnickname as "fromNickname", messages.tonickname as "toNickname",  messages.message, messages.time, messages.extra, ' + 
@@ -3708,5 +3709,89 @@ io.on('connection', (socket) => {
 	
 	socket.on("downloadFileComplete", function (chunkStatus){ //chunkStatus = JSON Object : "{ 'IsSuccess' : true }"
 		console.log('downloadFileComplete. status = ' + chunkStatus.IsSuccess);
+	});
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//save ban info
+	socket.on('ban_info',(banInfo, callback)=>{
+		console.log("ban_info : applicationId = %s, startBanTime = %d", banInfo["applicationId"], banInfo["startBanTime"] );
+		var applicationId = banInfo["applicationId"];
+		var startBanTime  = banInfo["startBanTime"];
+		
+		var query  = "INSERT INTO ban (packageid, startbantime) VALUES ($1, $2)"; //The id is automatically added if it is auto increment
+		
+		pool.query(query, [applicationId, startBanTime], async(error, results) =>{
+		
+			const promise = new Promise((resolve, reject) => {
+				 resolve(results); 
+			});
+			
+			//if(error)(reject("promise error "+error)); 
+			let res = await promise;
+			promise.then((value) => {	// value et result la même chose
+			  
+			  var ban = {}
+			  if(results == null){
+				  console.log('promise then INSERT into ban  results = null');
+				  //callback(null);
+				  //return;
+			  }
+			  console.log('promise then INSERT into ban  results = ' + JSON.stringify(results.rowCount));
+			  if(results.rowCount == 0 )ban = {"status":"fail"};
+			  if(results.rowCount == 1 )ban = {"status":"success"};
+			  callback(ban);
+			}).catch((error) =>{
+				console.log("promise insert into ban " + error.message); 
+				callback(null);
+			});
+		});
+	});
+	
+	//get ban info
+	socket.on('get_ban_info',(applicationId)=>{
+		console.log("get_ban_info : applicationId = %s", applicationId);
+		
+		
+		var query  = "SELECT packageid, startbantime FROM ban WHERE packageid = $1"; 
+		
+		pool.query(query, [applicationId], async(error, results) =>{
+		//pool.query(query, [], async(error, results) =>{
+			const promise = new Promise((resolve, reject) => {
+				 resolve(results); 
+			});
+			
+			//if(error)(reject("promise error "+error)); 
+			let res = await promise;
+			promise.then((value) => {	// value et result la même chose
+			
+			//var ban = {
+			//	"packageid": null,
+			//	"startbantime": null
+			//};
+			
+			var ban =[
+			 {
+				"packageid": null,
+				"startbantime": null
+			 }
+			];
+			
+			if(results == null) {
+				console.log('promise then SELECT FROM ban  results == null');
+				//socket.to(socket.id).emit('get_ban_info_back', ban); //ne marche pas
+				io.to(socket.id).emit('get_ban_info_back', null);
+				return;
+			}
+			console.log('promise then SELECT FROM ban  results != null');
+			console.log('promise then SELECT FROM ban  results = ' + JSON.stringify(results.rowCount));
+			  
+			if(results.rowCount != 0)ban = results.rows;
+			
+			  io.to(socket.id).emit('get_ban_info_back', ban);
+			}).catch((error) =>{
+				console.log("promise ELECT FROM ban ban " + error.message); 
+				socket.to(socket.id).emit('get_ban_info_back', {});
+			});
+		});
 	});
 });//end io.on('connection', (socket)
