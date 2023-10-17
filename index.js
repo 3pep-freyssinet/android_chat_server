@@ -56,7 +56,7 @@ const pool = new Pool({
 */
 //const Pool = require('pg').Pool
 
-/*
+
 //localhost
 const pool = new Pool({
   user: 'postgres',
@@ -70,7 +70,7 @@ const pool = new Pool({
   min: 1,
   idleTimeoutMillis: 1000,
 })
-/*
+
 
 /*
 //Heroku
@@ -92,7 +92,7 @@ const pool = new Pool({
 });
 */
 
-
+/*
 //Render
 const pool = new Pool({
   //connectionString: DATABASE_URL,
@@ -101,7 +101,7 @@ const pool = new Pool({
     rejectUnauthorized: false
   }
 });
-
+*/
 
 /*
 //HelioHost
@@ -1389,10 +1389,11 @@ io.on('connection', (socket) => {
 	});//socket.on
 	
 	//query if the user exists in db
-	socket.on('is_user_registered_in_db', (name, callback) => {
-		console.log("is_user_registered_in_db:  username= %s ", name);
+		socket.on('is_user_exists', (name, callback) => {
 		
-		var query = "SELECT COUNT(username) FROM credentials WHERE (username = $1)";
+		console.log("is_user_exists:  username= %s ", name);
+		
+		var query = "SELECT COUNT(username) FROM credentials WHERE username = $1";
 		
 		pool.query(query,[name], async(error, results) =>{
 		
@@ -1422,7 +1423,65 @@ io.on('connection', (socket) => {
 				callback(exists);
 				return;
 			}
-			if(results.rowCount == 0) {error.message; return;}
+			if(results.rowCount == 0) {callback(exists);error.message; return;}
+			  
+		    if (value.rows[0].count == 1)exists = {"exists": true};;
+		  
+		    console.log("promise 'is_user_exists : " + exists["exists"]); //valeur de la cle 'exists' du json 'exists'.
+		  
+		    callback(exists);
+			  
+			  //io.to(socket.id).emit('get_image_profile_uri_back', results.rows); 
+			  
+			}).catch((error) =>{
+				callback(exists);
+				console.log("promise 'is_user_exists : " + error.message);
+				console.log("promise 'is_user_exists' error : " + error.stack);
+				//console.error(error);
+			});
+		
+	});
+	});
+	
+	//query if the user is registered in db
+	socket.on('is_user_registered_in_db', (credential, callback) => {
+		
+		var name = credential["name"];
+		var pwd  = credential["pwd"];
+		
+		console.log("is_user_registered_in_db:  username= %s pwd = %s", name, pwd);
+		
+		var query = "SELECT COUNT(username) FROM credentials WHERE (username = $1) AND (password = $2)";
+		
+		pool.query(query,[name, pwd], async(error, results) =>{
+		
+			const promise = new Promise((resolve, reject) => {
+				 resolve(results); 
+			});
+			
+			//if(error)(reject("promise error "+error)); 
+			let res = await promise;
+			promise.then((value) => {	// value et result la même chose
+			  //console.log("promise 'is_user_registered_in_db'  results = " + results);
+			  //console.log("promise 'is_user_registered_in_db'  results.rowCount = " + results.rowCount); //JSON.stringify(results.rowCount));
+			  
+			  //console.log("'is_user_registered_in_db' : results.rowCount = " + results.rowCount + " results = " + results);
+			  //console.log("promise 'is_user_registered_in_db'  rvalue.rows[0] = " + value.rows[0]);
+			  
+			  
+			  //console.log('value keys = '+Object.keys(value));
+			  //console.log('results keys = '+Object.keys(results));
+				
+			  //console.log('value.rows[0] keys = '+Object.keys(value.rows[0]));
+			  //console.log('value.rows[0].count = '+value.rows[0].count);
+			  
+			var exists = {"exists": false};
+			
+			if(results == null){
+				callback(exists);
+				return;
+			}
+			if(results.rowCount == 0) {callback(exists);error.message; return;}
 			  
 		    if (value.rows[0].count == 1)exists = {"exists": true};;
 		  
@@ -1434,6 +1493,7 @@ io.on('connection', (socket) => {
 			  //io.to(socket.id).emit('get_image_profile_uri_back', results.rows); 
 			  
 			}).catch((error) =>{
+				callback(exists);
 				console.log("promise 'is_user_registered_in_db : " + error.message);
 				console.log("promise 'is_user_registered_in_db' error : " + error.stack);
 				//console.error(error);

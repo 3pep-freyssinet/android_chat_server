@@ -1389,12 +1389,16 @@ io.on('connection', (socket) => {
 	});//socket.on
 	
 	//query if the user exists in db
-	socket.on('is_user_registered_in_db', (name, callback) => {
-		console.log("is_user_registered_in_db:  username= %s ", name);
+	socket.on('is_user_registered_in_db', (credential, callback) => {
 		
-		var query = "SELECT COUNT(username) FROM credentials WHERE (username = $1)";
+		var name = credential["name"];
+		var pwd  = credential["pwd"];
 		
-		pool.query(query,[name], async(error, results) =>{
+		console.log("is_user_registered_in_db:  username= %s pwd = %s", name, pwd);
+		
+		var query = "SELECT COUNT(username) FROM credentials WHERE (username = $1) AND (password = $2)";
+		
+		pool.query(query,[name, pwd], async(error, results) =>{
 		
 			const promise = new Promise((resolve, reject) => {
 				 resolve(results); 
@@ -1422,7 +1426,7 @@ io.on('connection', (socket) => {
 				callback(exists);
 				return;
 			}
-			if(results.rowCount == 0) {error.message; return;}
+			if(results.rowCount == 0) {callback(exists);error.message; return;}
 			  
 		    if (value.rows[0].count == 1)exists = {"exists": true};;
 		  
@@ -1434,6 +1438,7 @@ io.on('connection', (socket) => {
 			  //io.to(socket.id).emit('get_image_profile_uri_back', results.rows); 
 			  
 			}).catch((error) =>{
+				callback(exists);
 				console.log("promise 'is_user_registered_in_db : " + error.message);
 				console.log("promise 'is_user_registered_in_db' error : " + error.stack);
 				//console.error(error);
