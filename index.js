@@ -56,7 +56,7 @@ const pool = new Pool({
 */
 //const Pool = require('pg').Pool
 
-
+/*
 //localhost
 const pool = new Pool({
   user: 'postgres',
@@ -70,7 +70,7 @@ const pool = new Pool({
   min: 1,
   idleTimeoutMillis: 1000,
 })
-
+*/
 
 /*
 //Heroku
@@ -92,7 +92,7 @@ const pool = new Pool({
 });
 */
 
-/*
+
 //Render
 const pool = new Pool({
   //connectionString: DATABASE_URL,
@@ -101,7 +101,7 @@ const pool = new Pool({
     rejectUnauthorized: false
   }
 });
-*/
+
 
 /*
 //HelioHost
