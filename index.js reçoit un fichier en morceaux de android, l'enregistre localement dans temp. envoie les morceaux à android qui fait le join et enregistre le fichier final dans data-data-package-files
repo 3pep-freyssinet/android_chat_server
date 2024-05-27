@@ -1,0 +1,131 @@
+// Based on http://code.tutsplus.com/tutorials/how-to-create-a-resumable-video-uploade-in-node-js--net-25445
+// Modifed to support Android by Aruna Tennakoon
+
+
+var app = require('http').createServer(handler)
+  , io = require('socket.io').listen(app)
+  , fs = require('fs')
+  , exec = require('child_process').exec
+  , util = require('util')
+ 
+var Files      = {};
+var i          = 0;
+var playload   = 0;
+var base64Data = 0;
+
+io.set('log level', 1);
+app.listen(3000);
+ 
+function handler (req, res) {
+  //console.log("handler __dirname = "+__dirname);
+  fs.readFile(__dirname + '/index.html',
+  function (err, data) {
+    if (err) {
+      res.writeHead(500);
+      return res.end('Error loading index.html');
+    }
+    res.writeHead(200);
+    res.end(data); //data = html content.
+  });
+}
+ 
+ 
+io.sockets.on('connection', function (socket) {
+    console.log("connection = "+socket);
+	socket.on('uploadFileStart', function (data) { //data contains the variables that we passed through in the html file
+         
+		var fileName = data['Name'];
+        var fileSize = data['Size'];
+        var Place    = 0;
+		
+        var uploadFilePath = 'Temp/' + fileName;
+
+        console.log('uploadFileStart # Uploading file: %s to %s. Complete file size: %d', fileName, uploadFilePath, fileSize);
+
+        Files[fileName] = {  //Create a new Entry in The Files Variable
+            FileSize    : fileSize,
+            Data        : "",
+            Downloaded  : 0
+        }        
+		console.log("uploadFileStart # Files[fileName]['Downloaded'] = "+Files[fileName]['Downloaded']+" successfully created");
+		
+        fs.open(uploadFilePath, "a", 0755, function(err, fd){
+            if(err) {
+                console.log(err);
+            }
+            else {
+                console.log('uploadFileStart # Requesting Place: %d Percent %d', Place, 0);
+
+                Files[fileName]['Handler'] = fd; //We store the file handler so we can write to it later
+                socket.emit('uploadFileMoreDataReq', { 'Place' : Place, 'Percent' : 0 });
+
+                // Send webclient upload progress..
+            }
+        });
+    });
+
+    socket.on('uploadFileChuncks', function (data){
+        
+		//console.log("uploadFileChuncks # data['Name'] = "+data['Name']+" data['Data'] = "+data['Data']);
+		var Name   = data['Name'];
+		base64Data = data['Data'];
+		playload   = Buffer.from(base64Data, 'base64').toString('binary');
+		
+        console.log('uploadFileChuncks # Got name: %s, received chunk size %d.', Name, playload.length);
+        
+		Files[Name]['Downloaded'] += playload.length;
+        Files[Name]['Data'] += playload;        
+        
+		console.log('********* downloaded = %d, size = %d *************', Files[Name]['Downloaded'], Files[Name]['FileSize']);
+		
+        if(Files[Name]['Downloaded'] == Files[Name]['FileSize']) //If File is Fully Uploaded
+        {
+
+            console.log('uploadFileChuncks # File %s receive completed', Name);
+
+            fs.write(Files[Name]['Handler'], Files[Name]['Data'], null, 'Binary', function(err, Writen){
+               // close the file
+               fs.close(Files[Name]['Handler'], function() {
+                  console.log('file closed');
+               });
+
+                // Notify android client we are done.
+                socket.emit('uploadFileCompleteRes', { 'IsSuccess' : true });
+
+                // Send user the remaining part.
+				//console.log('downloadFileComplete playload sent to client : ', base64Data);
+				socket.emit('downloadFileComplete', { 'Name' : Name, 'Data' : base64Data});
+                
+            });
+        }
+        else if(Files[Name]['Data'].length > 10485760){ //If the Data Buffer reaches 10MB
+            console.log('uploadFileChuncks # Updating file %s with received data', Name);
+
+            fs.write(Files[Name]['Handler'], Files[Name]['Data'], null, 'Binary', function(err, Writen){
+                Files[Name]['Data'] = ""; //Reset The Buffer
+                var Place = Files[Name]['Downloaded'];
+                var Percent = (Files[Name]['Downloaded'] / Files[Name]['FileSize']) * 100;
+
+				console.log('Place = '+Place+' Percent = '+Percent);
+
+                socket.emit('uploadFileMoreDataReq', { 'Place' : Place, 'Percent' :  Percent});
+				
+                // Send webclient upload progress..
+				
+
+            });
+        }
+        else
+        {
+            var Place = Files[Name]['Downloaded'];
+            var Percent = (Files[Name]['Downloaded'] / Files[Name]['FileSize']) * 100;
+            console.log('uploadFileChuncks # Requesting Place: %d, Percent %s, boucle : %d', Place, Percent, i);
+			i++;
+			//if(Percent > 101)return;
+            socket.emit('uploadFileMoreDataReq', { 'Place' : Place, 'Percent' :  Percent});
+            // Send webclient upload progress..
+			//console.log('downloadFileMoreData playload sent to client : ', base64Data);
+			socket.emit('downloadFileMoreData', { 'Name' : Name, 'Data' : base64Data, 'Place' : Place, 'Percent' :  Percent});
+        }
+    });
+});
