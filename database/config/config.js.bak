@@ -49,7 +49,11 @@ module.exports = {
     "database": process.env.DATABASE, //'postgres', 
     "options":{
 		"host": process.env.HOST, //'127.0.0.1',
-	    "dialect": 'postgres'
+	    "dialect": 'postgres',
+		ssl: {
+			rejectUnauthorized: true,
+			ca: fs.readFileSync("./ca.pem").toString(),
+		}
 	}
   },
   test: {
