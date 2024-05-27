@@ -57,8 +57,9 @@ module.exports = {
 
 const db = {};
 
-console.log(" ************process.env.DEV_DATABASE_URL = " + process.env.DEV_DATABASE_URL)
-//'config' renvoie la cle 'development'. 'config.use_env_variable' renvoie la clé 'use_env_variable' qui contient 'process.env.DEV_DATABASE_URL'
+console.log(" ************process.env.DEV_DATABASE_URL see 'database/models/index.js'= " + process.env.DEV_DATABASE_URL)
+//'config' renvoie la cle 'development' dans 'config.js'. 'config.use_env_variable' renvoie la clé 'use_env_variable' de la cle 'development' dans 'config.js' qui contient 'process.env.DEV_DATABASE_URL'
+//'process.env.DEV_DATABASE_URL' est le contenu du parametre 'DEV_DATABASE_URL' qui se trouve soit dand le fichier '.env' soit dans les variables d'environment.
 console.log(" ************config.use_env_variable : see 'database/models/index.js' = " + config.use_env_variable); //config[env]); //[use_env_variable]);
 
 /*
@@ -76,14 +77,13 @@ if (config.use_env_variable) {
 */
 
 //Connection string
-//let sequelize = new Sequelize(config.use_env_variable, config);
+//let sequelize = new Sequelize(config.use_env_variable);
 //console.log("using environment variable. see 'database/models/index.js' sequelize = " + sequelize);
 
 //Separated parameters
-const sequelize = new Sequelize(config.database, config.username, config.password, config.options); // {
-  //host: 'localhost',
-  //dialect: 'postgres'
-//});
+console.log("using environment variable. see 'database/models/index.js' config = " + JSON.stringify(config))
+const sequelize = new Sequelize(config.database, config.username, config.password, config.options);
+  
 
 fs
   .readdirSync(__dirname)

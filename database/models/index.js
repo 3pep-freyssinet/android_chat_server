@@ -35,10 +35,13 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename); 
-const env = process.env.NODE_ENV || 'development'; //look in system environment variable a 'NODE_ENV' value. If it doesn' exist then 'env' is set to 'development'
+//const env = process.env.NODE_ENV || 'development'; //look in system environment variable a 'NODE_ENV' value. If it doesn' exist then 'env' is set to 'development'
 													//we can set a variable by 'SET' like 'SET NODE_ENV = "...."'
 													// we can get all the environment variable by the command : SET (without parameter).
 													
+//test
+const env = 'development';
+
 console.log("process.env : : see 'database/models/index.js' = " + Object.keys(process.env)); //all the environment variaba of the system.
 console.log("process.env.NODE_ENV : : see 'database/models/index.js' = " + env);
 
