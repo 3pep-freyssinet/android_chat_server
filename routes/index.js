@@ -14,6 +14,8 @@ router.get("/read", function(req, res) {
   console.log("ici ******************************************");
 });
 
+console.log("routes : router = " + JSON.stringify(router));
+
 //router.post('/notes', controllers.createPost);
 
 router.get('/all_notes', controllers.getAllNotes);				//http://localhost:3000/api/all_notes

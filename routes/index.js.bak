@@ -5,7 +5,7 @@ const router = Router();
 
 router.get('/', (req, res) => {
 	res.send('Welcome');  //http://localhost:3000/api/  cf server
-    console.log("get('/' ******************************************");
+    console.log("get('/' : Welcome ");
 });
 
 router.get("/read", function(req, res) {
@@ -13,6 +13,8 @@ router.get("/read", function(req, res) {
   fs.createReadStream("my-self-esteem.txt");
   console.log("ici ******************************************");
 });
+
+console.log("routes ");
 
 //router.post('/notes', controllers.createPost);
 
