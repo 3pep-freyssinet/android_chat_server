@@ -1011,6 +1011,9 @@ app
   //const routes = require('../routes');
   
   const routes = require('./routes');
+  
+  console.log("routes : routes = " + JSON.stringify(routes));
+  
   //const server = express();
   app.use(express.json());
   app.use(express.static("./public"));
