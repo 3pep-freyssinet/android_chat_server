@@ -57,15 +57,20 @@ module.exports = {
     dialect: 'postgres',
   },
   production: {
-    use_env_variable: process.env.DEV_DATABASE_URL,
-    dialect: 'postgres',
-	ssl: true,
-	dialectOptions: {
-    ssl: {
-      require: true, 			// This will help you. But you will see new error ****************************************
-      rejectUnauthorized: false // This line will fix new error **********************************************************
+    "username": process.env.USER, /* USERNAME is used by windows in system environment variable */ //, 'postgres',
+    "password": process.env.PASSWORD, //'tomcat@14200', 
+    "database": process.env.DATABASE, //'postgres', 
+    "options":{
+		"host": process.env.HOST, //'127.0.0.1',
+	    "dialect": 'postgres',
+	    "ssl": true,
+	    "dialectOptions": {
+           "ssl": {
+				"require": true, 			// This will help you. But you will see new error ****************************************
+				"rejectUnauthorized": false // This line will fix new error **********************************************************
+		   }
+		}
     }
-  },
   }
 };
 
