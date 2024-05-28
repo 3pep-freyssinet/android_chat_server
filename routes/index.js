@@ -1,8 +1,12 @@
-const { Router } = require('express');
+//const { Router } = require('express'); //{x} = a means x=a.x example A much more useful example would be something like {width, height, color} = options,
+                                       // which would replace the lines width = options.width; height = options.height; color = options.color 
+//const router = Router();
+
+//idem que above
+const express = require('express');
+const router  = express.Router();
+
 const controllers = require('../controllers');
-
-const router = Router();
-
 router.get('/', (req, res) => {
 	res.send('Welcome');  //http://localhost:3000/api/  cf server
     console.log("get('/' : Welcome ");

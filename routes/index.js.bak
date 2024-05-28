@@ -1,4 +1,6 @@
-const { Router } = require('express');
+const { Router } = require('express'); //{x} = a means x=a.x example A much more useful example would be something like {width, height, color} = options,
+                                       // which would replace the lines width = options.width; height = options.height; color = options.color 
+
 const controllers = require('../controllers');
 
 const router = Router();
@@ -14,7 +16,7 @@ router.get("/read", function(req, res) {
   console.log("ici ******************************************");
 });
 
-console.log("routes ");
+console.log("routes : router = " + JSON.stringify(router));
 
 //router.post('/notes', controllers.createPost);
 
