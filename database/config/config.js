@@ -44,16 +44,13 @@ module.exports = {
 //local + env + parameters
 module.exports = {
   development: {
-    "username": process.env.USER, /* USERNAME is used by windows in system environment variable */ //, 'postgres',
+    "username": process.env.USER,     /* USERNAME is used by windows in system environment variable */ //, 'postgres',
     "password": process.env.PASSWORD, //'tomcat@14200', 
     "database": process.env.DATABASE, //'postgres', 
     "options":{
-		"host": process.env.HOST, //'127.0.0.1',
+		"host": process.env.HOST,     //'127.0.0.1',
 	    "dialect": 'postgres',
-		ssl: {
-			rejectUnauthorized: true,
-			ca: fs.readFileSync("./ca.pem").toString(),
-		}
+		ssl: true,
 	}
   },
   test: {
@@ -61,11 +58,11 @@ module.exports = {
     dialect: 'postgres',
   },
   production: {
-    "username": process.env.USER, /* USERNAME is used by windows in system environment variable */ //, 'postgres',
+    "username": process.env.USER,     /* USERNAME is used by windows in system environment variable */ //, 'postgres',
     "password": process.env.PASSWORD, //'tomcat@14200', 
     "database": process.env.DATABASE, //'postgres', 
     "options":{
-		"host": process.env.HOST, //'127.0.0.1',
+		"host": process.env.HOST,     //'127.0.0.1',
 	    "dialect": 'postgres',
 	    "ssl": true,
 	    "dialectOptions": {

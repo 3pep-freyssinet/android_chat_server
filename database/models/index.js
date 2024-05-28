@@ -108,6 +108,6 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-console.log("export db = "+db);
+console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! export db : config.js = " + Object.keys(db));
 
 module.exports = db;

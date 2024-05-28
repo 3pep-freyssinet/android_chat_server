@@ -34,10 +34,15 @@ server.listen(PORT, () => console.log(`Listening on ${ PORT }`)) //socket.io ver
 const express          = require("express");
 const { createServer } = require("http");
 const { Server }       = require("socket.io");
+const cors             = require("cors");
+const Sequelize        = require("sequelize");
+const bodyParser       = require("body-parser");
+const validator        = require("express-validator");
 
-const app = express();
+const app        = express();
 const httpServer = createServer(app);
 const io         = new Server(httpServer, { /* options */ });
+const Op         = Sequelize.Op;
 
 const PORT       = process.env.PORT || 5000
 httpServer.listen(PORT);
@@ -1010,12 +1015,22 @@ app
   
   //const routes = require('../routes');
   
-  const routes = require('./routes');
+  const routes    = require('./routes');
+  
   
   console.log("routes : routes = " + JSON.stringify(routes));
   
   //const server = express();
+  app.use(cors());
+  app.use((req, resp, next) =>{
+	  req.Op = Op;
+	  res.io = io;
+	  next();
+  });
+  app.use(bodyParser.json());
+  app.use(validator());
   app.use(express.json());
+  
   app.use(express.static("./public"));
   app.use('/api', routes);	//in browser type : http://localhost:3000/api
 

@@ -1,6 +1,6 @@
 require('dotenv').config();	//localy, loads environment variables from a .env file into process.env 
 //The .env file should never be committed to the source code repository. the file must be placed  into the .gitignore file. (When using git.)
-
+const fs       = require("fs");
 
 /*
 //local
