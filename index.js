@@ -31,21 +31,29 @@ server.listen(PORT, () => console.log(`Listening on ${ PORT }`)) //socket.io ver
 //var sequelize = require('socket.io-sequelize');
 */
 
-const express          = require("express");
-const { createServer } = require("http");
-const { Server }       = require("socket.io");
-const cors             = require("cors");
-const Sequelize        = require("sequelize");
-const bodyParser       = require("body-parser");
-const validator        = require("express-validator");
 
-const app        = express();
-const httpServer = createServer(app);
-const io         = new Server(httpServer, { /* options */ });
-const Op         = Sequelize.Op;
+const express    = require('express')
+const cors       = require('cors')
+const socket     = require('socket.io')
+const bodyParser = require('body-parser')
+const validator  = require('express-validator')
+const Sequelize  = require('sequelize')
 
-const PORT       = process.env.PORT || 5000
-httpServer.listen(PORT);
+//******************************************************************
+// If you try to require a directory, it expects there to be an index.js file in that directory. Otherwise, you have to simply require individual files:
+// require('./controllers/users'). 
+// Alternatively, you can create an index.js file in the controllers directory and add the following:
+// module.exports.users = require('./users');
+// module.exports.posts = require('./posts');
+//and then import: var c = require('./controllers');. You can then use them via c.users and c.posts.
+//******************************************************************
+const route      = require('./app/routes') // an 'index.js' is expected in folder 'routes'
+const port       = process.env.PORT || 5000
+
+const app        = express()
+const http       = require('http').Server(app)
+const io         = socket(http)
+const Op         = Sequelize.Op
 
 const pgsqldb  = require('./queries')
 const fs       = require("fs");
@@ -63,7 +71,7 @@ const crypto   = require('crypto');
 //Sequelize-pgsql
 //io.use(sequelize('pgsql', 'postgres', 'tomcat14200', { host: 'localhost' }, 'D:\node-pg-sequelize\models'));
 
-const { Pool } = require('pg');
+//const { Pool } = require('pg');
 
 /*
 const pool = new Pool({
@@ -157,7 +165,7 @@ const pool = new Pool({
 });
 */
 
-
+/*
 //Render + Heliohost + env
 const pool = new Pool({
   user: process.env.USER1,
@@ -170,23 +178,24 @@ const pool = new Pool({
   min: 1,
   idleTimeoutMillis: 1000,
 });
-
+*/
 
 //console.log('process.env.DATABASE_URL = ' + process.env.DATABASE_URL);
-console.log('pool = ' + pool);
+//console.log('pool = ' + pool);
 
 
     
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Dans le navigateur les commandes sont les suivantes: localhost:3000/users, localhost:3000/users/:id=1; ...
-app.get('/users', pgsqldb.getUsers)
-app.get('/users/:id', pgsqldb.getUserById)
-app.post('/users', pgsqldb.createUser)
-app.put('/users/:id', pgsqldb.updateUser)
-app.delete('/users/:id', pgsqldb.deleteUser)
+//app.get('/users', pgsqldb.getUsers)
+//app.get('/users/:id', pgsqldb.getUserById)
+//app.post('/users', pgsqldb.createUser)
+//app.put('/users/:id', pgsqldb.updateUser)
+//app.delete('/users/:id', pgsqldb.deleteUser)
 
 ////////////////////////////////////////////////////////
 
+/*
 const path = require('path');
 app
   .get('/', (req, res) => {
@@ -205,68 +214,23 @@ app
         }
     });
   })
-  
-  /*
-  .get('/db', async (req, res) => {
-    const response = 'Hello World from express listening on ' + PORT;
-	
-	
-	try {
-      const client  = await pool.connect();
-      const result  = await client.query('SELECT * FROM eleves WHERE id = 1');
-	  
-      const results = { 'results': (result) ? result.rows : null};
-	  var obj       = JSON.stringify(results);	//--->{"results":[{"id":1,"name":"hello database"}]}
-	  //var obj_ = JSON.parse(obj);
-																				// Simple quote is same as double quote
-	  console.log(" results obj = " + JSON.stringify(results));					//[object Object] --> results obj = {"results":[{"id":1,"nom":"tata\n","prenom":"tartar\n","adresse":"10, rue verte","ville":"bordeaux","codepostal":"33000\n","tel":"0456789012","idclasses":1}]}
-	  //console.log("obj['results'] = "+results["results"]);					//[object Object] --> [{"id":1,"name":"hello database"}]
-	  //console.log("obj['results'][0] = "+results["results"][0]);				//[object Object] --> {"id":1,"name":"hello database"}
-	  //console.log("obj['results'][0]['id'] = "+results["results"][0]["id"]);	// 1
-	  
-	  //ou
-	  
-	  //console.log("results.results[0].id = "+results.results[0].id);			// même chose que ci-dessus.
-				  
-	  //res.send(response + obj);
-	  res.send("results : " + JSON.stringify(results));
-	  
-	  //res.send("results obj = "+obj);	
-	  //res.send("obj.['results'] = "+obj['results']);	
-	  //res.send("obj.results id = "+obj.results);
-	  
-	  
-      client.release();
-    } catch (err) {
-      //console.error(err);
-      res.send("Error : " + err);
-    }
-	
-  });
   */
-  
-  //const routes = require('../routes');
-  
-  const routes    = require('./routes');
-  
-  console.log("");
-  console.log("*******************************************************************************************************");
-  console.log("routes : routes = " + JSON.stringify(routes));
-  console.log("*******************************************************************************************************");
-  console.log("");
-  
-  //const server = express();
-  app.use(cors());
-  app.use((req, res, next) =>{
-	  req.Op = Op;
-	  res.io = io;
-	  next();
-  });
-  app.use(bodyParser.json());
-  app.use(validator());
-  app.use(express.json());
-  
-  app.use(express.static("./public"));
-  app.use('/api', routes);	//in browser type : http://localhost:3000/api
+ 
 
-  module.exports = app;
+  
+  //app.use(express.static("./public"));
+  //app.use('/api', routes);	//in browser type : http://localhost:3000/api
+
+	app.use(cors())
+	app.use((req, res, next) => {
+	  req.Op = Op
+	  res.io = io
+	  next()
+	});
+	app.use(bodyParser.json())
+	app.use(validator())
+	app.use(route)
+
+	http.listen(port,() => {
+	  console.log('Listening on ' + port)
+	})
