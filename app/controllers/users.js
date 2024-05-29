@@ -31,10 +31,29 @@ const createNotes = async (req, res) => {
 }
 
 //Get all notes
+////public static async findAll(options: object): Promise<Array<Model>>
 const getAllNotes = async (req, res) => {
-  console.log("controllers.getAllNotes");
+  console.log("controllers.getAllNotes : models.Notes = ");
+  const promise = new Promise((resolve, reject) => {
+				 resolve(models.Notes.findAll()); 
+  });
+			
+			//if(error)(reject("promise error "+error)); 
+			let resul = await promise;
+			promise.then((value) => {	// value et result la même chose
+			  console.log("///////////////// promise then 'getAllNotes'  results = " + JSON.stringify(value)); //JSON.stringify(results.rowCount));
+				
+			  //var res = (results.rowCount == 1) ? "success" : "failure" ;
+			  //console.log("/////////////// Testing db : status = " + res);
+			  
+			}).catch((error) =>{
+				console.log("promise 'getAllNotes' error : " + error.message);
+				console.log("promise 'getAllNotes' error : " + error.stack);
+				console.error(error);
+			});
+  
   try {
-    const notes = await models.Notes.findAll({
+	const notes = await models.Notes.findAll({
      
 	 /*
 	  include: [
@@ -49,7 +68,7 @@ const getAllNotes = async (req, res) => {
       ]
 	  */
     });
-	console.log("controllers.getAllNotes : notes = " + JSON.stringify(notes));
+	//console.log("controllers.getAllNotes : notes = " + JSON.stringify(notes));
     return res.status(200).json({ notes });
   } catch (error) {
     return res.status(500).send("getAllNotes error : " + error.stack); //error.message

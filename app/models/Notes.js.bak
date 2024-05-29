@@ -42,6 +42,5 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
     })
   }
-  console.log("********models/Notes.js");
   return Notes;
 };
