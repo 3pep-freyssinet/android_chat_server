@@ -1,10 +1,12 @@
-const { Router } = require('express'); //{x} = a means x=a.x example A much more useful example would be something like {width, height, color} = options,
+//const { Router } = require('express'); //{x} = a means x=a.x example A much more useful example would be something like {width, height, color} = options,
                                        // which would replace the lines width = options.width; height = options.height; color = options.color 
+//const router = Router();
+
+//idem que above
+const express = require('express');
+const router  = express.Router();
 
 const controllers = require('../controllers');
-
-const router = Router();
-
 router.get('/', (req, res) => {
 	res.send('Welcome');  //http://localhost:3000/api/  cf server
     console.log("get('/' : Welcome ");
@@ -35,5 +37,44 @@ router.get('/delete/:postId', controllers.deleteNote); 			//http://localhost:300
 router.get('/classe/:postId', controllers.getClassOneEleveById);//http://localhost:3000/api/classe/3
 
 router.get('/student/:name', controllers.getAllStudents);		//http://localhost:3000/api/student/martin
+
+//test
+router.get('/db', async (req, res) => {
+    const response = 'Hello World from express listening on ' + PORT;
+	res.send("response = " + response);
+	
+	/*
+	try {
+      const client  = await pool.connect();
+      const result  = await client.query('SELECT * FROM eleves WHERE id = 1');
+	  
+      const results = { 'results': (result) ? result.rows : null};
+	  var obj       = JSON.stringify(results);	//--->{"results":[{"id":1,"name":"hello database"}]}
+	  //var obj_ = JSON.parse(obj);
+																				// Simple quote is same as double quote
+	  console.log(" results obj = " + JSON.stringify(results));					//[object Object] --> results obj = {"results":[{"id":1,"nom":"tata\n","prenom":"tartar\n","adresse":"10, rue verte","ville":"bordeaux","codepostal":"33000\n","tel":"0456789012","idclasses":1}]}
+	  //console.log("obj['results'] = "+results["results"]);					//[object Object] --> [{"id":1,"name":"hello database"}]
+	  //console.log("obj['results'][0] = "+results["results"][0]);				//[object Object] --> {"id":1,"name":"hello database"}
+	  //console.log("obj['results'][0]['id'] = "+results["results"][0]["id"]);	// 1
+	  
+	  //ou
+	  
+	  //console.log("results.results[0].id = "+results.results[0].id);			// même chose que ci-dessus.
+				  
+	  //res.send(response + obj);
+	  res.send("results : " + JSON.stringify(results));
+	  
+	  //res.send("results obj = "+obj);	
+	  //res.send("obj.['results'] = "+obj['results']);	
+	  //res.send("obj.results id = "+obj.results);
+	  
+	  
+      client.release();
+    } catch (err) {
+      //console.error(err);
+      res.send("Error : " + err);
+    }
+	*/
+});
 
 module.exports = router;

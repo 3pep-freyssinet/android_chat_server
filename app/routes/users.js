@@ -6,6 +6,7 @@
 const express = require('express');
 const router  = express.Router();
 
+/*
 const controllers = require('../controllers/users'); //'users.js' is expected in folder 'controllers'
 
 router.get('/', (req, res) => {
@@ -38,5 +39,83 @@ router.get('/delete/:postId', controllers.deleteNote); 			//http://localhost:300
 router.get('/classe/:postId', controllers.getClassOneEleveById);//http://localhost:3000/api/classe/3
 
 router.get('/student/:name', controllers.getAllStudents);		//http://localhost:3000/api/student/martin
+*/
 
+const Pool = require('pg').Pool
+
+/*
+//localhost
+const pool = new Pool({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'postgres',
+  password: 'tomcat@14200',
+  port: 5432,
+  client_encoding: 'utf8',
+  //ssl: true,
+  max: 20,
+  min: 1,
+  idleTimeoutMillis: 1000,
+});
+*/
+
+///Render + Aiven + env
+const pool = new Pool({
+  user: process.env.USER,
+  host: process.env.HOST,
+  database: process.env.DATABASE,
+  password: process.env.PASSWORD,
+  port: process.env.PORT,
+  client_encoding: 'utf8',
+  ssl: {
+    rejectUnauthorized: true,
+    ca: fs.readFileSync("./ca.pem").toString(),
+  },
+  max: 20,
+  min: 1,
+  idleTimeoutMillis: 1000,
+});
+
+
+//test
+router.get('/', async (req, res) => {
+    const response = 'Hello World from express listening on ';
+	res.send("response = " + response);
+});
+
+router.get('/db', async (req, res) => {
+    const response = 'Hello World from express listening on ';
+	//res.send("response = " + response);
+	
+	try {
+      const client  = await pool.connect();
+      const result  = await client.query('SELECT * FROM eleves WHERE id = 1');
+	  
+      const results = { 'results': (result) ? result.rows : null};
+	  var obj       = JSON.stringify(results);	//--->{"results":[{"id":1,"name":"hello database"}]}
+	  //var obj_ = JSON.parse(obj);
+																				// Simple quote is same as double quote
+	  console.log(" results obj = " + JSON.stringify(results));					//[object Object] --> results obj = {"results":[{"id":1,"nom":"tata\n","prenom":"tartar\n","adresse":"10, rue verte","ville":"bordeaux","codepostal":"33000\n","tel":"0456789012","idclasses":1}]}
+	  //console.log("obj['results'] = "+results["results"]);					//[object Object] --> [{"id":1,"name":"hello database"}]
+	  //console.log("obj['results'][0] = "+results["results"][0]);				//[object Object] --> {"id":1,"name":"hello database"}
+	  //console.log("obj['results'][0]['id'] = "+results["results"][0]["id"]);	// 1
+	  
+	  //ou
+	  
+	  //console.log("results.results[0].id = "+results.results[0].id);			// même chose que ci-dessus.
+				  
+	  //res.send(response + obj);
+	  res.send("results : " + JSON.stringify(results));
+	  
+	  //res.send("results obj = "+obj);	
+	  //res.send("obj.['results'] = "+obj['results']);	
+	  //res.send("obj.results id = "+obj.results);
+	  
+	  
+      client.release();
+    } catch (err) {
+      //console.error(err);
+      res.send("Error : " + err);
+    }
+});
 module.exports = router;

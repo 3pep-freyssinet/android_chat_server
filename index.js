@@ -71,7 +71,7 @@ const crypto   = require('crypto');
 //Sequelize-pgsql
 //io.use(sequelize('pgsql', 'postgres', 'tomcat14200', { host: 'localhost' }, 'D:\node-pg-sequelize\models'));
 
-//const { Pool } = require('pg');
+const { Pool } = require('pg');
 
 /*
 const pool = new Pool({
@@ -83,7 +83,7 @@ const pool = new Pool({
 */
 //const Pool = require('pg').Pool
 
-/*
+
 //localhost
 const pool = new Pool({
   user: 'postgres',
@@ -97,7 +97,7 @@ const pool = new Pool({
   min: 1,
   idleTimeoutMillis: 1000,
 })
-*/
+
 
 /*
 //Heroku
@@ -233,4 +233,4 @@ app
 
 	http.listen(port,() => {
 	  console.log('Listening on ' + port)
-	})
+	});

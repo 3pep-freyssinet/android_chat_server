@@ -50,7 +50,7 @@ const getAllNotes = async (req, res) => {
     });
     return res.status(200).json({ notes });
   } catch (error) {
-    return res.status(500).send("getAllNotes error : "+error.stack); //error.message
+    return res.status(500).send("getAllNotes error : " + error.stack); //error.message
   }
 }
 
