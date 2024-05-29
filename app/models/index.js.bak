@@ -8,7 +8,7 @@ const basename = path.basename(__filename);
 const env = 'development';
 
 //const config = require(__dirname + '/../config/config.json')[env]; //original
-console.log(" models.index *************env = ",env)
+console.log(" models.index *************env = " + env)
 const config = require(__dirname + '/../config/config.js')[env]; //moi
 
 const db = {};

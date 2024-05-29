@@ -84,6 +84,7 @@ router.get('/', async (req, res) => {
 	res.send("response = " + response);
 });
 
+//test
 router.get('/db', async (req, res) => {
     const response = 'Hello World from express listening on ';
 	//res.send("response = " + response);
