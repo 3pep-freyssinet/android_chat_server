@@ -30,6 +30,14 @@ const testDbConnection = async() => {
 		console.error("connection fail : ", error);
 	}
 }
+console.log("test connection " + async() => {
+	try{
+		await sequelize.authenticate();
+		console.log("connection success");
+	}catch(error){
+		console.error("connection fail : ", error);
+	}
+});
 
 fs
   .readdirSync(__dirname)
