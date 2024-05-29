@@ -42,6 +42,7 @@ router.get('/student/:name', controllers.getAllStudents);		//http://localhost:30
 */
 
 const Pool = require('pg').Pool
+const fs   = require("fs");
 
 /*
 //localhost

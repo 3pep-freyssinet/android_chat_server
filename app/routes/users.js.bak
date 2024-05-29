@@ -42,7 +42,7 @@ router.get('/student/:name', controllers.getAllStudents);		//http://localhost:30
 */
 
 const Pool = require('pg').Pool
-
+const fs   = require("fs");
 /*
 //localhost
 const pool = new Pool({
@@ -59,14 +59,18 @@ const pool = new Pool({
 });
 */
 
-//Render + Heliohost + env
+///Render + Aiven + env
 const pool = new Pool({
-  user: process.env.USER1,
-  host: process.env.HOST1,
-  database: process.env.DATABASE1,
-  password: process.env.PASSWORD1,
-  port: process.env.PORT1,
+  user: process.env.USER,
+  host: process.env.HOST,
+  database: process.env.DATABASE,
+  password: process.env.PASSWORD,
+  port: process.env.PORT,
   client_encoding: 'utf8',
+  ssl: {
+    rejectUnauthorized: true,
+    ca: fs.readFileSync("./ca.pem").toString(),
+  },
   max: 20,
   min: 1,
   idleTimeoutMillis: 1000,
