@@ -23,7 +23,7 @@ if (config.use_env_variable) {
 }
 
 //test connection
-const testDbConnection = async() => {
+async function testDbConnection() => {
 	try{
 		await sequelize.authenticate();
 		console.log("connection success");
@@ -32,14 +32,7 @@ const testDbConnection = async() => {
 	}
 }
 
-console.log("test connection " + async() => {
-	try{
-		await sequelize.authenticate();
-		console.log("connection success");
-	}catch(error){
-		console.error("connection fail : ", error);
-	}
-});
+console.log("test connection " + testDbConnection());
 
 fs
   .readdirSync(__dirname)
