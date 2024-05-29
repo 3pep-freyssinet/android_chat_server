@@ -49,8 +49,9 @@ module.exports = {
     "database": process.env.DATABASE, //'postgres', 
     "options":{
 		"host": process.env.HOST,     //'127.0.0.1',
+		"port": 5432,
 	    "dialect": 'postgres',
-		ssl: true,
+		"ssl": true
 	}
   },
   test: {
@@ -59,18 +60,21 @@ module.exports = {
   },
   production: {
     "username": process.env.USER,     /* USERNAME is used by windows in system environment variable */ //, 'postgres',
-    "password": process.env.PASSWORD, //'tomcat@14200', 
+    "password": process.env.PASSWORD, //'', 
     "database": process.env.DATABASE, //'postgres', 
     "options":{
 		"host": process.env.HOST,     //'127.0.0.1',
+		"port": 5432,           	  //5432
 	    "dialect": 'postgres',
 	    "ssl": true,
-	    "dialectOptions": {
-           "ssl": {
-				"require": true, 			// This will help you. But you will see new error ****************************************
-				"rejectUnauthorized": false // This line will fix new error **********************************************************
-		   }
-		}
+		"client_encoding": 'utf8',
+		ssl: {
+			rejectUnauthorized: true,
+			ca: fs.readFileSync("./ca.pem").toString(),
+		},
+		max: 20,
+		min: 1,
+		idleTimeoutMillis: 1000
     }
   }
 };

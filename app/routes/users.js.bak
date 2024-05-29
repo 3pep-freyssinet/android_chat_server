@@ -6,7 +6,7 @@
 const express = require('express');
 const router  = express.Router();
 
-/*
+
 const controllers = require('../controllers/users'); //'users.js' is expected in folder 'controllers'
 
 router.get('/', (req, res) => {
@@ -39,12 +39,12 @@ router.get('/delete/:postId', controllers.deleteNote); 			//http://localhost:300
 router.get('/classe/:postId', controllers.getClassOneEleveById);//http://localhost:3000/api/classe/3
 
 router.get('/student/:name', controllers.getAllStudents);		//http://localhost:3000/api/student/martin
-*/
+
 
 const Pool = require('pg').Pool
 const fs   = require("fs");
 
-/*
+
 //localhost
 const pool = new Pool({
   user: 'postgres',
@@ -58,9 +58,10 @@ const pool = new Pool({
   min: 1,
   idleTimeoutMillis: 1000,
 });
-*/
 
-///Render + Aiven + env
+
+/*
+//Render + Aiven + env
 const pool = new Pool({
   user: process.env.USER,
   host: process.env.HOST,
@@ -76,7 +77,7 @@ const pool = new Pool({
   min: 1,
   idleTimeoutMillis: 1000,
 });
-
+*/
 
 //test
 router.get('/', async (req, res) => {

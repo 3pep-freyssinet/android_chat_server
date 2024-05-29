@@ -1,11 +1,11 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+const fs 		= require('fs');
+const path 		= require('path');
 const Sequelize = require('sequelize');
-const basename = path.basename(__filename);
-//const env = process.env.NODE_ENV || 'development';
-const env = 'development';
+const basename 	= path.basename(__filename);
+const env 		= process.env.NODE_ENV || 'development';
+
 
 //const config = require(__dirname + '/../config/config.json')[env]; //original
 console.log(" models.index *************env = " + env)
@@ -22,10 +22,12 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config.options); //original : use the values in 'config.js'
 }
 
+
 //test connection
 async function testDbConnection() {
 	try{
 		return await sequelize.authenticate();
+		//return "hello the world";
 		console.log("connection success");
 	}catch(error){
 		console.error("connection fail : ", error);
@@ -34,10 +36,7 @@ async function testDbConnection() {
 }
 
 testDbConnection().then(res => console.log("test connection : " + res));;
-//or
-//testDbConnection().then(data => {
-//    console.log(data);
-//});
+
 
 fs
   .readdirSync(__dirname)

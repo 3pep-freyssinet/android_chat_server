@@ -32,6 +32,7 @@ const createNotes = async (req, res) => {
 
 //Get all notes
 const getAllNotes = async (req, res) => {
+  console.log("controllers.getAllNotes");
   try {
     const notes = await models.Notes.findAll({
      
@@ -48,6 +49,7 @@ const getAllNotes = async (req, res) => {
       ]
 	  */
     });
+	console.log("controllers.getAllNotes : notes = " + JSON.stringify(notes));
     return res.status(200).json({ notes });
   } catch (error) {
     return res.status(500).send("getAllNotes error : " + error.stack); //error.message
