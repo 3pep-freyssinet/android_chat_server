@@ -63,8 +63,8 @@ module.exports = {
     "password": process.env.PASSWORD, //'', 
     "database": process.env.DATABASE, //'postgres', 
     "options":{
-		"host": process.env.HOST,     //'127.0.0.1',
-		"port": 5432,           	  //5432
+		"host": process.env.HOST,     //'127.0.0.1', 'localhost'
+		"port": process.env.PORT,     //5432
 	    "dialect": 'postgres',
 	    "ssl": true,
 		"client_encoding": 'utf8',

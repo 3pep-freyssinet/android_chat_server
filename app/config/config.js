@@ -66,11 +66,12 @@ module.exports = {
 		"host": process.env.HOST,     //'127.0.0.1', 'localhost'
 		"port": process.env.PORT,     //5432
 	    "dialect": 'postgres',
-	    "ssl": true,
-		"client_encoding": 'utf8',
-		ssl: {
-			rejectUnauthorized: true,
-			ca: fs.readFileSync("./ca.pem").toString(),
+	    dialectOptions: {
+			ssl: {
+				require: true, // This will help you. But you will see nwe error
+				rejectUnauthorized: false, // This line will fix new error
+				ca: fs.readFileSync("./ca.pem").toString(),
+			}
 		},
 		max: 20,
 		min: 1,
