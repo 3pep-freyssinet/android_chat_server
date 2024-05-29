@@ -6,7 +6,7 @@
 const express = require('express');
 const router  = express.Router();
 
-/*
+
 const controllers = require('../controllers/users'); //'users.js' is expected in folder 'controllers'
 
 router.get('/', (req, res) => {
@@ -39,7 +39,7 @@ router.get('/delete/:postId', controllers.deleteNote); 			//http://localhost:300
 router.get('/classe/:postId', controllers.getClassOneEleveById);//http://localhost:3000/api/classe/3
 
 router.get('/student/:name', controllers.getAllStudents);		//http://localhost:3000/api/student/martin
-*/
+
 
 const Pool = require('pg').Pool
 const fs   = require("fs");

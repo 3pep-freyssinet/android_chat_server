@@ -14,6 +14,7 @@ const config = require(__dirname + '/../config/config.js')[env]; //moi
 const db = {};
 
 console.log("*********config = " + Object.keys(config));
+
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
@@ -30,7 +31,8 @@ const testDbConnection = async() => {
 		console.error("connection fail : ", error);
 	}
 }
-console.log("test connection " + async() => {
+
+console.log("test connection ", async() => {
 	try{
 		await sequelize.authenticate();
 		console.log("connection success");
