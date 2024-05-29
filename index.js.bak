@@ -233,6 +233,4 @@ app
 
 	http.listen(port,() => {
 	  console.log('Listening on ' + port)
-	})
-	
-	export pool;
+	});

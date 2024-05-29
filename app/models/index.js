@@ -28,9 +28,9 @@ async function testDbConnection() {
 	try{
 		return await sequelize.authenticate();
 		//return "hello the world";
-		console.log("connection success");
+		console.log("'models/index.js' : connection success");
 	}catch(error){
-		console.error("connection fail : ", error);
+		console.error("'models/index.js' : connection fail : ", error);
 		throw error;
 	}
 }
