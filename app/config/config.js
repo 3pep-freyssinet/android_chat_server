@@ -64,8 +64,8 @@ module.exports = {
     "database": 'DATABASE', //'postgres', 
     "options":{
 		"host": 'HOST',     //'127.0.0.1',
-		"port": 5432,
-	    "dialect": 'postgres',
+		//"port": 5432,
+		"dialect": 'postgres',
 		"ssl": true
 	}
   },
@@ -74,12 +74,12 @@ module.exports = {
     dialect: 'postgres',
   },
   production: {
-    "username": USER,     // USERNAME is used by windows in system environment variable  //, 'postgres',
-    "password": PASSWORD, //'', 
-    "database": DATABASE, //'postgres', 
+    "username": 'USER',     // USERNAME is used by windows in system environment variable  //, 'postgres',
+    "password": 'PASSWORD', //'', 
+    "database": 'DATABASE', //'postgres', 
     "options":{
-		"host": HOST,     //'127.0.0.1', 'localhost'
-		"port": PORT,     //5432
+		"host": process.env.HOST,     //'127.0.0.1', 'localhost'
+		//"port": 'PORT',     //5432
 	    "dialect": 'postgres',
 	    dialectOptions: {
 			ssl: {
