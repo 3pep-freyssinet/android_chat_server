@@ -70,10 +70,10 @@ const sequelize = new Sequelize(
 							  "port":process.env.PORT,
 							  "dialect":'postgres', //error: no pg_hba.conf entry for host    
 							  "client_encoding": 'utf8',
-							   ssl: {
-                                 require: true, // This will help you to ' //error: no pg_hba.conf entry for host' But you will see new error
-								rejectUnauthorized: false, // This line will fix new error
-								ca: fs.readFileSync("./ca.pem").toString(),
+							   "ssl": {
+                                 "require": true, // This will help you to ' //error: no pg_hba.conf entry for host' But you will see new error
+								"rejectUnauthorized": false, // This line will fix new error
+								"ca": fs.readFileSync("./ca.pem").toString(),
                                }
 							});
 
@@ -93,9 +93,9 @@ async function testDbConnection() {
 	try{
 		return await sequelize.authenticate();
 		//return "hello the world";
-		console.log("'models/index.js' : connection success");
+		console.log("'./index.js' : connection success");
 	}catch(error){
-		console.error("'models/index.js' : connection fail : ", error);
+		console.error("'./index.js' : connection fail : ", error);
 		throw error;
 	}
 }
