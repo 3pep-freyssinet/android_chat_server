@@ -62,10 +62,14 @@ const utf8       = require('utf8');
 const crypto     = require('crypto');
 
 
-const sequelize = new Sequelize(process.env.DATABASE, 
+const sequelize = new Sequelize(
+							process.env.DATABASE, 
 							process.env.USER, 
 							process.env.PASSWORD, 
-							{"host":process.env.HOST, "dialect":'postgres'});
+							{ "host":process.env.HOST,
+							  "port":process.env.PORT,
+							  "dialect":'postgres'
+							});
 
 /*
 const sequelize = new Sequelize({

@@ -236,7 +236,7 @@ app
 	
 	const response = 'Hello World from express listening on ' + port;
 
-	testDbConnection().then(result => res.send"test connection : " + result);
+	testDbConnection().then(result => res.send("test connection : " + result));
 	
 	
 	//res.send(response);
