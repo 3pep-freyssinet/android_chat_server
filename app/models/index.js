@@ -1,4 +1,5 @@
 'use strict';
+require('dotenv').config();
 
 const fs 		= require('fs');
 const path 		= require('path');
@@ -13,13 +14,23 @@ const config = require(__dirname + '/../config/config.js')[env]; //moi
 
 const db = {};
 
-console.log("*********config = " + Object.keys(config));
+console.log("********* config = " + Object.keys(config));
+console.log("********* 'model/index.js' : process.env = " + Object.keys(process.env));
+console.log("********* 'model/index.js' : process.env.DATABASE_URL = " + process.env.DATABASE_URL);
+
+console.log("********* 'model/index.js' : config = " + Object.keys(config));
+console.log("********* 'model/index.js' : config.use_env_variable = " + config.use_env_variable);
+console.log("********* 'model/index.js' : process.env[config.use_env_variable] = " + process.env['config.use_env_variable']);
+console.log("********* 'model/index.js' : config.use_env_variable] = " + process.env[config.use_env_variable]);
 
 let sequelize;
-if (config.use_env_variable) {
+sequelize = new Sequelize(process.env[config.use_env_variable], config);
+if(config.use_env_variable) {
+  console.log("********* 'model/index.js' : process.env[config.use_env_variable] = " + process.env[config.use_env_variable]);
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config.options); //original : use the values in 'config.js'
+  console.log("********* ici " + config.use_env_variable);
+  //sequelize = new Sequelize(config.database, config.username, config.password, config.options); //original : use the values in 'config.js'
 }
 
 

@@ -71,7 +71,7 @@ const crypto   = require('crypto');
 //Sequelize-pgsql
 //io.use(sequelize('pgsql', 'postgres', 'tomcat14200', { host: 'localhost' }, 'D:\node-pg-sequelize\models'));
 
-const { Pool } = require('pg');
+//const { Pool } = require('pg');
 
 /*
 const pool = new Pool({

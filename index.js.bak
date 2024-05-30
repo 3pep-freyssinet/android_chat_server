@@ -48,7 +48,7 @@ const Sequelize  = require('sequelize')
 //and then import: var c = require('./controllers');. You can then use them via c.users and c.posts.
 //******************************************************************
 const route      = require('./app/routes') // an 'index.js' is expected in folder 'routes'
-const port       = process.env.PORT || 5000
+const port       = process.env.PORT2 || 5000
 
 const app        = express()
 const http       = require('http').Server(app)
@@ -83,7 +83,7 @@ const pool = new Pool({
 */
 //const Pool = require('pg').Pool
 
-
+/*
 //localhost
 const pool = new Pool({
   user: 'postgres',
@@ -97,7 +97,7 @@ const pool = new Pool({
   min: 1,
   idleTimeoutMillis: 1000,
 })
-
+*/
 
 /*
 //Heroku

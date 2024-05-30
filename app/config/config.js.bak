@@ -15,36 +15,53 @@ module.exports = {
 };
 */
 
-/*
+
 //local + env + connection String
 module.exports = {
   development: {
-    use_env_variable: process.env.DEV_DATABASE_URL,
-    dialect: 'postgres',
-	host: '127.0.0.1'
+    "use_env_variable": 'DATABASE_URL',
+    "dialect": 'postgres',
+	dialectOptions: {
+			tls: {
+				rejectUnauthorized: false
+			},
+			ssl: {
+				require: true, // This will help you. But you will see nwe error
+			//	rejectUnauthorized: false, // This line will fix new error
+			//	//ca: fs.readFileSync("./ca.pem"), //.toString(),
+			//}
+	},
+	max: 20,
+	min: 1,
+	idleTimeoutMillis: 1000
   },
   test: {
-    url: process.env.TEST_DATABASE_URL,
-    dialect: 'postgres',
+    "url": 'DATABASE_URL',
+    "dialect": 'postgres',
   },
   production: {
-    use_env_variable: process.env.DEV_DATABASE_URL,
-    dialect: 'postgres',
-	ssl: true,
-	dialectOptions: {
-    ssl: {
-      require: true, 			// This will help you. But you will see new error ****************************************
-      rejectUnauthorized: false // This line will fix new error **********************************************************
+    "use_env_variable": 'DATABASE_URL',
+	"options":{
+	    "dialect": 'postgres',
+	    dialectOptions: {
+			ssl: {
+				require: true, // This will help you. But you will see nwe error
+				rejectUnauthorized: false, // This line will fix new error
+				//ca: fs.readFileSync("./ca.pem").toString(),
+			}
+		},
+		max: 20,
+		min: 1,
+		idleTimeoutMillis: 1000
     }
-  },
   }
 };
-*/
 
+/*
 //local + env + parameters
 module.exports = {
   development: {
-    "username": process.env.USER,     /* USERNAME is used by windows in system environment variable */ //, 'postgres',
+    "username": process.env.USER,     // USERNAME is used by windows in system environment variable //, 'postgres',
     "password": process.env.PASSWORD, //'', 
     "database": process.env.DATABASE, //'postgres', 
     "options":{
@@ -59,18 +76,19 @@ module.exports = {
     dialect: 'postgres',
   },
   production: {
-    "username": process.env.USER,     /* USERNAME is used by windows in system environment variable */ //, 'postgres',
+    "username": process.env.USER,     // USERNAME is used by windows in system environment variable  //, 'postgres',
     "password": process.env.PASSWORD, //'', 
     "database": process.env.DATABASE, //'postgres', 
     "options":{
 		"host": process.env.HOST,     //'127.0.0.1', 'localhost'
 		"port": process.env.PORT,     //5432
 	    "dialect": 'postgres',
-	    "ssl": true,
-		"client_encoding": 'utf8',
-		ssl: {
-			rejectUnauthorized: true,
-			ca: fs.readFileSync("./ca.pem").toString(),
+	    dialectOptions: {
+			ssl: {
+				require: true, // This will help you. But you will see nwe error
+				rejectUnauthorized: false, // This line will fix new error
+				ca: fs.readFileSync("./ca.pem").toString(),
+			}
 		},
 		max: 20,
 		min: 1,
@@ -78,7 +96,7 @@ module.exports = {
     }
   }
 };
-
+*/
 
 /*
 //local + url
