@@ -29,7 +29,7 @@ module.exports = {
 				require: true, // This will help you. But you will see nwe error
 			//	rejectUnauthorized: false, // This line will fix new error
 			//	//ca: fs.readFileSync("./ca.pem"), //.toString(),
-			//}
+			}
 	},
 	max: 20,
 	min: 1,
