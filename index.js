@@ -68,7 +68,13 @@ const sequelize = new Sequelize(
 							process.env.PASSWORD, 
 							{ "host":process.env.HOST,
 							  "port":process.env.PORT,
-							  "dialect":'postgres'
+							  "dialect":'postgres', //error: no pg_hba.conf entry for host    
+							  "client_encoding": 'utf8',
+							   ssl: {
+                                 require: true, // This will help you to ' //error: no pg_hba.conf entry for host' But you will see new error
+								rejectUnauthorized: false, // This line will fix new error
+								ca: fs.readFileSync("./ca.pem").toString(),
+                               }
 							});
 
 /*

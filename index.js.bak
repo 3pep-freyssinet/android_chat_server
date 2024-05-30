@@ -62,10 +62,19 @@ const utf8       = require('utf8');
 const crypto     = require('crypto');
 
 
-const sequelize = new Sequelize(process.env.DATABASE, 
+const sequelize = new Sequelize(
+							process.env.DATABASE, 
 							process.env.USER, 
 							process.env.PASSWORD, 
-							{"host":process.env.HOST, "dialect":'postgres'});
+							{ "host":process.env.HOST,
+							  "port":process.env.PORT,
+							  "dialect":'postgres', //error: no pg_hba.conf entry for host    
+							  "client_encoding": 'utf8',
+							   ssl: {
+                                 rejectUnauthorized: true,
+                                 ca: fs.readFileSync("./ca.pem").toString(),
+                               }
+							});
 
 /*
 const sequelize = new Sequelize({
