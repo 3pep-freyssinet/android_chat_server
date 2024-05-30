@@ -226,17 +226,25 @@ const pool = new Pool({
 
 ////////////////////////////////////////////////////////
 
-/*
+
 const path = require('path');
 app
   .get('/', (req, res) => {
 	  const options = {
         root: path.join(__dirname)
     };
-	const response = 'Hello World from express listening on ' + PORT;
+	
+	const response = 'Hello World from express listening on ' + port;
+
+	testDbConnection().then(result => res.send("test connection : " + result));
+	
+	
+	//res.send(response);
+	
 	const fileName = 'index.html';
 	//res.sendFile(__dirname, 'index.html');
 	
+	/*
     res.sendFile(fileName, options, function (err) {
         if (err) {
             console.error('Error sending file:', err);
@@ -244,8 +252,9 @@ app
             console.log('Sent:', fileName);
         }
     });
+	*/
   })
-  */
+  
  
 
   
