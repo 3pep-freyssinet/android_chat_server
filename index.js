@@ -76,11 +76,12 @@ const sequelize = new Sequelize(
 							  "port":process.env.PORT,
 							  "dialect":'postgres', //error: no pg_hba.conf entry for host    
 							  "client_encoding": 'utf8',
-							   "ssl": {
-                                 "require": true, // 'false' --->'timeout', 'true' ---> //error: no pg_hba.conf entry for host' But you will see new error
-								"rejectUnauthorized": false, // This line will fix new error
+							  "ssl": 1
+							   //"ssl": {
+                               //  "require": true, // 'false' --->'timeout', 'true' ---> //error: no pg_hba.conf entry for host' But you will see new error
+								//"rejectUnauthorized": false, // This line will fix new error
 								//"ca": fs.readFileSync("./ca.pem").toString(),
-                               }
+                              // }
 							});
 
 /*
