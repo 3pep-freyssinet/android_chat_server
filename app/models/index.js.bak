@@ -9,7 +9,8 @@ const env 		= process.env.NODE_ENV || 'development';
 
 
 //const config = require(__dirname + '/../config/config.json')[env]; //original
-console.log(" models.index *************env = " + env)
+console.log(" models.index *************process.env.NODE_ENV = " + process.env.NODE_ENV);
+console.log(" models.index ******************************env = " + env);
 const config = require(__dirname + '/../config/config.js')[env]; //moi
 
 const db = {};
@@ -20,11 +21,11 @@ console.log("********* 'model/index.js' : process.env.DATABASE_URL = " + process
 
 console.log("********* 'model/index.js' : config = " + Object.keys(config));
 console.log("********* 'model/index.js' : config.use_env_variable = " + config.use_env_variable);
-console.log("********* 'model/index.js' : process.env[config.use_env_variable] = " + process.env[config.use_env_variable]);
+console.log("********* 'model/index.js' : process.env[config.use_env_variable] = " + process.env['config.use_env_variable']);
 console.log("********* 'model/index.js' : config.use_env_variable] = " + process.env[config.use_env_variable]);
 
 let sequelize;
-sequelize = new Sequelize(process.env['config.use_env_variable'], config);
+sequelize = new Sequelize(process.env[config.use_env_variable], config);
 if(config.use_env_variable) {
   console.log("********* 'model/index.js' : process.env[config.use_env_variable] = " + process.env[config.use_env_variable]);
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
