@@ -61,10 +61,10 @@ const url        = require('url');
 const utf8       = require('utf8');
 const crypto     = require('crypto');
 
-console.log("'process.env.DATABASE = '" + process.env.DATABASE + 
-            "'process.env.USER     = '" + process.env.USER     +
-			"'process.env.PASSWORD = '" + process.env.PASSWORD + 
-			"'process.env.HOST     = '" + process.env.HOST     +
+console.log("'process.env.DATABASE = '" + process.env.DATABASE + "\n" +
+            "'process.env.USER     = '" + process.env.USER     + "\n" +
+			"'process.env.PASSWORD = '" + process.env.PASSWORD + "\n" +
+			"'process.env.HOST     = '" + process.env.HOST     + "\n" +
 			"'process.env.PORT     = '" + process.env.PORT     
 			);
 			
