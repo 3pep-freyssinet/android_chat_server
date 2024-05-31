@@ -34,6 +34,7 @@ const createNotes = async (req, res) => {
 ////public static async findAll(options: object): Promise<Array<Model>>
 const getAllNotes = async (req, res) => {
   console.log("controllers.getAllNotes : models.Notes = ");
+  res.send("controllers.getAllNotes : models.Notes");
   const promise = new Promise((resolve, reject) => {
 				 resolve(models.Notes.findAll()); 
   });
