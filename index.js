@@ -61,19 +61,19 @@ const url        = require('url');
 const utf8       = require('utf8');
 const crypto     = require('crypto');
 
-console.log("'process.env.DATABASE = '" + process.env.DATABASE + "\n" +
-            "'process.env.USER     = '" + process.env.USER     + "\n" +
-			"'process.env.PASSWORD = '" + process.env.PASSWORD + "\n" +
-			"'process.env.HOST     = '" + process.env.HOST     + "\n" +
-			"'process.env.PORT     = '" + process.env.PORT     
+console.log("'process.env.DATABASE = '" + process.env.DATABASE3 + "\n" +
+            "'process.env.USER     = '" + process.env.USER3     + "\n" +
+			"'process.env.PASSWORD = '" + process.env.PASSWORD3 + "\n" +
+			"'process.env.HOST     = '" + process.env.HOST3     + "\n" +
+			"'process.env.PORT     = '" + process.env.PORT3     
 			);
 			
 const sequelize = new Sequelize(
-							process.env.DATABASE, 
-							process.env.USER, 
-							process.env.PASSWORD, 
-							{ "host":process.env.HOST,
-							  "port":process.env.PORT,
+							process.env.DATABASE3, 
+							process.env.USER3, 
+							process.env.PASSWORD3, 
+							{ "host":process.env.HOST3,
+							  "port":process.env.PORT3,
 							  "dialect":'postgres', //error: no pg_hba.conf entry for host    
 							  "client_encoding": 'utf8',
 							  "sslmode":require,

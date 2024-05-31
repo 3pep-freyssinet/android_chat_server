@@ -77,9 +77,8 @@ module.exports = {
     "username": 'USER',     // USERNAME is used by windows in system environment variable  //, 'postgres',
     "password": 'PASSWORD', //'', 
     "database": 'DATABASE', //'postgres', 
-	"dialect": 'postgres',
     "options":{
-		"host": 'HOST',     //'127.0.0.1', 'localhost'
+		"host": process.env.HOST,     //'127.0.0.1', 'localhost'
 		//"port": 'PORT',     //5432
 	    "dialect": 'postgres',
 	    dialectOptions: {
