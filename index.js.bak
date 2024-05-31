@@ -100,6 +100,7 @@ const sequelize = new Sequelize({
 	//ssl:true
 });
 */
+/*
 //test connection
 async function testDbConnection() {
 	try{
@@ -113,7 +114,7 @@ async function testDbConnection() {
 }
 
 testDbConnection().then(res => console.log("test connection : " + res));
-//*/
+*/
 
 ///const mysql = require('mysql2')
 //console.log('process.env.DATABASE_URL = ' + process.env.DATABASE_URL)

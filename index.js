@@ -292,7 +292,7 @@ app
 	});
 	app.use(bodyParser.json())
 	app.use(validator())
-	//app.use(route)
+	app.use(route)
 
 	http.listen(port,() => {
 	  console.log('Listening on ' + port)
