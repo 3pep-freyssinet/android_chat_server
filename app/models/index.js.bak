@@ -25,7 +25,7 @@ console.log("********* 'model/index.js' : config.use_env_variable = " + config.u
 console.log("********* 'model/index.js' : process.env[config.use_env_variable] = " + process.env['config.use_env_variable']);
 console.log("********* 'model/index.js' : config.use_env_variable] = " + process.env[config.use_env_variable]);
 
-//let sequelize;
+let sequelize;
 console.log("'process.env.DATABASE = '" + process.env.DATABASE + "\n" +
             "'process.env.USER     = '" + process.env.USER     + "\n" +
 			"'process.env.PASSWORD = '" + process.env.PASSWORD + "\n" +
@@ -33,7 +33,7 @@ console.log("'process.env.DATABASE = '" + process.env.DATABASE + "\n" +
 			"'process.env.PORT     = '" + process.env.PORT     
 			);
 			
-const sequelize = new Sequelize(
+sequelize = new Sequelize(
 							process.env.DATABASE, 
 							process.env.USER, 
 							process.env.PASSWORD, 

@@ -74,23 +74,20 @@ module.exports = {
     dialect: 'postgres',
   },
   production: {
-    "username": 'USER3',     // USERNAME is used by windows in system environment variable  //, 'postgres',
-    "password": 'PASSWORD3', //'', 
-    "database": 'DATABASE3', //'postgres', 
+    "user"    : 'USER',     // USERNAME is used by windows in system environment variable  //, 'postgres',
+    "password": 'PASSWORD', //'', 
+    "database": 'DATABASE', //'postgres', 
     "options":{
-		"host": process.env.HOST3,     //'127.0.0.1', 'localhost'
-		//"port": 'PORT',     //5432
-	    "dialect": 'postgres',
+		"host": process.env.HOST,
+		"port": process.env.PORT,
+	    "dialect":'postgres',   
+	    "client_encoding": 'utf8',
 	    dialectOptions: {
 			ssl: {
-				require: true, // This will help you. But you will see nwe error
-				rejectUnauthorized: false, // This line will fix new error
-				ca: fs.readFileSync("./ca.pem").toString(),
+				require: true, //seule, marche bd render
+				"ca": fs.readFileSync("./ca.pem").toString(), //require=true, ca et port=5000: error : Port scan timeout reached, failed to detect open port 25884 from PORT environment variable. Bind your service to port 25884 or update the PORT environment variable to the correct port												//require=true, ca et port=PORT=25884 : marche
 			}
-		},
-		max: 20,
-		min: 1,
-		idleTimeoutMillis: 1000
+		}
     }
   }
 };

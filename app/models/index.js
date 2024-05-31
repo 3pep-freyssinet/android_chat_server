@@ -32,7 +32,8 @@ console.log("'process.env.DATABASE = '" + process.env.DATABASE + "\n" +
 			"'process.env.HOST     = '" + process.env.HOST     + "\n" +
 			"'process.env.PORT     = '" + process.env.PORT     
 			);
-			
+
+/*		
 sequelize = new Sequelize(
 							process.env.DATABASE, 
 							process.env.USER, 
@@ -49,7 +50,12 @@ sequelize = new Sequelize(
 								}
 							  }
 							});
+*/
 
+sequelize = new Sequelize(process.env[config.database], 
+							process.env[config.user], 
+							process.env[config.password], 
+							config.options); //original : use the values in 'config.js'
 
 /*
 //sequelize = new Sequelize(process.env[config.use_env_variable], config);
