@@ -41,7 +41,7 @@ const getAllNotes = async (req, res) => {
 			//if(error)(reject("promise error "+error)); 
 			let resul = await promise;
 			promise.then((value) => {	// value et result la même chose
-			  console.log("///////////////// promise then 'getAllNotes'  results = " + value); //JSON.stringify(results.rowCount));
+			  console.log("///////////////// promise then 'getAllNotes'  results = " + JSON.stringify(value)); //JSON.stringify(results.rowCount));
 				
 			  //var res = (results.rowCount == 1) ? "success" : "failure" ;
 			  //console.log("/////////////// Testing db : status = " + res);
