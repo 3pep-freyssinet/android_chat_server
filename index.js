@@ -48,7 +48,7 @@ const Sequelize  = require('sequelize')
 //and then import: var c = require('./controllers');. You can then use them via c.users and c.posts.
 //******************************************************************
 //const route      = require('./app/routes') // an 'index.js' is expected in folder 'routes'
-const port       = process.env.PORT || 5000
+const port       = process.env.PORT99 || 5000
 
 const app        = express()
 const http       = require('http').Server(app)
@@ -69,11 +69,11 @@ console.log("'process.env.DATABASE = '" + process.env.DATABASE3 + "\n" +
 			);
 			
 const sequelize = new Sequelize(
-							process.env.DATABASE3, 
-							process.env.USER3, 
-							process.env.PASSWORD3, 
-							{ "host":process.env.HOST3,
-							  "port":process.env.PORT3,
+							process.env.DATABASE, 
+							process.env.USER, 
+							process.env.PASSWORD, 
+							{ "host":process.env.HOST,
+							  "port":process.env.PORT,
 							  "dialect":'postgres', //error: no pg_hba.conf entry for host    
 							  "client_encoding": 'utf8',
 							  dialectOptions: {
