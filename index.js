@@ -78,7 +78,7 @@ const sequelize = new Sequelize(
 							  "client_encoding": 'utf8',
 							  dialectOptions: {
 								ssl: {
-									require: true
+									require: true, //seule, marche bd render
 									"ca": fs.readFileSync("./ca.pem").toString(),
 								}
 							  }

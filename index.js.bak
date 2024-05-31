@@ -61,11 +61,11 @@ const url        = require('url');
 const utf8       = require('utf8');
 const crypto     = require('crypto');
 
-console.log("'process.env.DATABASE = '" + process.env.DATABASE3 + "\n" +
-            "'process.env.USER     = '" + process.env.USER3     + "\n" +
-			"'process.env.PASSWORD = '" + process.env.PASSWORD3 + "\n" +
-			"'process.env.HOST     = '" + process.env.HOST3     + "\n" +
-			"'process.env.PORT     = '" + process.env.PORT3     
+console.log("'process.env.DATABASE = '" + process.env.DATABASE + "\n" +
+            "'process.env.USER     = '" + process.env.USER     + "\n" +
+			"'process.env.PASSWORD = '" + process.env.PASSWORD + "\n" +
+			"'process.env.HOST     = '" + process.env.HOST     + "\n" +
+			"'process.env.PORT     = '" + process.env.PORT     
 			);
 			
 const sequelize = new Sequelize(
@@ -78,7 +78,8 @@ const sequelize = new Sequelize(
 							  "client_encoding": 'utf8',
 							  dialectOptions: {
 								ssl: {
-									require: true
+									require: true //seule, marche bd render
+									"ca": fs.readFileSync("./ca.pem").toString(),
 								}
 							  }
 							  //"sslmode":require,
