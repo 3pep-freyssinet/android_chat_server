@@ -32,8 +32,11 @@ const createNotes = async (req, res) => {
 
 //Get all notes
 const getAllNotes = async (req, res) => {
-  try {
-    const notes = await models.Notes.findAll({
+	const notes = {"name": 'tom'};
+	return res.status(200).json({ notes });
+  
+  //try {
+    //const notes = await models.Notes.findAll({
      
 	 /*
 	  include: [
@@ -47,11 +50,12 @@ const getAllNotes = async (req, res) => {
         }
       ]
 	  */
-    });
-    return res.status(200).json({ notes });
-  } catch (error) {
-    return res.status(500).send("getAllNotes error : "+error.stack); //error.message
-  }
+  //  });
+  //  return res.status(200).json({ notes });
+  //} catch (error) {
+  //  return res.status(500).send("getAllNotes error : "+error.stack); //error.message
+  //}
+  
 }
 
 //Get student info, classroom and mark knowing note id.
