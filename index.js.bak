@@ -47,7 +47,7 @@ const Sequelize  = require('sequelize')
 // module.exports.posts = require('./posts');
 //and then import: var c = require('./controllers');. You can then use them via c.users and c.posts.
 //******************************************************************
-//const route      = require('./app/routes') // an 'index.js' is expected in folder 'routes'
+
 const port       = process.env.PORT || 5000
 
 const app        = express()
@@ -61,6 +61,9 @@ const url        = require('url');
 const utf8       = require('utf8');
 const crypto     = require('crypto');
 
+const route      = require('./app/routes') // an 'index.js' is expected in folder 'routes'
+
+/* marche
 console.log("'process.env.DATABASE = '" + process.env.DATABASE + "\n" +
             "'process.env.USER     = '" + process.env.USER     + "\n" +
 			"'process.env.PASSWORD = '" + process.env.PASSWORD + "\n" +
@@ -80,17 +83,11 @@ const sequelize = new Sequelize(
 								ssl: {
 									require: true, //seule, marche bd render
 									"ca": fs.readFileSync("./ca.pem").toString(), //require=true, ca et port=5000: error : Port scan timeout reached, failed to detect open port 25884 from PORT environment variable. Bind your service to port 25884 or update the PORT environment variable to the correct port
+																					//require=true, ca et port=PORT=25884 : marche
 								}
 							  }
-							  //"sslmode":require,
-							  //"ssl": true,
-							  //"ca": fs.readFileSync("./ca.pem").toString(),
-							   //"ssl": {
-                               //  "require": true, // 'false' --->'timeout', 'true' ---> //error: no pg_hba.conf entry for host' But you will see new error
-								//"rejectUnauthorized": false, // This line will fix new error
-								//"ca": fs.readFileSync("./ca.pem").toString(),
-                              // }
 							});
+*/
 
 /*
 const sequelize = new Sequelize({
@@ -260,11 +257,11 @@ app
     };
 	
 	const response = 'Hello World from express listening on ' + port;
-
-	testDbConnection().then(result => res.send("test connection : " + result));
+    res.send(response);
+	//testDbConnection().then(result => res.send("test connection : " + result));
 	
 	
-	//res.send(response);
+	
 	
 	const fileName = 'index.html';
 	//res.sendFile(__dirname, 'index.html');
