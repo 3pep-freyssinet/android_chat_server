@@ -48,7 +48,7 @@ const Sequelize  = require('sequelize')
 //and then import: var c = require('./controllers');. You can then use them via c.users and c.posts.
 //******************************************************************
 //const route      = require('./app/routes') // an 'index.js' is expected in folder 'routes'
-const port       = process.env.PORT99 || 5000
+const port       = process.env.PORT || 5000
 
 const app        = express()
 const http       = require('http').Server(app)
@@ -74,12 +74,12 @@ const sequelize = new Sequelize(
 							process.env.PASSWORD, 
 							{ "host":process.env.HOST,
 							  "port":process.env.PORT,
-							  "dialect":'postgres', //error: no pg_hba.conf entry for host    
+							  "dialect":'postgres',   
 							  "client_encoding": 'utf8',
 							  dialectOptions: {
 								ssl: {
 									require: true, //seule, marche bd render
-									"ca": fs.readFileSync("./ca.pem").toString(),
+									"ca": fs.readFileSync("./ca.pem").toString(), //require=true, ca et port=5000: error : Port scan timeout reached, failed to detect open port 25884 from PORT environment variable. Bind your service to port 25884 or update the PORT environment variable to the correct port
 								}
 							  }
 							  //"sslmode":require,
