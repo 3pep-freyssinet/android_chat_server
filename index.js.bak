@@ -74,7 +74,7 @@ const sequelize = new Sequelize(
 							process.env.PASSWORD, 
 							{ "host":process.env.HOST,
 							  "port":process.env.PORT,
-							  "dialect":'postgres', //error: no pg_hba.conf entry for host    
+							  "dialect":'postgres',   
 							  "client_encoding": 'utf8',
 							  dialectOptions: {
 								ssl: {

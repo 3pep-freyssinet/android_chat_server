@@ -26,6 +26,32 @@ console.log("********* 'model/index.js' : process.env[config.use_env_variable] =
 console.log("********* 'model/index.js' : config.use_env_variable] = " + process.env[config.use_env_variable]);
 
 let sequelize;
+console.log("'process.env.DATABASE = '" + process.env.DATABASE + "\n" +
+            "'process.env.USER     = '" + process.env.USER     + "\n" +
+			"'process.env.PASSWORD = '" + process.env.PASSWORD + "\n" +
+			"'process.env.HOST     = '" + process.env.HOST     + "\n" +
+			"'process.env.PORT     = '" + process.env.PORT     
+			);
+			
+const sequelize = new Sequelize(
+							process.env.DATABASE, 
+							process.env.USER, 
+							process.env.PASSWORD, 
+							{ "host":process.env.HOST,
+							  "port":process.env.PORT,
+							  "dialect":'postgres',   
+							  "client_encoding": 'utf8',
+							  dialectOptions: {
+								ssl: {
+									require: true, //seule, marche bd render
+									"ca": fs.readFileSync("./ca.pem").toString(), //require=true, ca et port=5000: error : Port scan timeout reached, failed to detect open port 25884 from PORT environment variable. Bind your service to port 25884 or update the PORT environment variable to the correct port
+																					//require=true, ca et port=PORT=25884 : marche
+								}
+							  }
+							});
+
+
+/*
 //sequelize = new Sequelize(process.env[config.use_env_variable], config);
 if(config.use_env_variable) {
  console.log("********* 'connection string' *************");
@@ -37,7 +63,7 @@ if(config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.database], 
 							process.env[config.username], 
 							process.env[config.password], 
-							process.env[config.options]); //original : use the values in 'config.js'
+							config.options); //original : use the values in 'config.js'
 }
 
 
@@ -54,7 +80,7 @@ async function testDbConnection() {
 }
 
 testDbConnection().then(res => console.log("test connection : " + res));;
-
+*/
 
 fs
   .readdirSync(__dirname)

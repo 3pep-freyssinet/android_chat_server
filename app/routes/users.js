@@ -61,6 +61,7 @@ const pool = new Pool({
 */
 
 
+/*
 //Render + Aiven + env
 const pool = new Pool({
   user: process.env.USER,
@@ -121,4 +122,5 @@ router.get('/db', async (req, res) => {
       res.send("Error : " + err);
     }
 });
+*/
 module.exports = router;
