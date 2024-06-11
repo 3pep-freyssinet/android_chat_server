@@ -157,7 +157,7 @@ const pool = new Pool({
 })
 */
 
-/*
+
 //Render + Aiven + env
 const pool = new Pool({
   user: process.env.USER,
@@ -174,7 +174,7 @@ const pool = new Pool({
   min: 1,
   idleTimeoutMillis: 1000,
 });
-*/
+
 
 /*
 //Render + Heliohost + env

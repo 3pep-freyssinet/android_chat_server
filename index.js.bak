@@ -1232,6 +1232,11 @@ io.on('connection', (socket) => {
 	socket.on('monitor_users', () =>{
 		console.log("*********************received monitor_users ***********************************************************");
 		state.socket = socket;
+		
+		//emit current 'myMap' 
+		const current_users = listeners.mapWatch();
+		if(state.socket != null)state.socket.emit('monitor_users_back', current_users);
+		
 		//listeners.monitor_users();
 	});
 	
