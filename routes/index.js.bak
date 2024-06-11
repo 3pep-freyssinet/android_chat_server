@@ -6,6 +6,7 @@
 const express = require('express');
 const router  = express.Router();
 
+/*
 const controllers = require('../controllers');
 router.get('/', (req, res) => {
 	res.send('Welcome');  //http://localhost:3000/api/  cf server
@@ -37,9 +38,10 @@ router.get('/delete/:postId', controllers.deleteNote); 			//http://localhost:300
 router.get('/classe/:postId', controllers.getClassOneEleveById);//http://localhost:3000/api/classe/3
 
 router.get('/student/:name', controllers.getAllStudents);		//http://localhost:3000/api/student/martin
+*/
 
 //test
-router.get('/db', async (req, res) => {
+router.get('/monitor', async (req, res) => {
     const response = 'Hello World from express listening on ' + PORT;
 	res.send("response = " + response);
 	
@@ -76,5 +78,6 @@ router.get('/db', async (req, res) => {
     }
 	*/
 });
+
 
 module.exports = router;

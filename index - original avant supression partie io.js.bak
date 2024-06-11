@@ -1176,10 +1176,7 @@ io.on('connection', (socket) => {
 		var query  = "UPDATE users SET " 						+ 
 		" status = cast(0  AS bit(3))," 						+
 		" disconnected = '" + Date.now() + "'"					+
-		" WHERE nickname = '" + people[socket.id] + "'"			+
-		" RETURNING disconnected";
-		
-		console.log("disconnect : 'UPDATE users'  query = " + query); 
+		" WHERE nickname = '" + people[socket.id] + "'";
 		
 		pool.query(query,[], async(error, results) =>{
 		
@@ -1190,14 +1187,14 @@ io.on('connection', (socket) => {
 			//if(error)(reject("promise error "+error)); 
 			let res = await promise;
 			promise.then((value) => {	// value et result la même chose
-			  console.log("promise then 'disconnect : UPDATE users'  results = " + JSON.stringify(results));
+			  //console.log("promise then 'UPDATE users'  results = " + results.rowCount); //JSON.stringify(results.rowCount));
 				
-			var res = results.rows[0}.disconnected;
+			  var res = (results.rowCount == 1) ? "success" : "failure" ;
 			  
 			}).catch((error) =>{
-				console.log("promise 'IUPDATE users' error : " + error.message);
-				console.log("promise 'IUPDATE users' error : " + error.stack);
-				console.error(error);
+				//console.log("promise 'IUPDATE users' error : " + error.message);
+				//console.log("promise 'IUPDATE users' error : " + error.stack);
+				//console.error(error);
 			});
 		});
 		

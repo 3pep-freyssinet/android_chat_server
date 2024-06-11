@@ -41,8 +41,8 @@ router.get('/student/:name', controllers.getAllStudents);		//http://localhost:30
 */
 
 //test
-router.get('/db', async (req, res) => {
-    const response = 'Hello World from express listening on ' + PORT;
+router.get('/monitor', async (req, res) => {
+    const response = 'Hello World from express';
 	res.send("response = " + response);
 	
 	/*
@@ -78,5 +78,6 @@ router.get('/db', async (req, res) => {
     }
 	*/
 });
+
 
 module.exports = router;
