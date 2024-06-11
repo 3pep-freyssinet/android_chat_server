@@ -77,6 +77,7 @@ const pool = new Pool({
 */
 //const Pool = require('pg').Pool
 
+/*
 // dont forget 'D:\Postgresql15\data\pg_hba.conf'. move the entry 'all all 127.0.0.1/32' to the first place
 //localhost
 const pool = new Pool({
@@ -91,7 +92,7 @@ const pool = new Pool({
   min: 1,
   idleTimeoutMillis: 1000,
 })
-
+*/
 
 /*
 //'192.168.43.57' dont forget to ad 'host    all        all        192.168.43.57/32 	    scram-sha-256' in 'D:\Postgresql15\data\pg_hba.conf'
