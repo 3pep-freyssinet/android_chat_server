@@ -46,6 +46,7 @@ watchVariable(data_, 'size', (newValue, oldValue) => {
 	
 	mapWatch(myMap);
 	
+	/*
 	console.log(" *** watchVariable : myMap ****************************************************");
 		console.log("")
 		const keys0 = myMap.keys(); //iterator
@@ -57,9 +58,12 @@ watchVariable(data_, 'size', (newValue, oldValue) => {
 		console.log("");
 		console.log("")
 	console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$ myMap instanceof Map = " + (myMap instanceof Map) + "  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+	*/
 	
 	//il y a un pb dans emit map. changer map en array en emission et recomposer map en reception
 	//Unfortunately, Maps and Sets and other ES2015 datatypes cannot be JSON-encoded.
+	console.log("$$$$$$$$ watchVariable $$$$$$$$$$$$$$$$$$$$ state.socket = " + state.socket + " Array.from(myMap) = " + Array.from(myMap));
+	console.log("$$$$$$$$ state.socket.emit $$$$$$");
 	if(state.socket != null)state.socket.emit('monitor_users_back', Array.from(myMap));
 	
 	
@@ -93,17 +97,17 @@ function monitor_users(){
 */
 
 function mapWatch(){
-	console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ mapWatch : myMap.size         = " + myMap.size + " @@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-	console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ mapWatch :  Array.from(myMap) = " + Array.from(myMap) + " @@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+	//console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ mapWatch : myMap.size         = " + myMap.size + " @@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+	//console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ mapWatch :  Array.from(myMap) = " + Array.from(myMap) + " @@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 	return Array.from(myMap);
 }
 
 async function testSocket1(pool, socket, msg, callback){
 	//console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ testSocket1 : socket from require    = " + socket_.sockets + "keys = " + Object.keys(socket_));
-	console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ testSocket1 : socket from parameters = " + socket + "keys  = " + Object.keys(socket));
-	console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ testSocket1 : socket from require    = " + socket.broadcast);
-	console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ testSocket1 : global.answer          = " + answer);
-	console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ testSocket1 : global.answer_         = " + answer_);
+	//console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ testSocket1 : socket from parameters = " + socket + "keys  = " + Object.keys(socket));
+	//console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ testSocket1 : socket from require    = " + socket.broadcast);
+	//console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ testSocket1 : global.answer          = " + answer);
+	//console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ testSocket1 : global.answer_         = " + answer_);
 	answer++; 
 	answer_++;
 	
@@ -113,7 +117,7 @@ async function testSocket1(pool, socket, msg, callback){
 	//console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ test_socket listeners            :" + listeners); 
 	//console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Object.keys(listeners)           :" + Object.keys(listeners)); 
 	//console.log("@@@@@@@@@@@@@@@@@ùùùùùùùùùùùùùùùùùùùùùùù listeners.testSocket typeof      :" + typeof(listeners.testSocket));
-	console.log("@@ nb users in 'users' table : " + nbUsers_);
+	//console.log("@@ nb users in 'users' table : " + nbUsers_);
 	callback(nbUsers_)
 	socket.broadcast.emit('testSocket_back', nbUsers_);		//to all
 }
@@ -128,17 +132,17 @@ async function disconnect_(pool, socket, people, people0, myMap){
  n++;
  async function join(pool, socket, chatUserInfos){
 		//timeout();
-		console.log("????????????????????????????'join' chat_user_infos chatUserInfos socketid = "+socket.id + " chatUserInfos.length = " + chatUserInfos.length);
-		console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ join : global.answer          = " + answer);
-		console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ join : global.answer_         = " + answer_);
-		console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ join : myMap.size             = " + myMap.size);
+		//console.log("????????????????????????????'join' chat_user_infos chatUserInfos socketid = "+socket.id + " chatUserInfos.length = " + chatUserInfos.length);
+		//console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ join : global.answer          = " + answer);
+		//console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ join : global.answer_         = " + answer_);
+		//console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ join : myMap.size             = " + myMap.size);
 		
 		//data_.size = 20;
 		
 		//Conversion string -> JSON
 		const obj 					= JSON.parse(chatUserInfos);
 		//const obj 				= JSON.stringify(chatUserInfos);
-		console.log('chat_user_infos : ' + obj);
+		//console.log('chat_user_infos : ' + obj);
 		
 		//console.log('chat_user_infos ' + JSON.stringify(chatUserInfos));
 		//console.log("'join' blacklistAuthor " + chatUserInfos["BlacklistAuthor"] + " " + chatUserInfos.BlacklistAuthor);
@@ -221,6 +225,7 @@ async function disconnect_(pool, socket, people, people0, myMap){
 		//done above in 'else'
 		//if (found == false)people[socket.id]   =  userNickname; // new user is connecting
 		
+		/*
 		console.log(" ** ************************************** join : people **");
 		console.log("")
 		for(var key in people) {
@@ -229,6 +234,7 @@ async function disconnect_(pool, socket, people, people0, myMap){
 		console.log("");
 		console.log("")
         console.log(" ** ************************************** join : end people **");
+		*/
 		
 		//Store the image profile of the nickname
 		profile[userNickname] =  imageProfile;
@@ -247,27 +253,33 @@ async function disconnect_(pool, socket, people, people0, myMap){
 			var nickname;
 			var found = false;
 			//console.log("avant Begin Map toNickname_ = " + toNickname_);
+			//run on all keys looking for existing 'userNickname'. if it is found, delete it and recreate it so it will have a new id 
 			while (!key_.done) {
 				 //console.log("map    key =  " + key_.value + " value = " + myMap.get(key_.value)); // key : value
 				 //console.log("******** test if = " +(myMap.get(key.value) == toNickname_));
-				 if(myMap.get(key_.value) == userNickname){ //The user exits, delete it from the map
+				 if(myMap.get(key_.value) == userNickname){ //The user exits, delete it from the map and recreate it so it will have a new id
 					myMap.delete(key_.value);
-					found = true;
+					found = true; //not used
 					break;
-				 }else{
-					//first connection, there are other persons in the map
-					myMap.set(socket.id, userNickname);
 				 }
+				 //else{
+				 //	//first connection, there are other persons in the map
+				 //	myMap.set(socket.id, userNickname);
+				 //}
 				 key_ = keys.next();		 //next key
 			}
-		}else{
-			//the first time, the map is empty
-			myMap.set(socket.id, userNickname);
 		}
+		//else{
+			//the first time, the map is empty
+		//	myMap.set(socket.id, userNickname);
+		//}
+		
+		//add item to map
+		myMap.set(socket.id, userNickname);
 		
 		//console.log("join : End Map -----------------------------------------------");
 		
-		console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ join : myMap.size = " + myMap.size + " keys = " + Object.keys(myMap));
+		console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ join : myMap.size = " + myMap.size);
 		console.log(" *** myMap ****************************************************");
 		console.log("")
 		const keys0 = myMap.keys(); //iterator
@@ -279,8 +291,8 @@ async function disconnect_(pool, socket, people, people0, myMap){
 		console.log("");
 		console.log("")
 		console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"); 
-		//'myMap' has changed, send change to 'watchVariable'
 		
+		//'myMap' has changed, send change to 'watchVariable'
 		data_.size = myMap.size;
 		
 		//the following statement is done above in 'else'
