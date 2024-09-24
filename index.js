@@ -50,8 +50,6 @@ const httpServer  = createServer(app);
 const io          = new Server(httpServer, { /* options */ });
 httpServer.listen(PORT, () => console.log(`   Listening on ${ PORT }`));
 
-app.listen(PORT, () => console.log(`   Listening on ${ PORT }`));
-
 const pgsqldb  = require('./queries')
 const fs       = require("fs");
 const url      = require('url');
