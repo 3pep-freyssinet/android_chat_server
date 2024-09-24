@@ -50,10 +50,13 @@ const PORT       = process.env.PORT || 5000
 
 
 //https
-//const httpsServer = https.createServer(httpOptions, app);
-const httpsServer = https.createServer(app);
-const io          = new Server(httpsServer, { /* options */ });
-httpsServer.listen(PORT, () => console.log(`   Listening on ${ PORT }`));
+//not used on 'render.com'
+//const httpsServer = https.createServer(httpOptions, app); 
+//const httpsServer = https.createServer(app);
+//const io          = new Server(httpsServer, { /* options */ });
+//end not used
+
+app.listen(PORT, () => console.log(`   Listening on ${ PORT }`));
 
 const pgsqldb  = require('./queries')
 const fs       = require("fs");
