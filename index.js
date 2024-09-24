@@ -45,12 +45,13 @@ const PORT       = process.env.PORT || 5000
 
 //*http
 //const httpServer  = createServer(app);
-//const io          = new Server(httpsServer, { /* options */ });
+//const io          = new Server(httpServer, { /* options */ });
 //httpServer.listen(PORT, () => console.log(`   Listening on ${ PORT }`));
 
 
 //https
-const httpsServer = https.createServer(httpOptions, app);
+//const httpsServer = https.createServer(httpOptions, app);
+const httpsServer = https.createServer(app);
 const io          = new Server(httpsServer, { /* options */ });
 httpsServer.listen(PORT, () => console.log(`   Listening on ${ PORT }`));
 
