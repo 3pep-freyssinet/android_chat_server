@@ -43,17 +43,12 @@ const { Server }       = require("socket.io");
 const app        = express();
 const PORT       = process.env.PORT || 5000
 
-//*http
-//const httpServer  = createServer(app);
-//const io          = new Server(httpServer, { /* options */ });
-//httpServer.listen(PORT, () => console.log(`   Listening on ${ PORT }`));
-
-
-//https
-//not used on 'render.com'
-//const httpsServer = https.createServer(httpOptions, app); 
-const httpserver    = http.createServer(app);
-const io            = new Server(httpServer, { /* options */ });
+//*http and hhtps
+// he WebSocket connection will use ws:// in development (plain HTTP) but will automatically upgrade 
+// to wss:// in production on Render because the platform provides SSL termination.
+const httpServer  = createServer(app);
+const io          = new Server(httpServer, { /* options */ });
+httpServer.listen(PORT, () => console.log(`   Listening on ${ PORT }`));
 
 app.listen(PORT, () => console.log(`   Listening on ${ PORT }`));
 
