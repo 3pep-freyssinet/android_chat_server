@@ -52,9 +52,8 @@ const PORT       = process.env.PORT || 5000
 //https
 //not used on 'render.com'
 //const httpsServer = https.createServer(httpOptions, app); 
-//const httpsServer = https.createServer(app);
-//const io          = new Server(httpsServer, { /* options */ });
-//end not used
+const httpserver    = http.createServer(app);
+const io            = new Server(httpServer, { /* options */ });
 
 app.listen(PORT, () => console.log(`   Listening on ${ PORT }`));
 
