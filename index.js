@@ -33,6 +33,7 @@ server.listen(PORT, () => console.log(`Listening on ${ PORT }`)) //socket.io ver
 
 const express          = require("express");
 const { createServer } = require("http");
+var https              = require('https');
 const { Server }       = require("socket.io");
 //const cors             = require("cors");
 //const Sequelize        = require("sequelize");
