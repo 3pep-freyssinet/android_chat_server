@@ -40,12 +40,18 @@ const { Server }       = require("socket.io");
 //const validator        = require("express-validator");
 
 const app        = express();
-const httpServer = createServer(app);
-const io         = new Server(httpServer, { /* options */ });
-//const Op         = Sequelize.Op;
-
 const PORT       = process.env.PORT || 5000
-httpServer.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+
+//*http
+//const httpServer  = createServer(app);
+//const io          = new Server(httpsServer, { /* options */ });
+//httpServer.listen(PORT, () => console.log(`   Listening on ${ PORT }`));
+
+
+//https
+const httpsServer = https.createServer(httpOptions, app);
+const io          = new Server(httpsServer, { /* options */ });
+httpsServer.listen(PORT, () => console.log(`   Listening on ${ PORT }`));
 
 const pgsqldb  = require('./queries')
 const fs       = require("fs");
