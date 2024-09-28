@@ -1252,8 +1252,8 @@ io.on('connection', (socket) => {
 	//test
 	socket.on('chat_message', (msg) => {
 		console.log("chat message, msg = " + msg);
-		var msg_ = {};
-		msg_.push(msg + " from node.js");
+		//turn a tring to JSON object
+		var msg_ = JSON.parse( msg + " from node.js server");
 		socket.emit('chat_message_back', msg_);
 	});
 	
