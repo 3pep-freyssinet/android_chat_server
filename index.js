@@ -1254,7 +1254,9 @@ io.on('connection', (socket) => {
 		console.log("chat message, msg = " + JSON.stringify(msg));
 		//update an element in JSON object
 		var msg_ = msg["message"] = msg["message"] + " from node.js server";
-		socket.emit('chat_message_back', msg_);
+		//create json object
+		var msg__ = {"message", msg_};
+		socket.emit('chat_message_back', msg__);
 	});
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
