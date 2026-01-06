@@ -1218,6 +1218,27 @@ function crypt() {
 const listeners = require('./event_listeners'); //'index.js' expected in folder './queries_'. Il y a un autre file 'queries.js' à la racine.
 //import * as data from './queries_';
 const state     = require("./common-modules");
+
+//handle io and sockets
+const jwt = require('jsonwebtoken');
+io.use((socket, next) => {
+  try {
+    const token = socket.handshake.auth?.token;
+
+    if (!token) {
+      return next(new Error("No token"));
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    socket.user = decoded; // trust established
+    next();
+  } catch (err) {
+    next(new Error("Unauthorized"));
+  }
+});
+
+
 //detect the user first connection
 io.on('connection', (socket) => {
 	
