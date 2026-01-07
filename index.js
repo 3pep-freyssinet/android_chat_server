@@ -55,7 +55,7 @@ const fs       = require("fs");
 const url      = require('url');
 const utf8     = require('utf8');
 const crypto   = require('crypto');
-const route      = require('./routes') // an 'index.js' is expected in folder 'routes'
+//const route    = require('./routes') // an 'index.js' is expected in folder 'routes'
 
 
 //handle io and sockets
