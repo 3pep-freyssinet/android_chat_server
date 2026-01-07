@@ -3963,7 +3963,7 @@ io.on('connection', (socket) => {
 		  //console.log('select not_seen_messages ref = '+value.fields[0].name +' fromnickname = '+value.fields[1].name+' tonickname = '+value.fields[2].name);
 						
 		  if (error) {
-			console.log('*** error  in get_not_seen_messages ****'+error);
+			console.log('*** error  in get_not_seen_messages ****'+error); 
 		  }
 		  
 		  //console.log('*************************************************************************************')
