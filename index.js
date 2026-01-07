@@ -1249,7 +1249,9 @@ io.on('connection', (socket) => {
 	
 	socket.on('test_socket', (msg, callback) =>{
 		console.log("*********************received test_socket *************************************************************");
-		listeners.testSocket1(pool, socket, msg, callback);
+		console.log("msg = ", msg);
+		callback("socket success");
+		//listeners.testSocket1(pool, socket, msg, callback);
 	});
 	
 	//var state = require("./common-modules");
