@@ -61,7 +61,7 @@ const crypto   = require('crypto');
 
 //handle io and sockets
 const jwt = require('jsonwebtoken');
-console.log("******* io.use((socket, next) socket : "); 
+console.log("******* io.use((socket, next)"); 
 io.use((socket, next) => {
   console.log('socket : ', socket);
   try {
