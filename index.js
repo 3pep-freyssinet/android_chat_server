@@ -64,6 +64,8 @@ const jwt = require('jsonwebtoken');
 console.log("******* io.use((socket, next)"); 
 io.use((socket, next) => {
   console.log('socket : ', socket);
+  console.log("Handshake socket id:", socket.id);
+  console.log("Auth payload:", socket.handshake.auth);
   try {
     const token = socket.handshake.auth?.token;
     console.log('token : ', token);
