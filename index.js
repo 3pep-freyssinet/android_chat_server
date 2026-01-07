@@ -57,6 +57,7 @@ const utf8     = require('utf8');
 const crypto   = require('crypto');
 //const route    = require('./routes') // an 'index.js' is expected in folder 'routes'
 
+//const JWT_SECRET 	= process.env.JWT_SECRET;
 
 //handle io and sockets
 const jwt = require('jsonwebtoken');
@@ -75,7 +76,7 @@ io.use((socket, next) => {
     socket.user = decoded; // trust established
     next();
   } catch (err) {
-    next(new Error("Unauthorized"));
+    	next(new Error("Unauthorized"));
   }
 });
 
