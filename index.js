@@ -60,11 +60,13 @@ const crypto   = require('crypto');
 
 //handle io and sockets
 const jwt = require('jsonwebtoken');
+console.log("******* io.use((socket, next) ");
 io.use((socket, next) => {
   try {
     const token = socket.handshake.auth?.token;
-
+    console.log('token : ', token);
     if (!token) {
+	  console.log('No token : ');
       return next(new Error("No token"));
     }
 
