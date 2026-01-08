@@ -71,7 +71,7 @@ io.use((socket, next) => {
     console.log('token : ', token);
     if (!token) {
 	  console.log('No token : ');
-      return next(new Error("No token"));
+      return next(new Error("Session expired. Please log in again.""));
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -79,7 +79,7 @@ io.use((socket, next) => {
     socket.user = decoded; // trust established
     next();
   } catch (err) {
-    	next(new Error("Unauthorized"));
+    	next(new Error("Session expired. Please log in again.""));
   }
 });
 
