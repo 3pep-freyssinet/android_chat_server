@@ -137,13 +137,13 @@ io.on('connection', (socket) => {
           			nickname,
           			status,
           			connected_at,
-          			last_connected
+          			last_seen_at
         		)
         		VALUES ($1, $2, 'online', NOW(), NOW())
         		ON CONFLICT (id)
         		DO UPDATE SET
           		status = 'online',
-          		last_connected = NOW()
+          		last_seen_at = NOW()
       		`, [userId, username]);
 
       		// 2️⃣ Store avatar in chat.user_images (if provided)
