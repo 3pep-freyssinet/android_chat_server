@@ -99,13 +99,11 @@ io.on('connection', (socket) => {
 		//listeners.testSocket1(pool, socket, msg, callback);
 	});
 
-	//register
-  	io.on('connection', (socket) => {
-
-    	socket.on('chat:register', async (payload) => {
+	//register  
+    socket.on('chat:register', async (payload) => {
     	try {
-      		const userId = socket.user.userId;          // from JWT
-      		const username = socket.user.username;      // from JWT
+      		const userId       = socket.user.userId;     // from JWT
+      		const username     = socket.user.username;   // from JWT
       		const avatarBase64 = payload.avatarBase64;  // optional
 
       		// 1️⃣ Upsert user in chat.users
