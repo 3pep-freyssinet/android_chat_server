@@ -98,7 +98,7 @@ io.use((socket, next) => {
 	console.log("jwt successfully verified");
     next();
   } catch (err) {
-    	next(new Error("Session expired. Please log in again.""));
+    	next(new Error("Session expired. Please log in again."));
   }
 });
 
