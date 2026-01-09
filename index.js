@@ -55,7 +55,25 @@ const fs       = require("fs");
 const url      = require('url');
 const utf8     = require('utf8');
 const crypto   = require('crypto');
-//const route    = require('./routes') // an 'index.js' is expected in folder 'routes'
+//const route  = require('./routes') // an 'index.js' is expected in folder 'routes'
+const { Pool } = require('pg');
+
+//Render + Aiven + env
+const pool = new Pool({
+  user: process.env.USER,
+  host: process.env.HOST,
+  database: process.env.DATABASE,
+  password: process.env.PASSWORD,
+  port: process.env.PORT,
+  client_encoding: 'utf8',
+  ssl: {
+    rejectUnauthorized: true,
+    ca: fs.readFileSync("./ca.pem").toString(),
+  },
+  max: 20,
+  min: 1,
+  idleTimeoutMillis: 1000,
+});
 
 //const JWT_SECRET 	= process.env.JWT_SECRET;
 
@@ -77,6 +95,7 @@ io.use((socket, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     socket.user = decoded; // trust established
+	console.log("jwt successfully verified");
     next();
   } catch (err) {
     	next(new Error("Session expired. Please log in again.""));
@@ -101,11 +120,16 @@ io.on('connection', (socket) => {
 
 	//register  
     socket.on('chat:register', async (payload) => {
+		console.log("chat:register");
     	try {
       		const userId       = socket.user.userId;     // from JWT
       		const username     = socket.user.username;   // from JWT
       		const avatarBase64 = payload.avatarBase64;  // optional
 
+			console.log("register userId : ", userId);
+			console.log("register username : ", username);
+			console.log("register avatarBase64 : ", avatarBase64);
+			
       		// 1️⃣ Upsert user in chat.users
       		await pool.query(`
         		INSERT INTO chat.users (
