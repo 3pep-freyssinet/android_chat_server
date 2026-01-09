@@ -98,4 +98,66 @@ io.on('connection', (socket) => {
 		callback("socket success");
 		//listeners.testSocket1(pool, socket, msg, callback);
 	});
+
+	//register
+  	io.on('connection', (socket) => {
+
+    	socket.on('chat:register', async (payload) => {
+    	try {
+      		const userId = socket.user.userId;          // from JWT
+      		const username = socket.user.username;      // from JWT
+      		const avatarBase64 = payload.avatarBase64;  // optional
+
+      		// 1️⃣ Upsert user in chat.users
+      		await pool.query(`
+        		INSERT INTO chat.users (
+          			id,
+          			nickname,
+          			status,
+          			connected_at,
+          			last_connected
+        		)
+        		VALUES ($1, $2, 'online', NOW(), NOW())
+        		ON CONFLICT (id)
+        		DO UPDATE SET
+          		status = 'online',
+          		last_connected = NOW()
+      		`, [userId, username]);
+
+      		// 2️⃣ Store avatar in chat.user_images (if provided)
+      		if (avatarBase64) {
+        		const imageData = Buffer.from(avatarBase64, 'base64');
+
+        		await pool.query(`
+          		INSERT INTO chat.user_images (
+            		user_id,
+            		image_data,
+            		uploaded_at
+          		)
+          		VALUES ($1, $2, NOW())
+          		ON CONFLICT (user_id)
+          		DO UPDATE SET
+		            image_data = EXCLUDED.image_data,
+            		uploaded_at = NOW()
+        		`, [userId, imageData]);
+      		}
+
+      		// 3️⃣ Notify other connected users
+      		socket.broadcast.emit("user:joined", {
+        		userId,
+        		nickname: username
+      		});
+
+      		// 4️⃣ Confirm registration to the client
+      		socket.emit("chat:register:ok");
+
+    		} catch (err) {
+      			console.error(err);
+      			socket.emit("chat:error", {
+        		code: "REGISTER_FAILED",
+        		message: "Unable to register user"
+      		});
+    	}
+  });
+
 });// end io.on('connection', (socket) => {
