@@ -81,7 +81,7 @@ const pool = new Pool({
 const jwt = require('jsonwebtoken');
 console.log("******* io.use((socket, next)"); 
 io.use((socket, next) => {
-  console.log('socket : ', socket);
+  //console.log('socket : ', socket);
   console.log("Handshake socket id:", socket.id);
   console.log("Auth payload:", socket.handshake.auth);
   try {
