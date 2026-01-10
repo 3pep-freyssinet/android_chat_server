@@ -106,6 +106,9 @@ io.use((socket, next) => {
 
 //detect the user first connection
 io.on('connection', (socket) => {
+	socket.on("disconnect", reason => {
+    	console.log("Socket disconnected:", reason);
+  	});
 	
 	console.log("************************ io connection  ********************************* socket.id = " + socket.id);
 	console.log("A client has connected, socket.connected = " + socket.connected + " socket.disconnected = " + socket.disconnected);
