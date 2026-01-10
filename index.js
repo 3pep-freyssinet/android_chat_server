@@ -147,6 +147,8 @@ io.on('connection', (socket) => {
           		last_seen_at = NOW()
       		`, [userId, username]);
 
+			console.log("chat:register : user registered successfully");
+			
       		// 2️⃣ Store avatar in chat.user_images (if provided)
       		if (avatarBase64) {
         		const imageData = Buffer.from(avatarBase64, 'base64');
@@ -164,8 +166,10 @@ io.on('connection', (socket) => {
             		uploaded_at = NOW()
         		`, [userId, imageData]);
       		}
-
-      		// 3️⃣ Notify other connected users
+            
+			console.log("chat:register : image-avatar registered successfully");
+      		
+			// 3️⃣ Notify other connected users
       		socket.broadcast.emit("user:joined", {
         		userId,
         		nickname: username
