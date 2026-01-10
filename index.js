@@ -95,6 +95,7 @@ io.use((socket, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     socket.user = decoded; // trust established
+	console.log("JWT decoded payload:", decoded); 
 	console.log("jwt successfully verified");
     next();
   } catch (err) {
