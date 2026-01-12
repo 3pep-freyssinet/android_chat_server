@@ -248,5 +248,20 @@ io.on('connection', (socket) => {
       }
     ]);
    });
+
+	socket.on("chat:send_message", ({ toUserId, content }) => {
+    const room = getRoomName(socket.user.userId, toUserId);
+
+    io.to(room).emit("chat:new_message", {
+      from: socket.user.userId,
+      content,
+      timestamp: Date.now()
+    });
+  });
+});
+
+function getRoomName(a, b) {
+  return [a, b].sort().join("_");
+}
 	
 });// end io.on('connection', (socket) => {
