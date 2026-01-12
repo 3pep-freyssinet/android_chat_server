@@ -47,7 +47,17 @@ const PORT       = process.env.PORT || 5000
 // he WebSocket connection will use ws:// in development (plain HTTP) but will automatically upgrade 
 // to wss:// in production on Render because the platform provides SSL termination.
 const httpServer  = createServer(app);
-const io          = new Server(httpServer, { /* options */ });
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",        // OK for now (tighten later)
+    methods: ["GET", "POST"]
+  },
+
+  transports: ["polling", "websocket"],
+
+  pingTimeout: 60000,   // Mobile networks need longer timeout
+  pingInterval: 25000
+});
 httpServer.listen(PORT, () => console.log(`   Listening on ${ PORT }`));
 
 const pgsqldb  = require('./queries')
