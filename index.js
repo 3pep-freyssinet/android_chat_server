@@ -86,7 +86,7 @@ io.use((socket, next) => {
   console.log("Auth payload:", socket.handshake.auth);
   try {
     const token = socket.handshake.auth?.token;
-    console.log('token : ', token);
+    //console.log('token : ', token);
     if (!token) {
 	  console.log('No token : ');
       return next(new Error("Session expired. Please log in again."));
@@ -189,5 +189,30 @@ io.on('connection', (socket) => {
       		});
     	}
   });
+  
+  //dummies users
+  console.log("User connected:", socket.user.userId);
 
+  // Example users list (temporary)
+  const users = [
+    {
+      id: "1",
+      nickname: "Alice",
+      status: 1,
+      connectedAt: "10:12",
+      lastConnectedAt: "Yesterday",
+      notSeenMessages: 2
+    },
+    {
+      id: "2",
+      nickname: "Bob",
+      status: 0,
+      connectedAt: "09:40",
+      lastConnectedAt: "Today",
+      notSeenMessages: 0
+    }
+  ];
+
+  socket.emit("chat:users:list", users);
+//end dummies users
 });// end io.on('connection', (socket) => {
