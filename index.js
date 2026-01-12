@@ -214,5 +214,6 @@ io.on('connection', (socket) => {
   ];
 
   socket.emit("chat:users:list", users);
+  console.log("End sending User connected:");
 //end dummies users
 });// end io.on('connection', (socket) => {
