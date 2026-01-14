@@ -258,7 +258,6 @@ io.on('connection', (socket) => {
       timestamp: Date.now()
     });
   });
-});
 
 function getRoomName(a, b) {
   return [a, b].sort().join("_");
