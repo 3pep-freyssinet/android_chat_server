@@ -223,7 +223,9 @@ io.on('connection', (socket) => {
     }
   ];
 
-  socket.emit("chat:users:list", users);
+  //socket.emit("chat:users:list", users);
+  io.emit("chat:users:list", users);
+
   console.log("End sending User connected:");
 //end dummies users
 
@@ -233,19 +235,21 @@ io.on('connection', (socket) => {
 
     const room = getRoomName(socket.user.userId, withUserId);
     socket.join(room);
-
-    // TEMP: dummy messages
+    
+	console.log("Username", socket.user.username, "joined room", room);
+    
+	// TEMP: dummy messages
     socket.emit("chat:conversation_history", [
-      {
-        from: withUserId,
-        content: "Hello 👋",
-        timestamp: Date.now() - 60000
-      },
-      {
-        from: socket.user.userId,
-        content: "Hi!",
-        timestamp: Date.now()
-      }
+	    {
+	        from: withUserId,
+	        content: "Hello 👋",
+	        timestamp: Date.now() - 60000
+	    },
+	    {
+	        from: socket.user.userId,
+	        content: "Hi!",
+	        timestamp: Date.now()
+	    }
     ]);
    });
 
