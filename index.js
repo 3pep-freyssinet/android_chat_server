@@ -201,7 +201,7 @@ io.on('connection', (socket) => {
   });
   
   //dummies users
-  console.log("User connected:", socket.user.userId);
+  console.log("User connected:", socket.user.userId, " username : ", socket.user.username);
 
   // Example users list (temporary)
   const users = [
