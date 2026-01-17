@@ -206,7 +206,7 @@ io.on('connection', (socket) => {
   // Example users list (temporary)
   const users = [
     {
-      id: "1",
+      id: "187",
       nickname: "Alice",
       status: 1,
       connectedAt: "10:12",
@@ -214,7 +214,7 @@ io.on('connection', (socket) => {
       notSeenMessages: 2
     },
     {
-      id: "2",
+      id: "186",
       nickname: "Bob",
       status: 0,
       connectedAt: "09:40",
