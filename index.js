@@ -87,6 +87,11 @@ const pool = new Pool({
 
 //const JWT_SECRET 	= process.env.JWT_SECRET;
 
+//test
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 //handle io and sockets
 const jwt = require('jsonwebtoken');
 console.log("******* io.use((socket, next)"); 
