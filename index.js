@@ -211,7 +211,7 @@ io.on('connection', (socket) => {
   // Example users list (temporary)
   const users = [
     {
-      id: "187",
+      id: "188",
       nickname: "Alice",
       status: 1,
       connectedAt: "10:12",
@@ -219,7 +219,7 @@ io.on('connection', (socket) => {
       notSeenMessages: 2
     },
     {
-      id: "186",
+      id: "189",
       nickname: "Bob",
       status: 0,
       connectedAt: "09:40",
@@ -228,10 +228,10 @@ io.on('connection', (socket) => {
     }
   ];
 
-  //socket.emit("chat:users:list", users);
-  io.emit("chat:users:list", users);
+  socket.emit("chat:users:list", users);
+  //io.emit("chat:users:list", users);
 
-  console.log("End sending User connected:");
+  console.log("End sending the list of the connected users.");
 //end dummies users
 
   //send dummy message
