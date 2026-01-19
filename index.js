@@ -9,6 +9,11 @@ const PORT = process.env.PORT || 5000;
 // HTTP server
 const httpServer = createServer(app);
 
+//test
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 // Socket.IO server
 const io = new Server(httpServer, {
   cors: {
