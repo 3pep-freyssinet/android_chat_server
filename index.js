@@ -73,15 +73,6 @@ io.use((socket, next) => {
   }
 });
 
-//get friends
-async function getFriendIds(userId, pool) {
-  const result = await pool.query(
-    `SELECT friend_id FROM user_friends WHERE user_id = $1`,
-    [userId]
-  );
-  return result.rows.map(r => r.friend_id);
-}
-
 // On client connect
 io.on("connection", async (socket) => {
   const myUserId = socket.user.userId;
@@ -135,8 +126,12 @@ const messages = [
   
   // Join conversation example
  socket.on("chat:join_conversation", ({ withUserId }) => {
+  
   const myId = String(socket.user.userId);
-
+   
+  console.log("chat:join_conversation myId: ", myId);
+  console.log("chat:join_conversation withUserId: ", withUserId);
+   
   const conversation = messages.filter(m =>
     (m.id_from === myId && m.id_to === withUserId) ||
     (m.id_from === withUserId && m.id_to === myId)
