@@ -69,6 +69,15 @@ io.use((socket, next) => {
   }
 });
 
+//get friends
+async function getFriendIds(userId, pool) {
+  const result = await pool.query(
+    `SELECT friend_id FROM user_friends WHERE user_id = $1`,
+    [userId]
+  );
+  return result.rows.map(r => r.friend_id);
+}
+
 // On client connect
 io.on("connection", (socket) => {
   console.log("User connected:", socket.user.userId, "username:", socket.user.username);
