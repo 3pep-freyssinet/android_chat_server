@@ -122,19 +122,28 @@ io.on("connection", async (socket) => {
   // ✅ Broadcast: send to **everyone** (optional)
   // io.emit("chat:users:list", users);
 
+
+const messages = [
+  { id_from: "190", id_to: "205", message: "Hi, Fanny, can you call me.", sent_at:"Yesterday:10:12", seen: "seen"},
+  { id_from: "190", id_to: "209", message: "Hi, Jillian, can you call me.", sent_at:"Yesterday:10:13", seen: "seen"},
+  { id_from: "190", id_to: "240", message: "Hi, Karine, can you call me.", sent_at:"Yesterday:10:14",seen: "seen" },
+  { id_from: "205", id_to: "190", message: "Hi, Alice. I'm here. Do you want something.", sent_at:"Today:10:12", seen: "seen"},
+  { id_from: "205", id_to: "190", message: "Do you know ...", sent_at:"Today:10:30", seen: "seen"},
+  { id_from: "205", id_to: "190", message: "I've meet Kevin in the school", sent_at:"Today:10:38", seen: "seen"}
+];
+
+  
   // Join conversation example
-  socket.on("chat:join_conversation", ({ withUserId }) => {
-    console.log("join conversation with", withUserId);
+ socket.on("chat:join_conversation", ({ withUserId }) => {
+  const myId = String(socket.user.userId);
 
-    const room = [socket.user.userId, withUserId].sort().join("_");
-    socket.join(room);
-
-    // Send dummy messages
-    socket.emit("chat:conversation_history", [
-      { from: withUserId, content: "Hello 👋", timestamp: Date.now() - 60000 },
-      { from: socket.user.userId, content: "Hi!", timestamp: Date.now() }
-    ]);
-  });
+  const conversation = messages.filter(m =>
+    (m.id_from === myId && m.id_to === withUserId) ||
+    (m.id_from === withUserId && m.id_to === myId)
+  );
+  console.log("chat:conversation_history : ", conversation);
+  socket.emit("chat:conversation_history", conversation);
+});
 
   // Receive message
   socket.on("chat:send_message", ({ toUserId, content }) => {
