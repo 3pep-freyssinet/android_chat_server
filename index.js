@@ -79,7 +79,7 @@ async function getFriendIds(userId, pool) {
 }
 
 // On client connect
-io.on("connection", (socket) => {
+io.on("connection", function(socket){
   console.log("User connected:", socket.user.userId, "username:", socket.user.username);
 
   //get friends
