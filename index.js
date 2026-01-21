@@ -73,6 +73,15 @@ io.use((socket, next) => {
 io.on("connection", (socket) => {
   console.log("User connected:", socket.user.userId, "username:", socket.user.username);
 
+  //get friends
+  async function getFriendIds(userId, pool) {
+    const result = await pool.query(
+    `SELECT friend_id FROM user_friends WHERE user_id = $1`,
+    [userId]
+  );
+    return result.rows.map(r => r.friend_id);
+  }
+  
   // Example dummy users
   const users = [
     { id: "190", nickname: "Alice", status: 1, connectedAt: "10:12", lastConnectedAt: "Yesterday", notSeenMessages: 2 },
@@ -94,6 +103,7 @@ io.on("connection", (socket) => {
     201: [190, 205],         // Bob (example)
     202: [190],              // Charly (example)
   };
+  
   */
   // Fetch friends dynamically
   const friendIds = await getFriendIds(myUserId, pool);
