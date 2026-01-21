@@ -76,7 +76,11 @@ io.use((socket, next) => {
 // On client connect
 io.on("connection", async (socket) => {
   const myUserId = socket.user.userId;
-
+  const userId   = String(socket.user.userId);
+  
+  socket.join(userId);
+  
+  console.log("User joined room:", userId);
   console.log("User connected:", myUserId);
 
   try {
@@ -141,16 +145,38 @@ const messages = [
 });
 
   // Receive message
-  socket.on("chat:send_message", ({ toUserId, content }) => {
-    const room = [socket.user.userId, toUserId].sort().join("_");
-    console.log("Sending message to room:", room, "content:", content);
+  socket.on("chat:send_message", async ({ toUserId, message }) => {
+  try {
+    const fromUserId = socket.user.userId;
 
-    io.to(room).emit("chat:new_message", {
-      from: socket.user.userId,
-      content,
-      timestamp: Date.now()
-    });
-  });
+    console.log("📨 chat:send_message", fromUserId, "→", toUserId);
+
+    const query = `
+      INSERT INTO chat.conversations (id_from, id_to, message, seen)
+      VALUES ($1, $2, $3, 'sent')
+      RETURNING *
+    `;
+
+    const { rows } = await pool.query(query, [
+      fromUserId,
+      toUserId,
+      message
+    ]);
+
+    const savedMessage = rows[0];
+   console.log("📨 chat:send_message : savedMessage", savedMessage);
+    
+    // 🔥 Emit to sender
+    socket.emit("chat:new_message", savedMessage);
+
+    // 🔥 Emit to receiver (if connected)
+    io.to(String(toUserId)).emit("chat:new_message", savedMessage);
+
+  } catch (err) {
+    console.error("❌ send_message error", err);
+  }
+});
+
 });//io.on("connection", async (socket) =>
 
 // Start server
