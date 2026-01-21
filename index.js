@@ -79,53 +79,37 @@ async function getFriendIds(userId, pool) {
 }
 
 // On client connect
-io.on("connection", function(socket){
-  console.log("User connected:", socket.user.userId, "username:", socket.user.username);
+io.on("connection", async (socket) => {
+  const myUserId = socket.user.userId;
 
-  //get friends
-  async function getFriendIds(userId, pool) {
-    const result = await pool.query(
-    `SELECT friend_id FROM user_friends WHERE user_id = $1`,
-    [userId]
-  );
-    return result.rows.map(r => r.friend_id);
+  console.log("User connected:", myUserId);
+
+  try {
+    const friendIds = await getFriendIds(myUserId, pool);
+
+    const users = [
+      { id: 190, nickname: "Alice" },
+      { id: 201, nickname: "Bob" },
+      { id: 202, nickname: "Charly" },
+      { id: 205, nickname: "Fanny" },
+      { id: 209, nickname: "Jilian" },
+      { id: 210, nickname: "Karine" },
+    ];
+
+    const visibleUsers = users.filter(u =>
+      friendIds.includes(Number(u.id))
+    );
+
+    socket.emit("chat:users:list", visibleUsers);
+
+    console.log(
+      `Sent ${visibleUsers.length} friends to user ${myUserId}`
+    );
+
+  } catch (err) {
+    console.error("Failed to load friends:", err);
+    socket.emit("chat:users:list", []); // fail-safe
   }
-  
-  // Example dummy users
-  const users = [
-    { id: "190", nickname: "Alice", status: 1, connectedAt: "10:12", lastConnectedAt: "Yesterday", notSeenMessages: 2 },
-    { id: "201", nickname: "Bob", status: 0, connectedAt: "09:40", lastConnectedAt: "Today", notSeenMessages: 0 },
-    { id: "202", nickname: "Charly", status: 0, connectedAt: "08:40", lastConnectedAt: "Today", notSeenMessages: 1 },
-    { id: "233", nickname: "Dylan", status: 1, connectedAt: "09:00", lastConnectedAt: "Yesterday", notSeenMessages: 3 },
-    { id: "204", nickname: "Ema", status: 1, connectedAt: "06:40", lastConnectedAt: "Today", notSeenMessages: 0 },
-    { id: "205", nickname: "Fanny", status: 0, connectedAt: "09:48", lastConnectedAt: "Yesterday", notSeenMessages: 2 },
-    { id: "206", nickname: "Gael", status: 1, connectedAt: "07:40", lastConnectedAt: "Today", notSeenMessages: 0 },
-    { id: "207", nickname: "Harry", status: 0, connectedAt: "09:30", lastConnectedAt: "Today", notSeenMessages: 1 },
-    { id: "208", nickname: "Isabella", status: 1, connectedAt: "07:40", lastConnectedAt: "Today", notSeenMessages: 1 },
-    { id: "209", nickname: "Jilian", status: 0, connectedAt: "06:00", lastConnectedAt: "Yesterday", notSeenMessages: 0 },
-    { id: "210", nickname: "Karine", status: 1, connectedAt: "09:57", lastConnectedAt: "Today", notSeenMessages: 2 },
-  ];
-
-  /*
-  const friendsByUserId = {
-    190: [205, 209, 210],     // Alice
-    201: [190, 205],         // Bob (example)
-    202: [190],              // Charly (example)
-  };
-  
-  */
-  // Fetch friends dynamically
-  const friendIds = await getFriendIds(myUserId, pool);
-  
-  const visibleUsers = users.filter(u =>
-    friendIds.includes(Number(u.id))
-  );
-  
-  socket.emit("chat:users:list", visibleUsers);
-
-  console.log(
-    `Sent ${visibleUsers.length} friends to user ${myUserId}`
-  );
   
   // ✅ Private: send to **this socket only**
   //socket.emit("chat:users:list", users);
@@ -159,7 +143,7 @@ io.on("connection", function(socket){
       timestamp: Date.now()
     });
   });
-});
+});//io.on("connection", async (socket) =>
 
 // Start server
 httpServer.listen(PORT, () => console.log("Server listening on port", PORT));
