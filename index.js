@@ -9,10 +9,38 @@ const PORT = process.env.PORT || 5000;
 // HTTP server
 const httpServer = createServer(app);
 
+const { Pool } = require('pg');
+
+//Render + Aiven + env
+const pool = new Pool({
+  user: process.env.USER,
+  host: process.env.HOST,
+  database: process.env.DATABASE,
+  password: process.env.PASSWORD,
+  port: process.env.PORT,
+  client_encoding: 'utf8',
+  ssl: {
+    rejectUnauthorized: true,
+    ca: fs.readFileSync("./ca.pem").toString(),
+  },
+  max: 20,
+  min: 1,
+  idleTimeoutMillis: 1000,
+});
+
 //test
 app.get("/health", (req, res) => {
   res.status(200).send("OK");
 });
+
+//get friends
+async function getFriendIds(userId, pool) {
+  const result = await pool.query(
+    `SELECT friend_id FROM user_friends WHERE user_id = $1`,
+    [userId]
+  );
+  return result.rows.map(r => r.friend_id);
+}
 
 // Socket.IO server
 const io = new Server(httpServer, {
@@ -60,19 +88,20 @@ io.on("connection", (socket) => {
     { id: "210", nickname: "Karine", status: 1, connectedAt: "09:57", lastConnectedAt: "Today", notSeenMessages: 2 },
   ];
 
+  /*
   const friendsByUserId = {
     190: [205, 209, 210],     // Alice
     201: [190, 205],         // Bob (example)
     202: [190],              // Charly (example)
   };
-
-  const myUserId  = socket.user.userId;
-  const myFriends = friendsByUserId[myUserId] || [];
-
+  */
+  // Fetch friends dynamically
+  const friendIds = await getFriendIds(myUserId, pool);
+  
   const visibleUsers = users.filter(u =>
-    myFriends.includes(Number(u.id))
+    friendIds.includes(Number(u.id))
   );
-
+  
   socket.emit("chat:users:list", visibleUsers);
 
   console.log(
