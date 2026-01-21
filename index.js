@@ -10,6 +10,10 @@ const PORT = process.env.PORT || 5000;
 const httpServer = createServer(app);
 
 const { Pool } = require('pg');
+const fs       = require("fs");
+const url      = require('url');
+const utf8     = require('utf8');
+const crypto   = require('crypto');
 
 //Render + Aiven + env
 const pool = new Pool({
