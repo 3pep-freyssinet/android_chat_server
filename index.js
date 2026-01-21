@@ -146,6 +146,9 @@ const messages = [
 
   // Receive message
   socket.on("chat:send_message", async ({ toUserId, message }) => {
+  
+  console.log("chat:send_message start ...");
+    
   try {
     const fromUserId = socket.user.userId;
 
