@@ -47,8 +47,17 @@ io.on("connection", (socket) => {
 
   // Example dummy users
   const users = [
-    { id: "188", nickname: "Alice", status: 1, connectedAt: "10:12", lastConnectedAt: "Yesterday", notSeenMessages: 2 },
-    { id: "189", nickname: "Bob", status: 0, connectedAt: "09:40", lastConnectedAt: "Today", notSeenMessages: 0 }
+    { id: "190", nickname: "Alice", status: 1, connectedAt: "10:12", lastConnectedAt: "Yesterday", notSeenMessages: 2 },
+    { id: "201", nickname: "Bob", status: 0, connectedAt: "09:40", lastConnectedAt: "Today", notSeenMessages: 0 },
+    { id: "202", nickname: "Charly", status: 0, connectedAt: "08:40", lastConnectedAt: "Today", notSeenMessages: 1 },
+    { id: "233", nickname: "Dylan", status: 1, connectedAt: "09:00", lastConnectedAt: "Yesterday", notSeenMessages: 3 },
+    { id: "204", nickname: "Ema", status: 1, connectedAt: "06:40", lastConnectedAt: "Today", notSeenMessages: 0 },
+    { id: "205", nickname: "Fanny", status: 0, connectedAt: "09:48", lastConnectedAt: "Yesterday", notSeenMessages: 2 },
+    { id: "206", nickname: "Gael", status: 1, connectedAt: "07:40", lastConnectedAt: "Today", notSeenMessages: 0 },
+    { id: "207", nickname: "Harry", status: 0, connectedAt: "09:30", lastConnectedAt: "Today", notSeenMessages: 1 },
+    { id: "208", nickname: "Isabella", status: 1, connectedAt: "07:40", lastConnectedAt: "Today", notSeenMessages: 1 },
+    { id: "209", nickname: "Jilian", status: 0, connectedAt: "06:00", lastConnectedAt: "Yesterday", notSeenMessages: 0 },
+    { id: "210", nickname: "Karine", status: 1, connectedAt: "09:57", lastConnectedAt: "Today", notSeenMessages: 2 },
   ];
 
   // ✅ Private: send to **this socket only**
