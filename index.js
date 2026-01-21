@@ -60,9 +60,28 @@ io.on("connection", (socket) => {
     { id: "210", nickname: "Karine", status: 1, connectedAt: "09:57", lastConnectedAt: "Today", notSeenMessages: 2 },
   ];
 
+  const friendsByUserId = {
+    190: [205, 209, 210],     // Alice
+    201: [190, 205],         // Bob (example)
+    202: [190],              // Charly (example)
+  };
+
+  const myUserId  = socket.user.userId;
+  const myFriends = friendsByUserId[myUserId] || [];
+
+  const visibleUsers = users.filter(u =>
+    myFriends.includes(Number(u.id))
+  );
+
+  socket.emit("chat:users:list", visibleUsers);
+
+  console.log(
+    `Sent ${visibleUsers.length} friends to user ${myUserId}`
+  );
+  
   // ✅ Private: send to **this socket only**
-  socket.emit("chat:users:list", users);
-  console.log("Sent user list to socket:", socket.id);
+  //socket.emit("chat:users:list", users);
+  //console.log("Sent user list to socket:", socket.id);
 
   // ✅ Broadcast: send to **everyone** (optional)
   // io.emit("chat:users:list", users);
