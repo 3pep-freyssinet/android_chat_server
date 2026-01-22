@@ -39,6 +39,7 @@ app.get("/health", (req, res) => {
 
 //get friends
 async function getFriendIds(userId, pool) {
+  console.log("getFriendIds :", userId);
   const result = await pool.query(
     `SELECT friend_id FROM user_friends WHERE user_id = $1`,
     [userId]
