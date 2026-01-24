@@ -145,15 +145,12 @@ const messages = [
   socket.emit("chat:conversation_history", conversation);
 });
 
-  // Receive message
-  socket.on("chat:send_message", async ({ toUserId, message }) => {
-  
+  // Receive text message
+  socket.on("chat:send_message", async ({ toUserId, message, localId }) => {
   console.log("chat:send_message start ...");
-    
+
   try {
     const fromUserId = socket.user.userId;
-
-    console.log("📨 chat:send_message", fromUserId, "→", toUserId);
 
     const query = `
       INSERT INTO chat.conversations (id_from, id_to, message, seen)
@@ -168,18 +165,47 @@ const messages = [
     ]);
 
     const savedMessage = rows[0];
-   console.log("📨 chat:send_message : savedMessage", savedMessage);
-    
+
+    // 🔥 Attach localId so sender can match optimistic message
+    savedMessage.localId = localId;
+
     // 🔥 Emit to sender
     socket.emit("chat:new_message", savedMessage);
 
-    // 🔥 Emit to receiver (if connected)
+    // 🔥 Emit to receiver
     io.to(String(toUserId)).emit("chat:new_message", savedMessage);
 
   } catch (err) {
     console.error("❌ send_message error", err);
   }
 });
+
+  //receive an image message
+  socket.on("chat:send_image", async ({ toUserId, image_url, message, localId }) => {
+  console.log("chat:send_image start ...");
+    
+  const fromUserId = socket.user.userId;
+
+  const query = `
+    INSERT INTO chat.conversations (id_from, id_to, message, image_url, seen)
+    VALUES ($1, $2, $3, $4, 'sent')
+    RETURNING *
+  `;
+
+  const { rows } = await pool.query(query, [
+    fromUserId,
+    toUserId,
+    message || null,
+    image_url
+  ]);
+
+  const savedMessage = rows[0];
+  savedMessage.localId = localId; // ⭐ CRITICAL
+
+  socket.emit("chat:new_message", savedMessage);
+  io.to(String(toUserId)).emit("chat:new_message", savedMessage);
+});
+
 
 });//io.on("connection", async (socket) =>
 
