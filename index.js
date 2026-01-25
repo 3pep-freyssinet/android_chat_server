@@ -88,7 +88,7 @@ io.on("connection", async (socket) => {
     const friendIds = await getFriendIds(myUserId, pool);
 
     const users = [
-      { id: 193, nickname: "Alice" },
+      { id: 194, nickname: "Alice" },
       { id: 201, nickname: "Bob" },
       { id: 202, nickname: "Charly" },
       { id: 205, nickname: "Fanny" },
@@ -120,12 +120,12 @@ io.on("connection", async (socket) => {
 
 
 const messages = [
-  { id_from: "193", id_to: "205", message: "Hi, Fanny, can you call me.", sent_at:"Yesterday:10:12", seen: "seen"},
-  { id_from: "193", id_to: "209", message: "Hi, Jillian, can you call me.", sent_at:"Yesterday:10:13", seen: "seen"},
-  { id_from: "193", id_to: "210", message: "Hi, Karine, can you call me.", sent_at:"Yesterday:10:14",seen: "seen" },
-  { id_from: "205", id_to: "193", message: "Hi, Alice. I'm here. Do you want something.", sent_at:"Today:10:12", seen: "seen"},
-  { id_from: "205", id_to: "193", message: "Do you know ...", sent_at:"Today:10:30", seen: "seen"},
-  { id_from: "205", id_to: "193", message: "I've meet Kevin in the school", sent_at:"Today:10:38", seen: "seen"}
+  { id_from: "194", id_to: "205", message: "Hi, Fanny, can you call me.", sent_at:"Yesterday:10:12", seen: "seen"},
+  { id_from: "194", id_to: "209", message: "Hi, Jillian, can you call me.", sent_at:"Yesterday:10:13", seen: "seen"},
+  { id_from: "194", id_to: "210", message: "Hi, Karine, can you call me.", sent_at:"Yesterday:10:14",seen: "seen" },
+  { id_from: "205", id_to: "194", message: "Hi, Alice. I'm here. Do you want something.", sent_at:"Today:10:12", seen: "seen"},
+  { id_from: "205", id_to: "194", message: "Do you know ...", sent_at:"Today:10:30", seen: "seen"},
+  { id_from: "205", id_to: "194", message: "I've meet Kevin in the school", sent_at:"Today:10:38", seen: "seen"}
 ];
 
   
