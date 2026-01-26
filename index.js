@@ -196,8 +196,7 @@ const messages = [
     fromUserId,
     toUserId,
     message || null,
-    image_url,
-    localId
+    image_url
   ]);
 
   const savedMessage = rows[0];
