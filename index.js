@@ -148,7 +148,10 @@ const messages = [
   // Receive text message
   socket.on("chat:send_message", async ({ toUserId, message, localId }) => {
   console.log("chat:send_message start ...");
-
+  console.log("chat:send_message :  fromUserId : ", socket.user.userId);
+  console.log("chat:send_message :  toUserId : ", toUserId);
+  console.log("chat:send_message :  message : ", message);  
+    
   try {
     const fromUserId = socket.user.userId;
 
@@ -171,7 +174,9 @@ const messages = [
 
     // 🔥 Emit to sender
     socket.emit("chat:new_message", savedMessage);
-
+    console.log("chat:emit to : ", toUserId);
+    console.log("chat:emit message : ", savedMessage);
+    
     // 🔥 Emit to receiver
     io.to(String(toUserId)).emit("chat:new_message", savedMessage);
 
