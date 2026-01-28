@@ -89,11 +89,11 @@ io.on("connection", async (socket) => {
 
     const users = [
       { id: 198, nickname: "Alice" },
-      { id: 201, nickname: "Bob" },
-      { id: 202, nickname: "Charly" },
-      { id: 199, nickname: "Fanny" },
-      { id: 209, nickname: "Jilian" },
-      { id: 210, nickname: "Karine" },
+      { id: 301, nickname: "Bob" },
+      { id: 302, nickname: "Charly" },
+      { id: 200, nickname: "Fanny" },
+      { id: 309, nickname: "Jilian" },
+      { id: 310, nickname: "Karine" },
     ];
 
     const visibleUsers = users.filter(u =>
