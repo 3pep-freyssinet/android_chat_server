@@ -88,10 +88,10 @@ io.on("connection", async (socket) => {
     const friendIds = await getFriendIds(myUserId, pool);
 
     const users = [
-      { id: 196, nickname: "Alice" },
+      { id: 198, nickname: "Alice" },
       { id: 201, nickname: "Bob" },
       { id: 202, nickname: "Charly" },
-      { id: 197, nickname: "Fanny" },
+      { id: 199, nickname: "Fanny" },
       { id: 209, nickname: "Jilian" },
       { id: 210, nickname: "Karine" },
     ];
@@ -118,16 +118,17 @@ io.on("connection", async (socket) => {
   // ✅ Broadcast: send to **everyone** (optional)
   // io.emit("chat:users:list", users);
 
-
+/*
 const messages = [
-  { id_from: "196", id_to: "197", message: "Hi, Fanny, can you call me.", sent_at:"Yesterday:10:12", seen: "seen"},
-  { id_from: "196", id_to: "209", message: "Hi, Jillian, can you call me.", sent_at:"Yesterday:10:13", seen: "seen"},
-  { id_from: "196", id_to: "210", message: "Hi, Karine, can you call me.", sent_at:"Yesterday:10:14",seen: "seen" },
-  { id_from: "197", id_to: "196", message: "Hi, Alice. I'm here. Do you want something.", sent_at:"Today:10:12", seen: "seen"},
-  { id_from: "209", id_to: "196", message: "Do you know ...", sent_at:"Today:10:30", seen: "seen"},
-  { id_from: "210", id_to: "196", message: "I've meet Kevin in the school", sent_at:"Today:10:38", seen: "seen"}
+  { id_from: "198", id_to: "199", message: "Hi, Fanny, can you call me.", sent_at:"Yesterday:10:12", seen: "seen"},
+  { id_from: "198", id_to: "209", message: "Hi, Jillian, can you call me.", sent_at:"Yesterday:10:13", seen: "seen"},
+  { id_from: "198", id_to: "210", message: "Hi, Karine, can you call me.", sent_at:"Yesterday:10:14",seen: "seen" },
+  { id_from: "199", id_to: "198", message: "Hi, Alice. I'm here. Do you want something.", sent_at:"Today:10:12", seen: "seen"},
+  { id_from: "209", id_to: "198", message: "Do you know ...", sent_at:"Today:10:30", seen: "seen"},
+  { id_from: "210", id_to: "198", message: "I've meet Kevin in the school", sent_at:"Today:10:38", seen: "seen"}
 ];
-
+*/
+  const messages = [];
   
   // Join conversation example
  socket.on("chat:join_conversation", ({ withUserId }) => {
