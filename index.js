@@ -88,10 +88,10 @@ io.on("connection", async (socket) => {
     const friendIds = await getFriendIds(myUserId, pool);
 
     const users = [
-      { id: 198, nickname: "Alice" },
+      { id: 201, nickname: "Alice" },
       { id: 301, nickname: "Bob" },
       { id: 302, nickname: "Charly" },
-      { id: 200, nickname: "Fanny" },
+      { id: 202, nickname: "Fanny" },
       { id: 309, nickname: "Jilian" },
       { id: 310, nickname: "Karine" },
     ];
