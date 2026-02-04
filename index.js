@@ -190,7 +190,8 @@ const messages = [
   socket.on("chat:send_image_", async () => {
     console.log("chat:send_image start ...");
   });
-  
+
+  /*
   //receive an image message
   socket.on("chat:send_image", async ({ toUserId, image_url, message, localId }) => {
   console.log("chat:send_image start ...");
@@ -216,7 +217,7 @@ const messages = [
   socket.emit("chat:new_message", savedMessage);
   io.to(String(toUserId)).emit("chat:new_message", savedMessage);
 });
-
+*/
 
 });//io.on("connection", async (socket) =>
 
