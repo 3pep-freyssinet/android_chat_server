@@ -187,7 +187,12 @@ const messages = [
 });
 
   //receive an image message
-  socket.on("chat:send_image", async ({ toUserId, image_url, message, localId }) => {
+  socket.on("chat:send_image", async () => {
+    console.log("chat:send_image start ...");
+  }
+  
+  //receive an image message
+  socket.on("chat:send_image_", async ({ toUserId, image_url, message, localId }) => {
   console.log("chat:send_image start ...");
     
   const fromUserId = socket.user.userId;
