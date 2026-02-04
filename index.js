@@ -187,8 +187,8 @@ const messages = [
 });
 
   //receive an image message
-  socket.on("chat:send_image_", async () => {
-    console.log("chat:send_image start ...");
+  socket.on("chat:send_message_", async () => {
+    console.log("chat:send_image_ start ...");
   });
 
   /*
