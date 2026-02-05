@@ -75,7 +75,7 @@ io.use((socket, next) => {
 });
 
 // On client connect
-io.on("connection", async (socket) => {
+io.on("connection", (socket) => {
   const myUserId = socket.user.userId;
   const userId   = String(socket.user.userId);
   
@@ -87,11 +87,7 @@ io.on("connection", async (socket) => {
   
   console.log("User joined room:", userId);
   console.log("User connected:", myUserId);
-
-  try {
-    const friendIds = await getFriendIds(myUserId, pool);
-
-    const users = [
+  const users = [
       { id: 215, nickname: "Alice" },
       { id: 301, nickname: "Bob" },
       { id: 302, nickname: "Charly" },
@@ -104,6 +100,9 @@ io.on("connection", async (socket) => {
       friendIds.includes(Number(u.id))
     );
 
+  /*
+  try {
+    const friendIds = await getFriendIds(myUserId, pool);
     socket.emit("chat:users:list", visibleUsers);
 
     console.log(
@@ -114,6 +113,7 @@ io.on("connection", async (socket) => {
     console.error("Failed to load friends:", err);
     socket.emit("chat:users:list", []); // fail-safe
   }
+  */
   
   // ✅ Private: send to **this socket only**
   //socket.emit("chat:users:list", users);
@@ -195,6 +195,23 @@ const messages = [
     console.log("chat:send_image_ start ...");
   });
 
+  ///////////////////////////
+(async () => {
+  try {
+    const friendIds = await getFriendIds(myUserId, pool);
+    socket.emit("chat:users:list", visibleUsers);
+
+    console.log(
+      `Sent ${visibleUsers.length} friends to user ${myUserId}`
+    );
+
+  } catch (err) {
+    console.error("Failed to load friends:", err);
+    socket.emit("chat:users:list", []); // fail-safe
+  }
+});
+////////////////////////
+  
   /*
   //receive an image message
   socket.on("chat:send_image", async ({ toUserId, image_url, message, localId }) => {
