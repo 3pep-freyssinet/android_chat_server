@@ -80,7 +80,7 @@ io.on("connection", (socket) => {
   const userId   = String(socket.user.userId);
   
   socket.onAny((event) => {
-    console.log("any............📡 From", socket.id, "event:", event);
+    //console.log("any............📡 From", socket.id, "event:", event);
   });
   
   socket.join(userId);
