@@ -197,6 +197,18 @@ const messages = [
 
   ///////////////////////////
 (async () => {
+  const users = [
+      { id: 215, nickname: "Alice" },
+      { id: 301, nickname: "Bob" },
+      { id: 302, nickname: "Charly" },
+      { id: 216, nickname: "Fanny" },
+      { id: 309, nickname: "Jilian" },
+      { id: 310, nickname: "Karine" },
+    ];
+
+    const visibleUsers = users.filter(u =>
+      friendIds.includes(Number(u.id))
+    );
   try {
     const friendIds = await getFriendIds(myUserId, pool);
     socket.emit("chat:users:list", visibleUsers);
