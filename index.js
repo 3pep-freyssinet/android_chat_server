@@ -190,9 +190,9 @@ const messages = [
   }
 });
 
-  //receive an image message
+  //receive an message
   socket.on("chat:send_message_", async () => {
-    console.log("chat:send_image_ start ...");
+    console.log("chat:send_message_test start ...");
   });
 
   ///////////////////////////
