@@ -192,10 +192,31 @@ const messages = [
   }
 });
 
-  //receive an message
-  socket.on("chat:send_message_", async () => {
-    console.log("chat:send_message_test start ...");
-  });
+  //receive an image message
+  socket.on("chat:send_image", async ({ toUserId, image_url, message, localId }) => {
+  console.log("chat:send_image start ...");
+    
+  const fromUserId = socket.user.userId;
+
+  const query = `
+    INSERT INTO chat.conversations (id_from, id_to, message, image_url, seen)
+    VALUES ($1, $2, $3, $4, 'sent')
+    RETURNING *
+  `;
+
+  const { rows } = await pool.query(query, [
+    fromUserId,
+    toUserId,
+    message || null,
+    image_url
+  ]);
+
+  const savedMessage = rows[0];
+  savedMessage.localId = localId; // ⭐ CRITICAL
+
+  socket.emit("chat:new_message", savedMessage);
+  //io.to(String(toUserId)).emit("chat:new_message", savedMessage);
+});
 
   ///////////////////////////
 (async () => {
@@ -228,35 +249,7 @@ const messages = [
 })();;
 ////////////////////////
   
-  /*
-  //receive an image message
-  socket.on("chat:send_image", async ({ toUserId, image_url, message, localId }) => {
-  console.log("chat:send_image start ...");
-    
-  const fromUserId = socket.user.userId;
-
-  const query = `
-    INSERT INTO chat.conversations (id_from, id_to, message, image_url, seen)
-    VALUES ($1, $2, $3, $4, 'sent')
-    RETURNING *
-  `;
-
-  const { rows } = await pool.query(query, [
-    fromUserId,
-    toUserId,
-    message || null,
-    image_url
-  ]);
-
-  const savedMessage = rows[0];
-  savedMessage.localId = localId; // ⭐ CRITICAL
-
-  socket.emit("chat:new_message", savedMessage);
-  io.to(String(toUserId)).emit("chat:new_message", savedMessage);
-});
-*/
-
-});//io.on("connection", async (socket) =>
+});//end io.on("connection", async (socket) =>
 
 // Start server
 httpServer.listen(PORT, () => console.log("Server listening on port", PORT));
