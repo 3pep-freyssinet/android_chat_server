@@ -225,7 +225,7 @@ const messages = [
     console.error("Failed to load friends:", err);
     socket.emit("chat:users:list", []); // fail-safe
   }
-});
+})();;
 ////////////////////////
   
   /*
