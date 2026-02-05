@@ -87,6 +87,8 @@ io.on("connection", (socket) => {
   
   console.log("User joined room:", userId);
   console.log("User connected:", myUserId);
+
+  /*
   const users = [
       { id: 215, nickname: "Alice" },
       { id: 301, nickname: "Bob" },
@@ -99,7 +101,7 @@ io.on("connection", (socket) => {
     const visibleUsers = users.filter(u =>
       friendIds.includes(Number(u.id))
     );
-
+    */
   /*
   try {
     const friendIds = await getFriendIds(myUserId, pool);
@@ -207,7 +209,6 @@ const messages = [
       { id: 310, nickname: "Karine" },
     ];
 
-    
   try {
     const friendIds = await getFriendIds(myUserId, pool);
     
