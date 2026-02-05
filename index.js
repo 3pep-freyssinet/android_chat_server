@@ -79,6 +79,10 @@ io.on("connection", async (socket) => {
   const myUserId = socket.user.userId;
   const userId   = String(socket.user.userId);
   
+  socket.onAny((event) => {
+    console.log("any............📡 From", socket.id, "event:", event);
+  });
+  
   socket.join(userId);
   
   console.log("User joined room:", userId);
