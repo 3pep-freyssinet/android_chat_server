@@ -215,7 +215,7 @@ const messages = [
   savedMessage.localId = localId; // ⭐ CRITICAL
 
   socket.emit("chat:new_message", savedMessage);
-  //io.to(String(toUserId)).emit("chat:new_message", savedMessage);
+  io.to(String(toUserId)).emit("chat:new_message", savedMessage);
 });
 
   ///////////////////////////
