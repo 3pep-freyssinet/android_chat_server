@@ -163,7 +163,7 @@ const messages = [
     const fromUserId = socket.user.userId;
 
     const query = `
-      INSERT INTO chat.conversations (id_from, id_to, message, seen)
+      INSERT INTO chat.conversations (id_from, id_to, message, status)
       VALUES ($1, $2, $3, 'sent')
       RETURNING *
     `;
