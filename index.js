@@ -187,6 +187,10 @@ const messages = [
     // 🔥 Emit to receiver
     io.to(String(toUserId)).emit("chat:new_message", savedMessage);
 
+    io.to(String(fromUserId)).emit("chat:delivered", {
+    localId: localId
+    });
+
   } catch (err) {
     console.error("❌ send_message error", err);
   }
