@@ -222,10 +222,10 @@ const messages = [
 (async () => {
   
   const users = [
-      { id: 219, nickname: "Alice" },
+      { id: 221, nickname: "Alice" },
       { id: 301, nickname: "Bob" },
       { id: 302, nickname: "Charly" },
-      { id: 220, nickname: "Fanny" },
+      { id: 222, nickname: "Fanny" },
       { id: 309, nickname: "Jilian" },
       { id: 310, nickname: "Karine" },
     ];
