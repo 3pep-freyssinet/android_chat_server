@@ -109,6 +109,8 @@ for (const msg of rows) {
       status: "delivered"
     });
   }
+}//end for
+
 
   socket.on("disconnect", () => {
     onlineUsers.delete(String(userId));
@@ -159,6 +161,7 @@ for (const msg of rows) {
 
   // ✅ Broadcast: send to **everyone** (optional)
   // io.emit("chat:users:list", users);
+
 
 /*
 const messages = [
@@ -258,6 +261,8 @@ const messages = [
   io.to(String(toUserId)).emit("chat:new_message", savedMessage);
 });
 
+
+
 /*
 socket.on("chat:mark_seen", ({ withUserId }) => {
   console.log("chat:mark_seen start ...");
@@ -285,7 +290,8 @@ socket.on("chat:mark_seen", async ({ withUserId }) => {
       fromUserId: myUserId
   });
 });
-/////////////////////////////////////////////////////////////////
+
+ /////////////////////////////////////////////////////////////////
 async function updateConversations(id) {
   console.log('updateConversations : id :', id);
   try {
@@ -303,7 +309,8 @@ async function updateConversations(id) {
       console.error('Error fetching FCM token from the database:', error);
     throw error;
   }
-}
+} 
+
 //////////////////////////////////////////////////////////////////
   async function getMessagesWithSentStatus(userIdTo) {
   console.log('getMessagesWithSentStatus(userId) :', userIdTo);
@@ -324,6 +331,8 @@ async function updateConversations(id) {
 function isUserOnline(userId) {
   return onlineUsers.has(String(userId));
 }
+
+
 ///////////////////////////
 (async () => {
   
@@ -352,7 +361,7 @@ function isUserOnline(userId) {
     console.error("Failed to load friends:", err);
     socket.emit("chat:users:list", []); // fail-safe
   }
-})();;
+})();
 ////////////////////////
   
 });//end io.on("connection", async (socket) =>
