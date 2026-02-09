@@ -58,7 +58,7 @@ const io = new Server(httpServer, {
   pingInterval: 25000
 });
 
-// Middleware: JWT auth
+// Middleware: JWT auth 
 io.use((socket, next) => {
   console.log("Socket handshake auth:", socket.handshake.auth);
   try {
@@ -75,9 +75,19 @@ io.use((socket, next) => {
 });
 
 // On client connect
+const onlineUsers = new Map();
 io.on("connection", (socket) => {
   const myUserId = socket.user.userId;
   const userId   = String(socket.user.userId);
+  
+  onlineUsers.set(String(userId), socket.id);
+
+  console.log("User online:", userId);
+
+  socket.on("disconnect", () => {
+    onlineUsers.delete(String(userId));
+    console.log("User offline:", userId);
+  });
   
   socket.onAny((event) => {
     //console.log("any............📡 From", socket.id, "event:", event);
@@ -161,7 +171,8 @@ const messages = [
     
   try {
     const fromUserId = socket.user.userId;
-
+    const status = isUserOnline(toUserId) ? "delivered" : "sent";
+    
     const query = `
       INSERT INTO chat.conversations (id_from, id_to, message, status)
       VALUES ($1, $2, $3, 'sent')
@@ -184,12 +195,11 @@ const messages = [
     console.log("chat:emit to : ", toUserId);
     console.log("chat:emit message : ", savedMessage);
     
-    // 🔥 Emit to receiver
-    io.to(String(toUserId)).emit("chat:new_message", savedMessage);
-
-    io.to(String(fromUserId)).emit("chat:delivered", {
-    localId: localId
-    });
+    // send to receiver ONLY if online
+    if (isUserOnline(toUserId)) {
+      console.log("chat:emit message to receiver : ", savedMessage);
+      io.to(onlineUsers.get(String(toUserId))) .emit("chat:new_message", savedMessage);
+    }
 
   } catch (err) {
     console.error("❌ send_message error", err);
@@ -250,8 +260,11 @@ socket.on("chat:mark_seen", async ({ withUserId }) => {
   });
 });
 
-
-  ///////////////////////////
+/////////////////////////////////
+function isUserOnline(userId) {
+  return onlineUsers.has(String(userId));
+}
+///////////////////////////
 (async () => {
   
   const users = [
