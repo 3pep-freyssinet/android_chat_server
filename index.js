@@ -313,19 +313,21 @@ async function updateConversations(id) {
 
 //////////////////////////////////////////////////////////////////
   async function getMessagesWithSentStatus(userIdTo) {
-  console.log('getMessagesWithSentStatus(userId) :', userIdTo);
-  try {
-    const result = await pool.query("SELECT * FROM chat.conversations WHERE id_to = $1 AND status = 'sent', [userIdTo]");
-    console.log('getMessagesWithSentStatus : result.rows:', result.rows);
-    if (result.rows.length > 0) {
-      return result.rows[0];
-    } else {
-      throw new Error('No sent messages found for this user');
+    console.log('getMessagesWithSentStatus(userId) :', userIdTo);
+    try {
+      //const result = await pool.query("SELECT * FROM chat.conversations WHERE id_to = $1 AND status = 'sent', [userIdTo]");
+      const { rows } = await pool.query(`SELECT * FROM chat.conversations WHERE id_to = $1 AND status = 'sent'`, [userIdTo]);
+      console.log('getMessagesWithSentStatus : rows:', rows);
+      
+      if (rows != null) {
+        return rows;
+      } else {
+        throw new Error('No sent messages found for this user');
+      }
+    } catch (error) {
+        console.error('Error fetching FCM token from the database:', error);
+      throw error;
     }
-  } catch (error) {
-      console.error('Error fetching FCM token from the database:', error);
-    throw error;
-  }
 }
 /////////////////////////////////
 function isUserOnline(userId) {
