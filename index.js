@@ -307,7 +307,7 @@ async function updateConversations(id) {
   async function getMessagesWithSentStatus(userIdTo) {
   console.log('getMessagesWithSentStatus(userId) :', userIdTo);
   try {
-    const result = await pool.query('SELECT * FROM chat.conversations WHERE id_to = $1 AND status = 'sent', [userIdTo]);
+    const result = await pool.query("SELECT * FROM chat.conversations WHERE id_to = $1 AND status = 'sent', [userIdTo]");
     
     if (result.rows.length > 0) {
       return result.rows;
