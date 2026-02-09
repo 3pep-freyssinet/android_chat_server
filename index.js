@@ -81,8 +81,35 @@ io.on("connection", (socket) => {
   const userId   = String(socket.user.userId);
   
   onlineUsers.set(String(userId), socket.id);
-
   console.log("User online:", userId);
+
+  // 🔥 DELIVER MISSED MESSAGES
+  const { rows } = await pool.query(`
+    SELECT * FROM chat.conversations
+    WHERE id_to = $1 AND status = 'sent'
+  `, [userId]);
+
+for (const msg of rows) {
+  // 1️⃣ send message to receiver
+  socket.emit("chat:new_message", msg);
+
+  // 2️⃣ update status to delivered
+  await pool.query(`
+    UPDATE chat.conversations
+    SET status = 'delivered'
+    WHERE id = $1
+  `, [msg.id]);
+
+  msg.status = "delivered";
+
+  // 3️⃣ notify original sender (if online)
+  const senderSocketId = onlineUsers.get(String(msg.id_from));
+  if (senderSocketId) {
+    io.to(senderSocketId).emit("chat:message_status_update", {
+      localId: msg.localId,
+      status: "delivered"
+    });
+  }
 
   socket.on("disconnect", () => {
     onlineUsers.delete(String(userId));
