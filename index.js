@@ -318,7 +318,7 @@ async function updateConversations(id) {
     const result = await pool.query("SELECT * FROM chat.conversations WHERE id_to = $1 AND status = 'sent', [userIdTo]");
     
     if (result.rows.length > 0) {
-      return result.rows;
+      return result.rows[0];
     } else {
       throw new Error('No sent messages found for this user');
     }
