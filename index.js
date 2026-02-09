@@ -98,7 +98,7 @@ for (const msg of rows) {
   socket.emit("chat:new_message", msg);
 
   // 2️⃣ update status to delivered
-  updateConversations([msg.id);
+  updateConversations(msg.id);
   msg.status = "delivered";
 
   // 3️⃣ notify original sender (if online)
