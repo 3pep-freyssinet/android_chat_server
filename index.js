@@ -316,11 +316,11 @@ async function updateConversations(id) {
     console.log('getMessagesWithSentStatus(userId) :', userIdTo);
     try {
       //const result = await pool.query("SELECT * FROM chat.conversations WHERE id_to = $1 AND status = 'sent', [userIdTo]");
-      const { rows } = await pool.query(`SELECT * FROM chat.conversations WHERE id_to = $1 AND status = 'sent'`, [userIdTo]);
-      console.log('getMessagesWithSentStatus : rows:', rows);
+      const result = await pool.query(`SELECT * FROM chat.conversations WHERE id_to = $1 AND status = 'sent'`, [userIdTo]);
+      console.log('getMessagesWithSentStatus : result.rows:', result.rows);
       
-      if (rows != null) {
-        return rows;
+      if (result != null) {
+        return result.rows || [];
       } else {
         throw new Error('No sent messages found for this user');
       }
