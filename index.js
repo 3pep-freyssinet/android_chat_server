@@ -84,11 +84,15 @@ io.on("connection", (socket) => {
   console.log("User online:", userId);
 
   // 🔥 DELIVER MISSED MESSAGES
+  const { rows } = getMessagesWithSentStatus(userId);
+
+  /*
   const { rows } = await pool.query(`
     SELECT * FROM chat.conversations
     WHERE id_to = $1 AND status = 'sent'
   `, [userId]);
-
+   */
+  
 for (const msg of rows) {
   // 1️⃣ send message to receiver
   socket.emit("chat:new_message", msg);
@@ -205,16 +209,13 @@ const messages = [
       VALUES ($1, $2, $3, 'sent')
       RETURNING *
     `;
-
-    const { rows } = getMessagesWithSentStatus(toUserId);
-
-    /*
+    
     const { rows } = await pool.query(query, [
       fromUserId,
       toUserId,
       message
     ]);
-    */
+    
     const savedMessage = rows[0];
 
     // 🔥 Attach localId so sender can match optimistic message
