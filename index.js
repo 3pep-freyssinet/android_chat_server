@@ -255,10 +255,10 @@ socket.on("chat:mark_seen", async ({ withUserId }) => {
 (async () => {
   
   const users = [
-      { id: 221, nickname: "Alice" },
+      { id: 223, nickname: "Alice" },
       { id: 301, nickname: "Bob" },
       { id: 302, nickname: "Charly" },
-      { id: 222, nickname: "Fanny" },
+      { id: 224, nickname: "Fanny" },
       { id: 309, nickname: "Jilian" },
       { id: 310, nickname: "Karine" },
     ];
