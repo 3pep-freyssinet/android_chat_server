@@ -303,6 +303,7 @@ async function updateConversations(id) {
       console.error('Error fetching FCM token from the database:', error);
     throw error;
   }
+}
 //////////////////////////////////////////////////////////////////
   async function getMessagesWithSentStatus(userIdTo) {
   console.log('getMessagesWithSentStatus(userId) :', userIdTo);
