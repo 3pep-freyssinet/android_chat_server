@@ -206,12 +206,15 @@ const messages = [
       RETURNING *
     `;
 
+    const { rows } = getMessagesWithSentStatus(toUserId);
+
+    /*
     const { rows } = await pool.query(query, [
       fromUserId,
       toUserId,
       message
     ]);
-
+    */
     const savedMessage = rows[0];
 
     // 🔥 Attach localId so sender can match optimistic message
@@ -286,7 +289,22 @@ socket.on("chat:mark_seen", async ({ withUserId }) => {
       fromUserId: myUserId
   });
 });
-
+//////////////////////////////////////////////////////////////////
+  async function getMessagesWithSentStatus(userIdTo) {
+  console.log('getMessagesWithSentStatus(userId) :', userIdTo);
+  try {
+    const result = await pool.query('SELECT * FROM chat.conversations WHERE id_to = $1 AND status = 'sent', [userIdTo]);
+    
+    if (result.rows.length > 0) {
+      return result.rows;
+    } else {
+      throw new Error('No sent messages found for this user');
+    }
+  } catch (error) {
+      console.error('Error fetching FCM token from the database:', error);
+    throw error;
+  }
+}
 /////////////////////////////////
 function isUserOnline(userId) {
   return onlineUsers.has(String(userId));
