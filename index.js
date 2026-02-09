@@ -98,12 +98,7 @@ for (const msg of rows) {
   socket.emit("chat:new_message", msg);
 
   // 2️⃣ update status to delivered
-  await pool.query(`
-    UPDATE chat.conversations
-    SET status = 'delivered'
-    WHERE id = $1
-  `, [msg.id]);
-
+  updateConversations([msg.id);
   msg.status = "delivered";
 
   // 3️⃣ notify original sender (if online)
@@ -290,6 +285,24 @@ socket.on("chat:mark_seen", async ({ withUserId }) => {
       fromUserId: myUserId
   });
 });
+/////////////////////////////////////////////////////////////////
+async function updateConversations(id) {
+  console.log('updateConversations : id :', id);
+  try {
+    const result = await pool.query("UPDATE chat.conversations SET status = 'delivered' WHERE id = $1, [id]");
+
+    /*
+    if (result.rows.length > 0) {
+      return result.rows;
+    } else {
+      throw new Error('No sent messages found for this user');
+    }
+    */
+    
+  } catch (error) {
+      console.error('Error fetching FCM token from the database:', error);
+    throw error;
+  }
 //////////////////////////////////////////////////////////////////
   async function getMessagesWithSentStatus(userIdTo) {
   console.log('getMessagesWithSentStatus(userId) :', userIdTo);
