@@ -202,17 +202,19 @@ const messages = [
   try {
     const fromUserId = socket.user.userId;
     const status = isUserOnline(toUserId) ? "delivered" : "sent";
+    console.log("chat:send_message :  status : ", status);  
     
     const query = `
       INSERT INTO chat.conversations (id_from, id_to, message, status)
-      VALUES ($1, $2, $3, 'sent')
+      VALUES ($1, $2, $3, $4)
       RETURNING *
     `;
     
     const { rows } = await pool.query(query, [
       fromUserId,
       toUserId,
-      message
+      message,
+      status
     ]);
     
     const savedMessage = rows[0];
