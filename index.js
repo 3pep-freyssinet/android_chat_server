@@ -83,9 +83,9 @@ io.on("connection", async (socket) => {
   onlineUsers.set(String(userId), socket.id);
   console.log("User online:", userId);
 
-console.log("Total clients:", pool.totalCount);
-console.log("Idle clients:", pool.idleCount);
-console.log("Waiting clients:", pool.waitingCount);
+//console.log("Total clients:", pool.totalCount);
+//console.log("Idle clients:", pool.idleCount);
+//console.log("Waiting clients:", pool.waitingCount);
 
 // 🔥 DELIVER MISSED MESSAGES
 const { rows } = await pool.query(`
@@ -109,9 +109,12 @@ for (const msg of rows) {
 
   // 3️⃣ notify original sender (if online)
   const senderSocketId = onlineUsers.get(String(msg.id_from));
+  console.log("notify original sender : senderSocketId:", senderSocketId);
+  console.log("notify original sender : msg.id:", msg.id);
+  
   if (senderSocketId) {
     io.to(senderSocketId).emit("chat:message_status_update", {
-      localId: msg.localId,
+      id: msg.id, //localId: msg.localId,
       status: "delivered"
     });
   }
