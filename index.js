@@ -87,10 +87,9 @@ console.log("Total clients:", pool.totalCount);
 console.log("Idle clients:", pool.idleCount);
 console.log("Waiting clients:", pool.waitingCount);
 
-  //SELECT * FROM chat.conversations
 // 🔥 DELIVER MISSED MESSAGES
 const { rows } = await pool.query(`
-  SELECT * FROM public.users_notification
+  SELECT * FROM chat.conversations
   WHERE id_to = $1 AND status = 'sent'
 `, [userId]);
 
