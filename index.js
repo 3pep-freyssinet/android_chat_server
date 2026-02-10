@@ -111,7 +111,8 @@ for (const msg of rows) {
       status: "delivered"
     });
   }
-
+}//end for
+  
   socket.on("disconnect", () => {
     onlineUsers.delete(String(userId));
     console.log("User offline:", userId);
