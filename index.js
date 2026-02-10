@@ -27,7 +27,7 @@ const pool = new Pool({
     rejectUnauthorized: true,
     ca: fs.readFileSync("./ca.pem").toString(),
   },
-  max: 5,
+  max: 20,
   min: 1,
   idleTimeoutMillis: 1000,
 });
