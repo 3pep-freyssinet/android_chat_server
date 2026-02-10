@@ -27,7 +27,7 @@ const pool = new Pool({
     rejectUnauthorized: true,
     ca: fs.readFileSync("./ca.pem").toString(),
   },
-  max: 20,
+  max: 5,
   min: 1,
   idleTimeoutMillis: 1000,
 });
@@ -83,6 +83,11 @@ io.on("connection", async (socket) => {
   onlineUsers.set(String(userId), socket.id);
   console.log("User online:", userId);
 
+console.log("Total clients:", pool.totalCount);
+console.log("Idle clients:", pool.idleCount);
+console.log("Waiting clients:", pool.waitingCount);
+
+  
 // 🔥 DELIVER MISSED MESSAGES
 const { rows } = await pool.query(`
   SELECT * FROM chat.conversations
