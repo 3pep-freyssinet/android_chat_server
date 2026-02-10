@@ -76,29 +76,31 @@ io.use((socket, next) => {
 
 // On client connect
 const onlineUsers = new Map();
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
   const myUserId = socket.user.userId;
   const userId   = String(socket.user.userId);
   
   onlineUsers.set(String(userId), socket.id);
   console.log("User online:", userId);
 
-  // 🔥 DELIVER MISSED MESSAGES
-  const { rows } = getMessagesWithSentStatus(userId);
-  console.log("DELIVER MISSED MESSAGES: rows : ", rows);
-  /*
-  const { rows } = await pool.query(`
-    SELECT * FROM chat.conversations
-    WHERE id_to = $1 AND status = 'sent'
-  `, [userId]);
-   */
-  
+// 🔥 DELIVER MISSED MESSAGES
+const { rows } = await pool.query(`
+  SELECT * FROM chat.conversations
+  WHERE id_to = $1 AND status = 'sent'
+`, [userId]);
+
 for (const msg of rows) {
+
   // 1️⃣ send message to receiver
   socket.emit("chat:new_message", msg);
 
   // 2️⃣ update status to delivered
-  updateConversations(msg.id);
+  await pool.query(`
+    UPDATE chat.conversations
+    SET status = 'delivered'
+    WHERE id = $1
+  `, [msg.id]);
+
   msg.status = "delivered";
 
   // 3️⃣ notify original sender (if online)
@@ -109,8 +111,6 @@ for (const msg of rows) {
       status: "delivered"
     });
   }
-}//end for
-
 
   socket.on("disconnect", () => {
     onlineUsers.delete(String(userId));
