@@ -85,7 +85,7 @@ io.on("connection", (socket) => {
 
   // 🔥 DELIVER MISSED MESSAGES
   const { rows } = getMessagesWithSentStatus(userId);
-  
+  console.log("DELIVER MISSED MESSAGES: rows : ", rows);
   /*
   const { rows } = await pool.query(`
     SELECT * FROM chat.conversations
