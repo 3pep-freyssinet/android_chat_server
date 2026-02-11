@@ -225,9 +225,11 @@ const messages = [
     ]);
     
     const savedMessage = rows[0];
+    console.log("chat:send_message : savedMessage", savedMessage);
 
     // 🔥 Attach localId so sender can match optimistic message
-    savedMessage.localId = localId;
+    savedMessage.localId   = localId;
+    //savedMessage.lserverId = serverId;
 
     // 🔥 Emit to sender
     socket.emit("chat:new_message", savedMessage);
