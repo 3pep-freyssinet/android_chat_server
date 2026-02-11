@@ -109,8 +109,10 @@ for (const msg of rows) {
 
   // 3️⃣ notify original sender (if online)
   const senderSocketId = onlineUsers.get(String(msg.id_from));
-  console.log("notify original sender : senderSocketId:", senderSocketId);
-  console.log("notify original sender : msg.id:", msg.id);
+  console.log("notify original sender : map : ", onlineUsers);
+  console.log("notify original sender : msg.id_from : ", msg.id_from);
+  console.log("notify original sender : senderSocketId : ", senderSocketId);
+  console.log("notify original sender : msg.id : ", msg.id);
   
   if (senderSocketId) {
     io.to(senderSocketId).emit("chat:message_status_update", {
