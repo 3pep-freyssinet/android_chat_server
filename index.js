@@ -29,7 +29,7 @@ const pool = new Pool({
   },
   max: 20,
   min: 1,
-  idleTimeoutMillis: 1000,
+  idleTimeoutMillis: 1000, 
 });
 
 //test
@@ -83,15 +83,15 @@ io.on("connection", async (socket) => {
   onlineUsers.set(String(userId), socket.id);
   console.log("User online:", userId);
 
-//console.log("Total clients:", pool.totalCount);
-//console.log("Idle clients:", pool.idleCount);
-//console.log("Waiting clients:", pool.waitingCount);
+  //console.log("Total clients:", pool.totalCount);
+  //console.log("Idle clients:", pool.idleCount);
+  //console.log("Waiting clients:", pool.waitingCount);
 
-// 🔥 DELIVER MISSED MESSAGES
-const { rows } = await pool.query(`
-  SELECT * FROM chat.conversations
-  WHERE id_to = $1 AND status = 'sent'
-`, [userId]);
+  // 🔥 DELIVER MISSED MESSAGES
+  const { rows } = await pool.query(`
+    SELECT * FROM chat.conversations
+    WHERE id_to = $1 AND status = 'sent'
+  `, [userId]);
 
 for (const msg of rows) {
 
@@ -211,6 +211,7 @@ const messages = [
   try {
     const fromUserId = socket.user.userId;
     const status = isUserOnline(toUserId) ? "delivered" : "sent";
+    
     console.log("chat:send_message :  status : ", status);  
     
     const query = `
@@ -244,6 +245,14 @@ const messages = [
       io.to(onlineUsers.get(String(toUserId))) .emit("chat:new_message", savedMessage);
     }
 
+    // If delivered immediately → notify sender
+    if (isOnline) {
+      io.to(socket.id).emit("chat:message_status_update", {
+        serverId: savedMessage.id,
+        status: "delivered"
+      });
+    }
+    
   } catch (err) {
     console.error("❌ send_message error", err);
   }
