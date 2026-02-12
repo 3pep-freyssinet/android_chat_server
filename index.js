@@ -210,7 +210,7 @@ const messages = [
     
   try {
     const fromUserId = socket.user.userId;
-    const status = isUserOnline(toUserId) ? "delivered" : "sent";
+    const status     = isUserOnline(toUserId) ? "delivered" : "sent";
     
     console.log("chat:send_message :  status : ", status);  
     
@@ -247,6 +247,7 @@ const messages = [
 
     // If delivered immediately → notify sender
     if (isOnline) {
+      console.log("delivered immediately → notify sender : chat:message_status_update : ", savedMessage.id);
       io.to(socket.id).emit("chat:message_status_update", {
         serverId: savedMessage.id,
         status: "delivered"
