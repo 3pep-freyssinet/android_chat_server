@@ -283,6 +283,21 @@ const messages = [
 
   socket.emit("chat:new_message", savedMessage);
   io.to(String(toUserId)).emit("chat:new_message", savedMessage);
+ 
+    // send to receiver ONLY if online
+    if (isUserOnline(toUserId)) {
+      console.log("chat:emit message to receiver : ", savedMessage);
+      io.to(onlineUsers.get(String(toUserId))) .emit("chat:new_message", savedMessage);
+    }
+    
+    // If delivered immediately → notify sender if the receiver is online.
+    if (isUserOnline(toUserId)) {
+      console.log("delivered immediately → notify sender : chat:message_status_update : ", savedMessage.id);
+      io.to(socket.id).emit("chat:message_status_update", {
+        serverId: savedMessage.id,
+        status: "delivered"
+      });
+    }
 });
 
 
