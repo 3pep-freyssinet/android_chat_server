@@ -245,8 +245,8 @@ const messages = [
       io.to(onlineUsers.get(String(toUserId))) .emit("chat:new_message", savedMessage);
     }
 
-    // If delivered immediately → notify sender
-    if (isOnline) {
+    // If delivered immediately → notify sender if the receiver is online.
+    if (isUserOnline(toUserId)) {
       console.log("delivered immediately → notify sender : chat:message_status_update : ", savedMessage.id);
       io.to(socket.id).emit("chat:message_status_update", {
         serverId: savedMessage.id,
