@@ -232,7 +232,7 @@ const messages = [
 
     // 🔥 Attach localId so sender can match optimistic message
     savedMessage.localId   = localId;
-    //savedMessage.lserverId = serverId;
+    savedMessage.serverId  = savedMessage.id;
 
     // 🔥 Emit to sender
     socket.emit("chat:new_message", savedMessage);
@@ -247,9 +247,9 @@ const messages = [
 
     // If delivered immediately → notify sender if the receiver is online.
     if (isUserOnline(toUserId)) {
-      console.log("delivered immediately → notify sender : chat:message_status_update : ", savedMessage.id);
+      console.log("delivered immediately → notify sender : chat:message_status_update : ", savedMessage.serverId);
       io.to(socket.id).emit("chat:message_status_update", {
-        serverId: savedMessage.id,
+        serverId: savedMessage.serverId,
         status: "delivered"
       });
     }
@@ -278,9 +278,10 @@ const messages = [
     image_url
   ]);
 
-  const savedMessage = rows[0];
-  savedMessage.localId = localId; // ⭐ CRITICAL
-
+  const savedMessage    = rows[0];
+  savedMessage.localId  = localId; // ⭐ CRITICAL
+  savedMessage.serverId =  rows[0].id;
+    
   socket.emit("chat:new_message", savedMessage);
   io.to(String(toUserId)).emit("chat:new_message", savedMessage);
  
@@ -295,7 +296,7 @@ const messages = [
     if (isUserOnline(toUserId)) {
       console.log("delivered immediately → notify sender : chat:message_status_update : ", savedMessage.id);
       io.to(socket.id).emit("chat:message_status_update", {
-        serverId: savedMessage.id,
+        serverId: savedMessage.serverId,
         status: "delivered"
       });
     }
