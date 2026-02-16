@@ -80,6 +80,9 @@ io.on("connection", async (socket) => {
   const myUserId = socket.user.userId;
   const userId   = String(socket.user.userId);
   
+  //send users list
+  getUsersList();
+  
   onlineUsers.set(String(userId), socket.id);
   console.log("User online:", userId);
 
@@ -375,13 +378,13 @@ function isUserOnline(userId) {
 
 
 ///////////////////////////
-(async () => {
+async function getUsersList() => {
   
   const users = [
-      { id: 266, nickname: "Alice" },
+      { id: 268, nickname: "Alice" },
       { id: 301, nickname: "Bob" },
       { id: 302, nickname: "Charly" },
-      { id: 267, nickname: "Fanny" },
+      { id: 269, nickname: "Fanny" },
       { id: 309, nickname: "Jilian" },
       { id: 310, nickname: "Karine" },
     ];
@@ -402,8 +405,8 @@ function isUserOnline(userId) {
     console.error("Failed to load friends:", err);
     socket.emit("chat:users:list", []); // fail-safe
   }
-})();
-////////////////////////
+}
+/////////////////////////////////////////////////////////////////////////////////
   
 });//end io.on("connection", async (socket) =>
 
