@@ -378,7 +378,7 @@ function isUserOnline(userId) {
 
 
 ///////////////////////////
-async function getUsersList() => {
+async function getUsersList() {
   
   const users = [
       { id: 268, nickname: "Alice" },
