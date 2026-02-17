@@ -374,7 +374,7 @@ async function getUsersWithUnread (toUserId){
     console.log("chat:get_users_with_unread : rows : ", rows);
     
     //socket.emit("chat:users_with_unread", rows);
-    io.to(String(toUserId).emit("chat:users_with_unread", rows));
+    io.to(toUserId).emit("chat:users_with_unread", rows);
 
   } catch (err) {
     console.error("❌ get_users_with_unread error", err);
