@@ -264,7 +264,7 @@ const messages = [
     }
 
     //Recalculate unread for receiver
-    await emitUsersWithUnread(toUserId);
+    await getUsersWithUnread();
     
   } catch (err) {
     console.error("❌ send_message error", err);
