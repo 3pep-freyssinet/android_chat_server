@@ -84,7 +84,7 @@ io.on("connection", async (socket) => {
   getUsersList();
 
   //send users list with unread messages
-  getUsersWithUnread ();
+  getUsersWithUnread ( myUserId);
   
   // 🔥 IMPORTANT: Always emit current unread state
   //emitUsersWithUnread(userId, io);
