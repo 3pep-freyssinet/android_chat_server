@@ -134,7 +134,7 @@ for (const msg of rows) {
   });
   
   socket.onAny((event) => {
-    //console.log("any............📡 From", socket.id, "event:", event);
+    console.log("any............📡 From", socket.id, "event:", event);
   });
   
   socket.join(userId);
