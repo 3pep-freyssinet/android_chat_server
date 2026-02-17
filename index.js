@@ -339,6 +339,7 @@ socket.on("chat:mark_seen", async ({ withUserId }) => {
 socket.on("chat:get_users_with_unread", async () => {
   try {
     console.log("chat:get_users_with_unread : start ...");
+    console.log("chat:get_users_with_unread : socketId :  ", socket.id);
     const currentUserId = socket.user.userId;
 
     const query = `
