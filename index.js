@@ -83,8 +83,11 @@ io.on("connection", async (socket) => {
   //send users list
   getUsersList();
 
+  //send users list with unread messages
+  getUsersWithUnread ();
+  
   // 🔥 IMPORTANT: Always emit current unread state
-    //emitUsersWithUnread(userId, io);
+  //emitUsersWithUnread(userId, io);
   
   onlineUsers.set(String(userId), socket.id);
   console.log("User online:", userId);
@@ -336,7 +339,8 @@ socket.on("chat:mark_seen", async ({ withUserId }) => {
   });
 });
 
-socket.on("chat:get_users_with_unread", async () => {
+async function getUsersWithUnread (){
+//socket.on("chat:get_users_with_unread", async () => {
   try {
     console.log("chat:get_users_with_unread : start ...");
     console.log("chat:get_users_with_unread : socketId :  ", socket.id);
@@ -368,8 +372,8 @@ socket.on("chat:get_users_with_unread", async () => {
   } catch (err) {
     console.error("❌ get_users_with_unread error", err);
   }
-});
-
+//});
+}
   
  /////////////////////////////////////////////////////////////////
 async function updateConversations(id) {
