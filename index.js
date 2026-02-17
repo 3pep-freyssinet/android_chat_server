@@ -264,7 +264,7 @@ const messages = [
     }
 
     //Recalculate unread for receiver
-    await getUsersWithUnread();
+    await getUsersWithUnread(toUserId);
     
   } catch (err) {
     console.error("❌ send_message error", err);
@@ -341,12 +341,15 @@ socket.on("chat:mark_seen", async ({ withUserId }) => {
       fromUserId: myUserId
   });
 });
-
-async function getUsersWithUnread (){
+/////////////////////////////////////////////////////////////////////////////////
+async function getUsersWithUnread (toUserId){
 //socket.on("chat:get_users_with_unread", async () => {
   try {
     console.log("chat:get_users_with_unread : start ...");
     console.log("chat:get_users_with_unread : socketId :  ", socket.id);
+    console.log("chat:get_users_with_unread : currentUserId :  ", socket.user.userId);
+    console.log("chat:get_users_with_unread : toUserId :  ", toUserId);
+    
     const currentUserId = socket.user.userId;
 
     const query = `
@@ -370,7 +373,8 @@ async function getUsersWithUnread (){
     
     console.log("chat:get_users_with_unread : rows : ", rows);
     
-    socket.emit("chat:users_with_unread", rows);
+    //socket.emit("chat:users_with_unread", rows);
+    io.to(String(toUserId).emit("chat:users_with_unread", rows);
 
   } catch (err) {
     console.error("❌ get_users_with_unread error", err);
