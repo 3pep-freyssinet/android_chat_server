@@ -82,6 +82,9 @@ io.on("connection", async (socket) => {
   
   //send users list
   getUsersList();
+
+  // 🔥 IMPORTANT: Always emit current unread state
+    //emitUsersWithUnread(userId, io);
   
   onlineUsers.set(String(userId), socket.id);
   console.log("User online:", userId);
@@ -356,7 +359,9 @@ socket.on("chat:get_users_with_unread", async () => {
     `;
 
     const { rows } = await pool.query(query, [currentUserId]);
-
+    
+    console.log("chat:get_users_with_unread : rows : ", rows);
+    
     socket.emit("chat:users_with_unread", rows);
 
   } catch (err) {
