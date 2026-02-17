@@ -262,6 +262,9 @@ const messages = [
         status: "delivered"
       });
     }
+
+    //Recalculate unread for receiver
+    await emitUsersWithUnread(toUserId);
     
   } catch (err) {
     console.error("❌ send_message error", err);
