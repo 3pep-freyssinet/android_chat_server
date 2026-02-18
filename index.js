@@ -341,6 +341,9 @@ socket.on("chat:mark_seen", async ({ withUserId }) => {
       fromUserId: myUserId
   });
 });
+
+  //io.to(socket.id).emit("chat:get_users_with_unread",
+                        
 /////////////////////////////////////////////////////////////////////////////////
 async function getUsersWithUnread (toUserId){
 //socket.on("chat:get_users_with_unread", async () => {
@@ -372,6 +375,7 @@ async function getUsersWithUnread (toUserId){
     const { rows } = await pool.query(query, [currentUserId]);
     
     console.log("chat:get_users_with_unread : rows : ", rows);
+    console.log("chat:get_users_with_unread : emit toUserId: ", toUserId);
     
     //socket.emit("chat:users_with_unread", rows);
     io.to(toUserId).emit("chat:users_with_unread", rows);
