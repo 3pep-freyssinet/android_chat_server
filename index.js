@@ -288,7 +288,7 @@ console.log("chat:get_users_with_unread in send_message : toUserId : ", toUserId
     `;
 
     //const { rows_ } = await pool.query(query_, [currentUserId]);
-    const { rows_ } = await pool.query(query_, [toUserId]);
+    const { rows: rows_ } = await pool.query(query_, [toUserId]);
     
     console.log("chat:get_users_with_unread in send_message : rows : ", rows_);
     
