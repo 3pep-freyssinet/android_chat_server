@@ -264,7 +264,34 @@ const messages = [
     }
 
     //Recalculate unread for receiver
-    await getUsersWithUnread(toUserId);
+    //await getUsersWithUnread(toUserId);
+    ///////////////////////////////////////
+const currentUserId = socket.user.userId;
+
+    const query = `
+      SELECT u.id,
+             u.nickname,
+             u.status,
+             u.connected_at,
+             u.last_seen_at,
+             COALESCE(COUNT(c.id), 0) AS unread_count
+      FROM chat.users u
+      LEFT JOIN chat.conversations c
+             ON c.id_from = u.id
+             AND c.id_to = $1
+             AND c.status != 'seen'
+      WHERE u.id != $1
+      GROUP BY u.id
+      ORDER BY u.nickname
+    `;
+
+    const { rows } = await pool.query(query, [currentUserId]);
+    
+    console.log("chat:get_users_with_unread : rows : ", rows);
+    
+    //socket.emit("chat:users_with_unread", rows);
+    io.to(toUserId).emit("chat:users_with_unread", rows);
+    //////////////////////////////////////////////////////////////////////////
     
   } catch (err) {
     console.error("❌ send_message error", err);
