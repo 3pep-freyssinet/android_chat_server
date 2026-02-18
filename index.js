@@ -267,7 +267,8 @@ const messages = [
     //await getUsersWithUnread(toUserId);
     ///////////////////////////////////////
 const currentUserId = socket.user.userId;
-
+console.log("chat:get_users_with_unread in send_message : currentUserId : ", currentUserId);
+    
     const query_ = `
       SELECT u.id,
              u.nickname,
