@@ -382,7 +382,7 @@ async function getUsersWithUnread (socket, userId) {
     console.log("chat:get_users_with_unread : start ...");
     console.log("chat:get_users_with_unread : socketId :  ", socket.id);
     console.log("chat:get_users_with_unread : currentUserId :  ", socket.user.userId);
-    console.log("chat:get_users_with_unread : toUserId :  ", toUserId);
+    //console.log("chat:get_users_with_unread : toUserId :  ", toUserId);
     
     const currentUserId = socket.user.userId;
 
