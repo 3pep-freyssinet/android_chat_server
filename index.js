@@ -293,7 +293,8 @@ console.log("chat:get_users_with_unread in send_message : toUserId : ", toUserId
     console.log("chat:get_users_with_unread in send_message : rows : ", rows_);
     
     //socket.emit("chat:users_with_unread", rows);
-    io.to(toUserId).emit("chat:users_with_unread", rows_);
+    //io.to(toUserId).emit("chat:users_with_unread", rows_);
+    io.to(String(toUserId)).emit("chat:users_with_unread", rows_);
     //////////////////////////////////////////////////////////////////////////
     
   } catch (err) {
