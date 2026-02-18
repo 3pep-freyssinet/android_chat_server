@@ -268,7 +268,8 @@ const messages = [
     ///////////////////////////////////////
 const currentUserId = socket.user.userId;
 console.log("chat:get_users_with_unread in send_message : currentUserId : ", currentUserId);
-    
+console.log("chat:get_users_with_unread in send_message : toUserId : ", toUserId);
+
     const query_ = `
       SELECT u.id,
              u.nickname,
@@ -286,7 +287,8 @@ console.log("chat:get_users_with_unread in send_message : currentUserId : ", cur
       ORDER BY u.nickname
     `;
 
-    const { rows_ } = await pool.query(query_, [currentUserId]);
+    //const { rows_ } = await pool.query(query_, [currentUserId]);
+    const { rows_ } = await pool.query(query_, [toUserId]);
     
     console.log("chat:get_users_with_unread in send_message : rows : ", rows_);
     
