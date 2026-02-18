@@ -377,11 +377,12 @@ socket.on("chat:mark_seen", async ({ withUserId }) => {
                         
 /////////////////////////////////////////////////////////////////////////////////
 async function getUsersWithUnread (socket, userId) {
+  
 //socket.on("chat:get_users_with_unread", async () => {
   try {
     console.log("chat:get_users_with_unread : start ...");
-    console.log("chat:get_users_with_unread : socketId :  ", socket.id);
-    console.log("chat:get_users_with_unread : currentUserId :  ", socket.user.userId);
+    //console.log("chat:get_users_with_unread : socketId :  ", socket.id);
+    console.log("chat:get_users_with_unread : userId :  ", userId);
     //console.log("chat:get_users_with_unread : toUserId :  ", toUserId);
     
     const currentUserId = socket.user.userId;
