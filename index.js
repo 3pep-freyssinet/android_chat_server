@@ -285,12 +285,12 @@ const currentUserId = socket.user.userId;
       ORDER BY u.nickname
     `;
 
-    const { rows } = await pool.query(query_, [currentUserId]);
+    const { rows_ } = await pool.query(query_, [currentUserId]);
     
-    console.log("chat:get_users_with_unread : rows : ", rows);
+    console.log("chat:get_users_with_unread in send_message : rows : ", rows_);
     
     //socket.emit("chat:users_with_unread", rows);
-    io.to(toUserId).emit("chat:users_with_unread", rows);
+    io.to(toUserId).emit("chat:users_with_unread", rows_);
     //////////////////////////////////////////////////////////////////////////
     
   } catch (err) {
