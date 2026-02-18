@@ -84,7 +84,7 @@ io.on("connection", async (socket) => {
   getUsersList();
 
   //send users list with unread messages
-  getUsersWithUnread ( myUserId);
+  getUsersWithUnread(socket, myUserId);
   
   // 🔥 IMPORTANT: Always emit current unread state
   //emitUsersWithUnread(userId, io);
@@ -376,7 +376,7 @@ socket.on("chat:mark_seen", async ({ withUserId }) => {
   //io.to(socket.id).emit("chat:get_users_with_unread",
                         
 /////////////////////////////////////////////////////////////////////////////////
-async function getUsersWithUnread (toUserId){
+async function getUsersWithUnread (socket, userId) {
 //socket.on("chat:get_users_with_unread", async () => {
   try {
     console.log("chat:get_users_with_unread : start ...");
@@ -403,13 +403,15 @@ async function getUsersWithUnread (toUserId){
       ORDER BY u.nickname
     `;
 
-    const { rows } = await pool.query(query, [currentUserId]);
+    const { rows } = await pool.query(query, [userId]);
+
+    io.to(String(userId)).emit("chat:users_with_unread", rows);
     
-    console.log("chat:get_users_with_unread : rows : ", rows);
-    console.log("chat:get_users_with_unread : emit toUserId: ", toUserId);
+    //console.log("chat:get_users_with_unread : rows : ", rows);
+    //console.log("chat:get_users_with_unread : emit toUserId: ", toUserId);
     
     //socket.emit("chat:users_with_unread", rows);
-    io.to(String(toUserId)).emit("chat:users_with_unread", rows);
+    //io.to(String(toUserId)).emit("chat:users_with_unread", rows);
 
   } catch (err) {
     console.error("❌ get_users_with_unread error", err);
