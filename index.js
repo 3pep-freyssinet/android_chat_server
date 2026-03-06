@@ -81,7 +81,7 @@ io.on("connection", async (socket) => {
   const userId   = String(socket.user.userId);
   
   //send users list
-  getUsersList();
+  //getUsersList();
 
   socket.join(String(myUserId))
   //send users list with unread messages
