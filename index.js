@@ -358,6 +358,7 @@ socket.on("chat:mark_seen", ({ withUserId }) => {
 });
 */
 
+/*
 socket.on("chat:mark_seen", async ({ withUserId }) => {
 
   const myUserId = socket.user.userId;
@@ -376,7 +377,18 @@ socket.on("chat:mark_seen", async ({ withUserId }) => {
       fromUserId: myUserId
   });
 });
+*/
 
+socket.on("chat:mark_seen", async ({ fromUserId }) => {
+  await pool.query(`
+    UPDATE chat.conversations
+    SET status = 'seen'
+    WHERE id_from = $1
+      AND id_to = $2
+      AND status != 'seen'
+  `, [fromUserId, socket.user.userId]);
+});
+  
   //io.to(socket.id).emit("chat:get_users_with_unread",
                         
 /////////////////////////////////////////////////////////////////////////////////
