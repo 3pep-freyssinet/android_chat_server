@@ -380,6 +380,8 @@ socket.on("chat:mark_seen", async ({ withUserId }) => {
 */
 
 socket.on("chat:mark_seen", async ({ fromUserId }) => {
+    console.log("chat:mark_seen start ...fromUserId : ", fromUserId);
+
   await pool.query(`
     UPDATE chat.conversations
     SET status = 'seen'
