@@ -250,6 +250,9 @@ const messages = [
     console.log("chat:emit message : ", savedMessage);
     
     // send to receiver ONLY if online
+    console.log("chat:emit message : toUserId : ", toUserId, " isUserOnline : ",  isUserOnline(toUserId));
+    console.log("chat:emit message : onlineUsers.get(String(toUserId)) : ", onlineUsers.get(String(toUserId)));
+    
     if (isUserOnline(toUserId)) {
       console.log("chat:emit message to receiver : ", savedMessage);
       io.to(onlineUsers.get(String(toUserId))) .emit("chat:new_message", savedMessage);
