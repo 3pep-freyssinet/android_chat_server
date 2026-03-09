@@ -392,6 +392,12 @@ socket.on("chat:mark_seen", async ({ fromUserId }) => {
       AND id_to = $2
       AND status != 'seen'
   `, [fromUserId, socket.user.userId]);
+
+  // 🔥 notify sender that messages were seen
+  io.to(String(fromUserId)).emit("chat:message_status_update", {
+      fromUserId: socket.user.userId,
+      status: "seen"
+  });
 });
   
   //io.to(socket.id).emit("chat:get_users_with_unread",
