@@ -238,7 +238,7 @@ const messages = [
     ]);
     
     const savedMessage = rows[0];
-    console.log("chat:send_message : savedMessage", savedMessage);
+    //console.log("chat:send_message : savedMessage", savedMessage);
 
     // 🔥 Attach localId so sender can match optimistic message
     savedMessage.localId   = localId;
@@ -297,7 +297,7 @@ console.log("chat:get_users_with_unread in send_message : toUserId : ", toUserId
     //const { rows_ } = await pool.query(query_, [currentUserId]);
     const { rows: rows_ } = await pool.query(query_, [toUserId]);
     
-    console.log("chat:get_users_with_unread in send_message : rows : ", rows_);
+    //console.log("chat:get_users_with_unread in send_message : rows : ", rows_);
     
     //socket.emit("chat:users_with_unread", rows);
     //io.to(toUserId).emit("chat:users_with_unread", rows_);
