@@ -93,6 +93,14 @@ io.on("connection", async (socket) => {
   onlineUsers.set(String(userId), socket.id);
   console.log("User online:", userId);
 
+  setUserOnline(userId);
+
+  io.emit("user_status", {
+    userId,
+    status: "online"
+  });
+
+  
   //console.log("Total clients:", pool.totalCount);
   //console.log("Idle clients:", pool.idleCount);
   //console.log("Waiting clients:", pool.waitingCount);
