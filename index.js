@@ -383,21 +383,24 @@ socket.on("chat:mark_seen", async ({ withUserId }) => {
 */
 
 socket.on("chat:mark_seen", async ({ fromUserId }) => {
-    console.log("chat:mark_seen start ...fromUserId : ", fromUserId);
-
-  await pool.query(`
-    UPDATE chat.conversations
-    SET status = 'seen'
-    WHERE id_from = $1
+  console.log("chat:mark_seen start ...fromUserId : ", fromUserId);
+  const { rows } = await pool.query(`
+      UPDATE chat.conversations
+      SET status = 'seen'
+      WHERE id_from = $1
       AND id_to = $2
       AND status != 'seen'
+      RETURNING id
   `, [fromUserId, socket.user.userId]);
 
-  // 🔥 notify sender that messages were seen
-  io.to(String(fromUserId)).emit("chat:message_status_update", {
-      fromUserId: socket.user.userId,
-      status: "seen"
+  // notify sender (Fanny)
+  rows.forEach(r => {
+      io.to(String(fromUserId)).emit("chat:message_status_update", {
+          serverId: r.id,
+          status: "seen"
+      });
   });
+
 });
   
   //io.to(socket.id).emit("chat:get_users_with_unread",
