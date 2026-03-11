@@ -99,7 +99,6 @@ io.on("connection", async (socket) => {
     userId,
     status: "online"
   });
-
   
   //console.log("Total clients:", pool.totalCount);
   //console.log("Idle clients:", pool.idleCount);
