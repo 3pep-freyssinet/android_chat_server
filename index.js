@@ -140,9 +140,9 @@ for (const msg of rows) {
 }//end for
   
   socket.on("disconnect", async () => {
-    const userId = socket.userId;
+    const userId = socket.user.userId;
 
-     console.log("user offline : userId : ",userId);
+     console.log("user disconnect : userId : ", userId);
     
     if (!userId) return;
     onlineUsers.delete(userId);
