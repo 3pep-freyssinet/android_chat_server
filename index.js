@@ -453,6 +453,8 @@ async function getUsersWithUnread(socket, userId) {
       status: onlineUsers.has(u.id) ? 1 : 0
     }));
 
+    //console.log("chat:get_users_with_unread : users : ", users);
+    
     io.to(String(userId)).emit("chat:users_with_unread", users);
 
   } catch (err) {
