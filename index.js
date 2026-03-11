@@ -532,7 +532,7 @@ async function getUsersList() {
 }
 /////////////////////////////////////////////////////////////////////////////////
 async function setUserOnline(userId) {
-  await db.query(
+  await pool.query(
     `UPDATE users 
      SET is_online = true 
      WHERE id = $1`,
@@ -541,7 +541,7 @@ async function setUserOnline(userId) {
 }
 
 async function setUserOffline(userId) {
-  await db.query(
+  await pool.query(
     `UPDATE users 
      SET is_online = false,
          last_seen = NOW()
