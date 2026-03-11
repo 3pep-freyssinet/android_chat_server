@@ -99,6 +99,9 @@ io.on("connection", async (socket) => {
     userId,
     status: "online"
   });
+
+  // send snapshot to the new user
+  socket.emit("online_users", Array.from(onlineUsers.keys()));
   
   //console.log("Total clients:", pool.totalCount);
   //console.log("Idle clients:", pool.idleCount);
