@@ -90,9 +90,12 @@ io.on("connection", async (socket) => {
   // 🔥 IMPORTANT: Always emit current unread state
   //emitUsersWithUnread(userId, io);
   
+  // store presence
   onlineUsers.set(String(userId), socket.id);
   console.log("User online:", userId);
-
+  console.log("User online:", userId);
+   console.log("onlineUsers : ", onlineUsers);
+  
   setUserOnline(userId);//async function
 
   io.emit("user_status", {
