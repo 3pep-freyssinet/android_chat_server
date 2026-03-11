@@ -140,7 +140,7 @@ for (const msg of rows) {
 }//end for
   
   socket.on("disconnect", async () => {
-    const userId = getUserBySocket(socket.id);
+    const userId = socket.userId;
 
      console.log("user offline : userId : ",userId);
     
