@@ -93,7 +93,7 @@ io.on("connection", async (socket) => {
   onlineUsers.set(String(userId), socket.id);
   console.log("User online:", userId);
 
-  setUserOnline(userId);
+  setUserOnline(userId);//async function
 
   io.emit("user_status", {
     userId,
@@ -501,8 +501,6 @@ async function updateConversations(id) {
 function isUserOnline(userId) {
   return onlineUsers.has(String(userId));
 }
-
-
 ///////////////////////////
 async function getUsersList() {
   
@@ -533,7 +531,25 @@ async function getUsersList() {
   }
 }
 /////////////////////////////////////////////////////////////////////////////////
-  
+async function setUserOnline(userId) {
+  await db.query(
+    `UPDATE users 
+     SET is_online = true 
+     WHERE id = $1`,
+    [userId]
+  );
+}
+
+async function setUserOffline(userId) {
+  await db.query(
+    `UPDATE users 
+     SET is_online = false,
+         last_seen = NOW()
+     WHERE id = $1`,
+    [userId]
+  );
+}
+/////////////////////////////////////////////////////////////////////////////////  
 });//end io.on("connection", async (socket) =>
 
 // Start server
