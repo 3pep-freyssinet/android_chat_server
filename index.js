@@ -139,10 +139,19 @@ for (const msg of rows) {
   }
 }//end for
   
-  socket.on("disconnect", () => {
-    onlineUsers.delete(String(userId));
-    console.log("User offline:", userId);
-  });
+  socket.on("disconnect", async () => {
+    const userId = getUserBySocket(socket.id);
+
+     console.log("user offline : userId : ",userId);
+    
+    if (!userId) return;
+    onlineUsers.delete(userId);
+    await setUserOffline(userId);
+    io.emit("user_status", {
+      userId,
+      status: "offline"
+    });
+});
   
   socket.onAny((event) => {
     console.log("any............📡 From", socket.id, "event:", event);
