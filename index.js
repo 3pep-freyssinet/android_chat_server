@@ -153,7 +153,13 @@ for (const msg of rows) {
      console.log("user disconnect : userId : ", userId);
     
     if (!userId) return;
+
+    console.log("delete attempt:", userId, typeof userId);
+    console.log("keys before:", Array.from(onlineUsers.keys()));
     onlineUsers.delete(userId);
+    console.log("keys after:", Array.from(onlineUsers.keys()));
+    
+    //onlineUsers.delete(userId);
     await setUserOffline(userId);
     io.emit("user_status", {
       userId,
