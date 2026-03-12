@@ -76,6 +76,7 @@ io.use((socket, next) => {
 
 // On client connect
 const onlineUsers = new Map();
+
 io.on("connection", async (socket) => {
   const myUserId = socket.user.userId;
   const userId   = String(socket.user.userId);
@@ -93,8 +94,9 @@ io.on("connection", async (socket) => {
   // store presence
   onlineUsers.set(String(userId), socket.id);
   console.log("User online:", userId);
-  console.log("User online:", userId);
-   console.log("onlineUsers : ", onlineUsers);
+  
+  //console.log("onlineUsers : ", onlineUsers);
+  console.log("online users:", Array.from(onlineUsers.keys()));
   
   setUserOnline(userId);//async function
 
