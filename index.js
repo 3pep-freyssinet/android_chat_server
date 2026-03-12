@@ -170,6 +170,26 @@ for (const msg of rows) {
       status: "offline"
     });
 });
+
+  socket.on("user_status_change", async (status) => {
+    const userId = Number(socket.user.userId);
+    console.log("user_status_change:", userId, status);
+    if (status === "standby") {
+      await setUserStandby(userId);
+      io.emit("user_status", {
+        userId,
+        status: "standby"
+      });
+    }
+
+    if (status === "online") {
+      await setUserOnline(userId);
+      io.emit("user_status", {
+        userId,
+        status: "online"
+      });
+  }
+});
   
   socket.onAny((event) => {
     console.log("any............📡 From", socket.id, "event:", event);
