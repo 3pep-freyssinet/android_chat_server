@@ -92,12 +92,16 @@ io.on("connection", async (socket) => {
   //emitUsersWithUnread(userId, io);
   
   // store presence
-  onlineUsers.set(String(userId), socket.id);
-  console.log("User online:", userId);
+  const userId_ = Number(socket.user.userId);
+
+  onlineUsers.set(userId_, socket.id);
+  //onlineUsers.set(String(userId), socket.id);
+  console.log("User online:", userId_);
   
   //console.log("onlineUsers : ", onlineUsers);
   console.log("online users:", Array.from(onlineUsers.keys()));
-  
+
+  //set 'online' on db.
   setUserOnline(userId);//async function
 
   io.emit("user_status", {
@@ -153,13 +157,9 @@ for (const msg of rows) {
      console.log("user disconnect : userId : ", userId);
     
     if (!userId) return;
-
-    console.log("delete attempt:", userId, typeof userId);
-    console.log("keys before:", Array.from(onlineUsers.keys()));
-    onlineUsers.delete(userId);
-    console.log("keys after:", Array.from(onlineUsers.keys()));
+    const userId_ = Number(socket.user.userId);
+    onlineUsers.delete(userId_);
     
-    //onlineUsers.delete(userId);
     await setUserOffline(userId);
     io.emit("user_status", {
       userId,
