@@ -158,7 +158,13 @@ for (const msg of rows) {
     
     if (!userId) return;
     const userId_ = Number(socket.user.userId);
+    
+    console.log("delete attempt:", userId_, typeof userId_, ' expected a number');
+    console.log("keys before:", Array.from(onlineUsers.keys()));
+    
     onlineUsers.delete(userId_);
+    
+    console.log("keys after:", Array.from(onlineUsers.keys()));
     
     await setUserOffline(userId);
     io.emit("user_status", {
