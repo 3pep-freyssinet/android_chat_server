@@ -85,12 +85,7 @@ io.on("connection", async (socket) => {
   //getUsersList();
 
   socket.join(String(myUserId))
-  //send users list with unread messages
-  getUsersWithUnread(socket, myUserId);
-  
-  // 🔥 IMPORTANT: Always emit current unread state
-  //emitUsersWithUnread(userId, io);
-  
+
   // store presence
   const userId_ = Number(socket.user.userId);
 
@@ -100,7 +95,7 @@ io.on("connection", async (socket) => {
   
   //console.log("onlineUsers : ", onlineUsers);
   console.log("online users:", Array.from(onlineUsers.keys()));
-
+  
   //set 'online' on db.
   setUserOnline(userId);//async function
 
@@ -111,6 +106,9 @@ io.on("connection", async (socket) => {
 
   // send snapshot to the new user
   socket.emit("online_users", Array.from(onlineUsers.keys()));
+  
+  //send users list with unread messages
+  getUsersWithUnread(socket, myUserId);
   
   //console.log("Total clients:", pool.totalCount);
   //console.log("Idle clients:", pool.idleCount);
