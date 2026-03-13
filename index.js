@@ -590,6 +590,23 @@ async function setUserOffline(userId) {
     [userId]
   );
 }
+  
+async function setUserStandby(userId) {
+  try {
+    const query = `
+      UPDATE chat.users
+      SET status = 2,
+          last_seen_at = NOW()
+      WHERE id = $1
+    `;
+
+    await pool.query(query, [userId]);
+    console.log("User standby:", userId);
+  } catch (err) {
+    console.error("❌ setUserStandby error", err);
+  }
+}
+  
 /////////////////////////////////////////////////////////////////////////////////  
 });//end io.on("connection", async (socket) =>
 
