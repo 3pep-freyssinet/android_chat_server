@@ -574,19 +574,20 @@ async function getUsersList() {
 /////////////////////////////////////////////////////////////////////////////////
 async function setUserOnline(userId) {
   await pool.query(
-    `UPDATE users 
-     SET is_online = true 
-     WHERE id = $1`,
+    `UPDATE chat.users
+    SET status = 1,
+        connected_at = NOW()
+    WHERE id = $1`,
     [userId]
   );
 }
 
 async function setUserOffline(userId) {
   await pool.query(
-    `UPDATE users 
-     SET is_online = false,
-         last_seen = NOW()
-     WHERE id = $1`,
+    `UPDATE chat.users
+    SET status = 0,
+        last_seen_at = NOW()
+    WHERE id = $1`,
     [userId]
   );
 }
