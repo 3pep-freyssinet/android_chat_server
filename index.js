@@ -77,6 +77,25 @@ io.use((socket, next) => {
 // On client connect
 const onlineUsers = new Map();
 
+//watchdog timer
+setInterval(async () => {
+  const result = await pool.query(`
+      UPDATE chat.users
+      SET status = 0
+      WHERE status != 0
+      AND last_heartbeat_at < NOW() - INTERVAL '60 seconds'
+      RETURNING id
+  `);
+
+  result.rows.forEach(row => {
+      io.emit("user_status", {
+          userId: row.id,
+          status: "offline"
+      });
+      console.log("forced offline:", row.id);
+  });
+}, 30000);
+
 io.on("connection", async (socket) => {
   const myUserId = socket.user.userId;
   const userId   = String(socket.user.userId);
