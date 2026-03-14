@@ -191,6 +191,20 @@ for (const msg of rows) {
   }
 });
   
+  socket.on("presence_ping", async () => {
+    const userId = Number(socket.user.userId);
+    console.log("presence_ping : userId : ", userId);
+    await pool.query(
+      `
+        UPDATE chat.users
+        SET last_heartbeat_at = NOW(),
+          status = 1
+        WHERE id = $1
+      `,
+    [userId]
+  );
+});
+  
   socket.onAny((event) => {
     console.log("any............📡 From", socket.id, "event:", event);
   });
