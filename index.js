@@ -579,10 +579,10 @@ function isUserOnline(userId) {
 async function getUsersList() {
   
   const users = [
-      { id: 321, nickname: "Alice" },
+      { id: 323, nickname: "Alice" },
       { id: 901, nickname: "Bob" },
       { id: 902, nickname: "Charly" },
-      { id: 322, nickname: "Fanny" },
+      { id: 324, nickname: "Fanny" },
       { id: 909, nickname: "Jilian" },
       { id: 910, nickname: "Karine" },
     ];
