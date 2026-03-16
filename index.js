@@ -32,6 +32,8 @@ const pool = new Pool({
   idleTimeoutMillis: 1000, 
 });
 
+console.log("test");
+
 //test
 app.get("/health", (req, res) => {
   res.status(200).send("OK");
