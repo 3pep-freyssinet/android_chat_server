@@ -104,7 +104,7 @@ io.on("connection", async (socket) => {
   const myUserId = socket.user.userId;
   const userId   = String(socket.user.userId);
   
-  //send users list
+  //send users list, done in unread messages.
   //getUsersList();
 
   socket.join(String(myUserId))
