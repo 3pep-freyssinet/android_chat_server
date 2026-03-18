@@ -79,6 +79,7 @@ io.use((socket, next) => {
 // On client connect
 const onlineUsers = new Map();
 
+/*
 //watchdog timer
 setInterval(async () => {
   const result = await pool.query(`
@@ -97,7 +98,8 @@ setInterval(async () => {
       console.log("forced offline:", row.id);
   });
 }, 30000);
-
+*/
+  
 io.on("connection", async (socket) => {
   const myUserId = socket.user.userId;
   const userId   = String(socket.user.userId);
