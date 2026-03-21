@@ -493,6 +493,12 @@ socket.on("chat:mark_seen", async ({ fromUserId }) => {
   });
 
 });
+
+socket.on("typing:start", ({ to }) => {
+    const from = socket.user.userId;
+    console.log("✏️ typing:start", from, "→", to);
+    io.to(String(to)).emit("typing:start", { from });
+});
   
   //io.to(socket.id).emit("chat:get_users_with_unread",
                         
