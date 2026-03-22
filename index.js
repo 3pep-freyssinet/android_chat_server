@@ -309,11 +309,13 @@ const messages = [
   console.log("chat:send_message :  toUserId : ", toUserId);
   console.log("chat:send_message :  message : ", message);  
 
+  /*
   // ⭐ FORCE stop typing
   socket.to(msg.to).emit("typing:stop", {
     from: socket.user.userId,
     to: toUserId
   });
+  */
     
   try {
     const fromUserId = socket.user.userId;
