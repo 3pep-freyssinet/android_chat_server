@@ -505,6 +505,14 @@ socket.on("typing:start", ({ to }) => {
     console.log("✏️ typing:start", from, "→", to);
     io.to(String(to)).emit("typing:start", { from });
 });
+
+ socket.on("typing:stop", ({ to }) => {
+    const from = socket.user.userId;
+
+    console.log("🛑 typing:stop", from, "→", to);
+
+    io.to(String(to)).emit("typing:stop", { from });
+}); 
   
   //io.to(socket.id).emit("chat:get_users_with_unread",
                         
