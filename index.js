@@ -311,6 +311,8 @@ const messages = [
 
   // ⭐ FORCE stop typing
   const from = socket.user.userId;
+  const to   = String(toUserId);
+  
   io.to(String(message.to)).emit("typing:stop", { from });
     
   try {
@@ -355,7 +357,7 @@ const messages = [
     }
     */
     
-    io.to(String(toUserId)).emit("chat:new_message", savedMessage);
+    io.to(String(to)).emit("chat:new_message", savedMessage);
     
     // If delivered immediately → notify sender if the receiver is online.
     if (isUserOnline(toUserId)) {
