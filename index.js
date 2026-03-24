@@ -532,7 +532,8 @@ socket.on("chat:get_conversation", async ({ withUserId }) => {
       [myId, withUserId, withUserId, myId]
     );
 
-    socket.emit("chat:conversation", messages);
+    console.log("chat:get_conversation : messages.rows : ", messages.rows);
+    socket.emit("chat:conversation", messages.rows);
 
   } catch (err) {
     console.error("❌ get_conversation error:", err);
