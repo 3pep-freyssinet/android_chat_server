@@ -525,8 +525,8 @@ socket.on("chat:get_conversation", async ({ withUserId }) => {
       `
       SELECT *
       FROM chat.conversations
-      WHERE (id_from = ? AND id_to = ?)
-         OR (id_from = ? AND id_to = ?)
+      WHERE (id_from = $1 AND id_to = $2)
+         OR (id_from = $3 AND id_to = $4)
       ORDER BY sent_at ASC
       `,
       [myId, withUserId, withUserId, myId]
