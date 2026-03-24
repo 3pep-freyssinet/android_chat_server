@@ -524,7 +524,7 @@ socket.on("chat:get_conversation", async ({ withUserId }) => {
     const messages = await pool.query(
       `
       SELECT *
-      FROM chat.messages
+      FROM chat.conversations
       WHERE (id_from = ? AND id_to = ?)
          OR (id_from = ? AND id_to = ?)
       ORDER BY sent_at ASC
