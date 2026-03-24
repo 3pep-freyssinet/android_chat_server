@@ -513,6 +513,31 @@ socket.on("typing:start", ({ to }) => {
 
     io.to(String(to)).emit("typing:stop", { from });
 }); 
+
+socket.on("chat:get_conversation", async ({ withUserId }) => {
+  console.log("chat:get_conversation start ");
+  try {
+    const myId = socket.user.userId;
+
+    console.log("📥 get_conversation:", myId, "<->", withUserId);
+
+    const messages = await db.query(
+      `
+      SELECT *
+      FROM messages
+      WHERE (id_from = ? AND id_to = ?)
+         OR (id_from = ? AND id_to = ?)
+      ORDER BY sent_at ASC
+      `,
+      [myId, withUserId, withUserId, myId]
+    );
+
+    socket.emit("chat:conversation", messages);
+
+  } catch (err) {
+    console.error("❌ get_conversation error:", err);
+  }
+});
   
   //io.to(socket.id).emit("chat:get_users_with_unread",
                         
