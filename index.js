@@ -521,7 +521,7 @@ socket.on("chat:get_conversation", async ({ withUserId }) => {
 
     console.log("📥 get_conversation:", myId, "<->", withUserId);
 
-    const messages = await db.query(
+    const messages = await pool.query(
       `
       SELECT *
       FROM messages
