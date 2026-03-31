@@ -604,6 +604,21 @@ async function updateConversations(id) {
 } 
 
 //////////////////////////////////////////////////////////////////
+async function sendNotification(token, title, body) {
+  const message = {
+    token: token,
+    notification: {
+      title: title,
+      body: body
+    },
+    data: {
+      type: "chat_message"
+    }
+  };
+
+  return admin.messaging().send(message);
+}
+/////////////////////////////////////////////////////////////////  
   async function getMessagesWithSentStatus(userIdTo) {
     console.log('getMessagesWithSentStatus(userId) :', userIdTo);
     try {
