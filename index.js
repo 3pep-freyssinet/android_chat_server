@@ -418,10 +418,6 @@ const messages = [
     console.error("Error sending FCM:", err);
   }
 }
-    }
-    
-    
-
     
     // If delivered immediately → notify sender if the receiver is online.
     if (isUserOnline(toUserId)) {
