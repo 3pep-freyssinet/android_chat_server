@@ -32,6 +32,21 @@ const pool = new Pool({
   idleTimeoutMillis: 1000, 
 });
 
+// Import routes
+//const users_routes  		= require('./routes/users');
+//const tokens_routes 		= require('./routes/tokens');
+const fcm_routes    		= require('./routes/fcm');
+//const notifications_routes    	= require('./routes/notifications');
+//const pins_routes    	        = require('./routes/pins');
+//const environ_routes            = require('./routes/environ');
+
+// Use routes
+app.use('/users', users_routes);
+app.use('/tokens', tokens_routes);
+app.use('/fcm', fcm_routes);
+app.use('/notifications', notifications_routes);
+app.use('/pins', pins_routes);
+app.use('/environ', environ_routes);
 console.log("test");
 
 //test
