@@ -1,1 +1,74 @@
+require('dotenv').config();
+const jwt  = require('jsonwebtoken');
+const pool = require('../db'); 
 
+const JWT_SECRET = process.env.JWT_SECRET;
+
+module.exports = async(req, res, next) => {
+ console.log('auth : JWT_SECRET : ', JWT_SECRET);
+ //console.log('All Headers:', req.headers); // Debugging statement
+ 
+const authHeader = req.headers['authorization'];
+
+ console.log('auth : req.headers["authorization"] : ', authHeader);
+ 
+//console.log('auth : req.body : ', req.body);
+  
+ //const authHeader_ = req.headers.authorization;
+ 
+ //console.log('auth : req.headers.authorization : ', authHeader_);
+
+// Case: No auth header (e.g., registration/public routes)
+  if (!authHeader) {
+    console.log('auth: No Authorization header - skipping validation');
+    return next(); // Explicit return to continue middleware chain
+  }
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    console.log('auth : authHeader : false or authHeader.startsWith("Bearer"): false ');
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const token = authHeader.split(' ')[1];
+  if (!token) {
+        return res.status(401).json({ error: 'Token is required' });
+  }
+  //there is a token
+  console.log('auth : jwt token = ', token);
+  console.log('auth : JWT_SECRET = ', JWT_SECRET);
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET); // Use your JWT secret
+    // Check if the token is in the revoked_tokens table
+        const query = 'SELECT * FROM revoked_tokens WHERE token = $1';
+        const result = await pool.query(query, [token]);
+
+        if (result.rows.length > 0) {
+            // Token is revoked
+            return res.status(401).json({ error: 'Token has been revoked' });
+        }
+    //the token is valid
+    req.user = decoded; // Add user info to request object    
+    
+    console.log('auth : decoded : ', decoded, ' id = ', req.user.userId);
+
+    // Check session status
+    const result_ = await pool.query(
+      `SELECT is_session_closed FROM users_notification WHERE id = $1`,
+      [req.user.userId]
+    );
+    if (result_.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    const { session_status } = result_.rows[0];
+    if (session_status) {
+      // the user has closed the session or
+      // he remains too long inactive, the session is closed
+      return res.status(401).json({ error: 'Session inactive. Please log in again.' });
+    }
+    next();
+  } catch (err) {
+     console.log('auth : err : Invalid token : ', err);
+     res.status(403).json({ error: 'Invalid token' });
+  }
+};
