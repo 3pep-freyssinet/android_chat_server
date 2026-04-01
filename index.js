@@ -378,7 +378,7 @@ const messages = [
     
     // send to receiver ONLY if online
     console.log("chat:emit message : toUserId : ", toUserId, " isUserOnline : ",  isUserOnline(toUserId));
-    console.log("chat:emit message : onlineUsers.get(String(toUserId)) : ", onlineUsers.get(String(toUserId)));
+    console.log("chat:emit message : onlineUsers.get(toUserId) : ", onlineUsers.get(toUserId));
 
     /*
     if (isUserOnline(toUserId)) {
