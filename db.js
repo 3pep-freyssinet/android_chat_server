@@ -1,4 +1,4 @@
-const pgsql     = require('pgsql');
+//const pgsql     = require('pgsql');
 const { Pool }  = require('pg');
 const fs        = require("fs");
 
