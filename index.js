@@ -17,8 +17,12 @@ const fs       = require("fs");
 const url      = require('url');
 const utf8     = require('utf8');
 const crypto   = require('crypto');
-const admin    = require('firebase-admin');
-const serviceAccount = require('./firebase-service-account.json');
+
+const admin = require('firebase-admin');
+const serviceAccount = require('./android-chatservice-push-firebase-adminsdk-ubukh-e0999ced7c.json');
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 //Render + Aiven + env
 const pool = new Pool({
