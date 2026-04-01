@@ -16,7 +16,7 @@ const pool   = require('../db'); // Assuming you use a database pool for Postgre
 //const bcrypt = require('bcryptjs');
 const jwt    = require('jsonwebtoken');
 const crypto = require('crypto');
-const axios  = require('axios');
+//const axios  = require('axios');
 const http   = require('http');
 
 const JWT_SECRET 		= process.env.JWT_SECRET;
