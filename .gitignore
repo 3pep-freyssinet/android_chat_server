@@ -1,6 +1,9 @@
-node_modules
-uploads
-.env
+# Ignore all JSON except required ones
 *.json
 !package.json
+!package-lock.json
+!google-services.json
+
+# Explicitly ignore Firebase admin keys
+firebase-adminsdk-*.json
 android-chatservice-push-firebase-adminsdk-*.json
