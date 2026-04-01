@@ -17,6 +17,8 @@ const fs       = require("fs");
 const url      = require('url');
 const utf8     = require('utf8');
 const crypto   = require('crypto');
+const admin    = require('firebase-admin');
+const serviceAccount = require('./firebase-service-account.json');
 
 //Render + Aiven + env
 const pool = new Pool({
