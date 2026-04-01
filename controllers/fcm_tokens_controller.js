@@ -55,35 +55,35 @@ exports.storeFCMToken = async (req, res) => {
 	return res.status(400).json({ error: 'FCM token is required' });
    }	
 
-const userId = req.user.userId; // Assuming user ID comes from middleware after verifying the JWT
+	const userId = req.user.userId; // Assuming user ID comes from middleware after verifying the JWT
 	
-console.log('storeFCMTokens : user_id = ', userId, ' fcm_token = ', fcm_token, '\n');
+	console.log('storeFCMTokens : user_id = ', userId, ' fcm_token = ', fcm_token, '\n');
 	
-  try {
-    /*
-    const result = await pool.query('INSERT into fcm_tokens (user_id, fcm_token) VALUES ($1, $2) RETURNING id', [
-				userId,
-				fcm_token	
-			]);
-    */
-	const query = `
-		INSERT INTO fcm_tokens (user_id, fcm_token, last_updated)
-		VALUES ($1, $2, CURRENT_TIMESTAMP) 
-		ON CONFLICT (user_id)
-		DO UPDATE SET fcm_token = EXCLUDED.fcm_token, last_updated = CURRENT_TIMESTAMP
-                RETURNING id;
-	  `;
+  	try {
+	    /*
+	    const result = await pool.query('INSERT into fcm_tokens (user_id, fcm_token) VALUES ($1, $2) RETURNING id', [
+					userId,
+					fcm_token	
+				]);
+	    */
+		const query = `
+			INSERT INTO fcm_tokens (user_id, fcm_token, last_updated)
+			VALUES ($1, $2, CURRENT_TIMESTAMP) 
+			ON CONFLICT (user_id)
+			DO UPDATE SET fcm_token = EXCLUDED.fcm_token, last_updated = CURRENT_TIMESTAMP
+	                RETURNING id;
+		  `;
 	
 	  
-		// Execute the query with userId and fcmToken as parameters
-		const result = await pool.query(query, [userId, fcm_token]);
+			// Execute the query with userId and fcmToken as parameters
+			const result = await pool.query(query, [userId, fcm_token]);
 		
-		console.log('FCM token stored successfully');
+			console.log('FCM token stored successfully');
 		
-		//return { success: true };
+			//return { success: true };
   
 	  
-    //console.log('storeFCMTokens / : result : ', JSON.stringify(result));
+    	//console.log('storeFCMTokens / : result : ', JSON.stringify(result));
 
     //Whatever 'INSERT' or 'UPDATE' the affected row's id is returned
     if(result.rowCount == 1){
