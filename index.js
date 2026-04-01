@@ -95,8 +95,12 @@ io.use((socket, next) => {
   }
 });
 
-// On client connect
+// users manager
 const onlineUsers = new Map();
+
+function isUserOnline(userId) {
+  return onlineUsers.has(Number(userId));
+}
 
 /*
 //watchdog timer
@@ -118,7 +122,8 @@ setInterval(async () => {
   });
 }, 30000);
 */
-  
+
+// On client connect
 io.on("connection", async (socket) => {
   const myUserId = socket.user.userId;
   const userId   = String(socket.user.userId);
@@ -375,8 +380,48 @@ const messages = [
       io.to(onlineUsers.get(String(toUserId))) .emit("chat:new_message", savedMessage);
     }
     */
+    if (isUserOnline(toUserId)) {
+      // ✅ Send via Socket.io
+      io.to(String(to)).emit("chat:new_message", savedMessage);
+      console.log("Sent via socket");
+    }else{
+      console.log("User offline → sending FCM");
+
+    try {
+      const result = await pool.query(
+        'SELECT fcm_token FROM fcm_tokens WHERE user_id = $1',
+        [toUserId]
+      );
+
+      if (result.rows.length > 0) {
+        const token = result.rows[0].fcm_token;
+
+        await admin.messaging().send({
+          token: token,
+          notification: {
+            title: "New Message",
+            body: message
+        },
+        data: {
+          senderId: String(fromUserId),
+          message: message
+        }
+      });
+
+      console.log("FCM notification sent");
+
+    } else {
+      console.log("No FCM token found for user");
+    }
+
+  } catch (err) {
+    console.error("Error sending FCM:", err);
+  }
+}
+    }
     
-    io.to(String(to)).emit("chat:new_message", savedMessage);
+    
+
     
     // If delivered immediately → notify sender if the receiver is online.
     if (isUserOnline(toUserId)) {
@@ -389,9 +434,9 @@ const messages = [
     //Recalculate unread for receiver
     //await getUsersWithUnread(toUserId);
     ///////////////////////////////////////
-const currentUserId = socket.user.userId;
-console.log("chat:get_users_with_unread in send_message : currentUserId : ", currentUserId);
-console.log("chat:get_users_with_unread in send_message : toUserId : ", toUserId);
+  const currentUserId = socket.user.userId;
+  console.log("chat:get_users_with_unread in send_message : currentUserId : ", currentUserId);
+  console.log("chat:get_users_with_unread in send_message : toUserId : ", toUserId);
 
     const query_ = `
       SELECT u.id,
