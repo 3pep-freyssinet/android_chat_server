@@ -188,7 +188,7 @@ for (const msg of rows) {
   msg.status = "delivered";
 
   // 3️⃣ notify original sender (if online)
-  const senderSocketId = onlineUsers.get(String(msg.id_from));
+  const senderSocketId = onlineUsers.get(msg.id_from);
   console.log("notify original sender : map : ", onlineUsers);
   console.log("notify original sender : msg.id_from : ", msg.id_from);
   console.log("notify original sender : senderSocketId : ", senderSocketId);
