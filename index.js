@@ -19,7 +19,7 @@ const utf8     = require('utf8');
 const crypto   = require('crypto');
 
 const admin = require('firebase-admin');
-const serviceAccount = require('./android-chatservice-push-firebase-adminsdk-ubukh-e0999ced7c.json');
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
