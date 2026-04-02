@@ -416,7 +416,7 @@ const messages = [
           },
           android: {
             notification: {
-              channelId: "chat_channel" // 🔥 must match Android
+              //channelId: "chat_channel" // 🔥 must match Android
             }
           }
         });
