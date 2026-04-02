@@ -407,12 +407,15 @@ const messages = [
 
         //Get the sender name
         const senderName = await getUserName(fromUserId);
+
+        //format the message
+        const preview = formatMessagePreview(savedMessage);
         
         await admin.messaging().send({
           token: fcmToken,
           notification: {
             title: "New message from: " + senderName,
-            body: "You have a new message"
+            body: preview
           },
           android: {
             notification: {
@@ -641,6 +644,16 @@ async function getUserName(userId) {
   }
 }
 //////////////////////////////////////////////////////////////////
+  function formatMessagePreview(message, maxLength = 40) {
+  if (!message) return "";
+
+  if (message.length <= maxLength) {
+    return message;
+  }
+
+  return message.substring(0, maxLength) + "...";
+}
+//////////////////////////////////////////////////////////////////////
 async function getUsersWithUnread(socket, userId) {
   try {
     console.log("chat:get_users_with_unread : start ...");
