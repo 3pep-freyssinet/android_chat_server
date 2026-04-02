@@ -406,6 +406,7 @@ const messages = [
         const fcmToken = result.rows[0].fcm_token;
 
         //Get the sender name
+         console.log("getUserName : " + fromUserId);
         const senderName = await getUserName(fromUserId);
         
         await admin.messaging().send({
