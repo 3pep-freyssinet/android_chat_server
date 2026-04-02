@@ -396,6 +396,7 @@ const messages = [
       console.log("User offline → sending FCM");
 
     try {
+      //get 'fcm_token'
       const result = await pool.query(
         'SELECT fcm_token FROM fcm_tokens WHERE user_id = $1',
         [toUserId]
@@ -405,16 +406,17 @@ const messages = [
         const token = result.rows[0].fcm_token;
 
         await admin.messaging().send({
-          token: token,
+          token: fcmToken,
           notification: {
-            title: "New Message",
-            body: message
-        },
-        data: {
-          senderId: String(fromUserId),
-          message: message
-        }
-      });
+            title: "New message",
+            body: "You have a new message"
+          },
+          android: {
+            notification: {
+              channelId: "chat_channel" // 🔥 must match Android
+            }
+          }
+        });
 
       console.log("FCM notification sent");
 
