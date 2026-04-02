@@ -619,7 +619,7 @@ socket.on("chat:get_conversation", async ({ withUserId }) => {
 async function getUserName(userId) {
   try {
     const result = await pool.query(
-      "SELECT username FROM users WHERE id = $1",
+      "SELECT nickname FROM users WHERE id = $1",
       [userId]
     );
 
