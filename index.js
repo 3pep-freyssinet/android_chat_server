@@ -403,7 +403,7 @@ const messages = [
       );
 
       if (result.rows.length > 0) {
-        const token = result.rows[0].fcm_token;
+        const fcmToken = result.rows[0].fcm_token;
 
         //Get the sender name
         const senderName = await getUserName(fromUserId);
