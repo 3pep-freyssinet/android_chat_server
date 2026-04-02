@@ -405,10 +405,13 @@ const messages = [
       if (result.rows.length > 0) {
         const token = result.rows[0].fcm_token;
 
+        //Get the sender name
+        const senderName = await getUserName(fromUserId);
+        
         await admin.messaging().send({
           token: fcmToken,
           notification: {
-            title: "New message",
+            title: "New message from: " + senderName,
             body: "You have a new message"
           },
           android: {
@@ -613,6 +616,23 @@ socket.on("chat:get_conversation", async ({ withUserId }) => {
   //io.to(socket.id).emit("chat:get_users_with_unread",
                         
 /////////////////////////////////////////////////////////////////////////////////
+async function getUserName(userId) {
+  try {
+    const result = await pool.query(
+      "SELECT username FROM users WHERE id = $1",
+      [userId]
+    );
+
+    if (result.rows.length === 0) {
+      return "Unknown"; // fallback
+    }
+    return result.rows[0].username;
+  } catch (err) {
+    console.error("Error fetching username:", err);
+    return "Unknown";
+  }
+}
+//////////////////////////////////////////////////////////////////
 async function getUsersWithUnread(socket, userId) {
   try {
     console.log("chat:get_users_with_unread : start ...");
