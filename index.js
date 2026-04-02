@@ -406,7 +406,6 @@ const messages = [
         const fcmToken = result.rows[0].fcm_token;
 
         //Get the sender name
-         console.log("getUserName : " + fromUserId);
         const senderName = await getUserName(fromUserId);
         
         await admin.messaging().send({
@@ -636,7 +635,7 @@ async function getUserName(userId) {
     if (result.rows.length === 0) {
       return "Unknown"; // fallback
     }
-    return result.rows[0].username;
+    return result.rows[0].nickname;
   } catch (err) {
     console.error("Error fetching username:", err);
     return "Unknown";
