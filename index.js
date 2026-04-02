@@ -428,7 +428,16 @@ const messages = [
     }
 
   } catch (err) {
-    console.error("Error sending FCM:", err);
+    console.error("Error sending FCM:", error);
+
+    if (error.code === 'messaging/registration-token-not-registered') {
+      console.log("Invalid token → removing from DB");
+
+      await pool.query(
+        "DELETE FROM fcm_tokens WHERE fcm_token = $1",
+        [fcmToken]
+      );
+    }
   }
 }
     
