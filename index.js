@@ -626,12 +626,13 @@ socket.on("chat:get_conversation", async ({ withUserId }) => {
                         
 /////////////////////////////////////////////////////////////////////////////////
 async function getUserName(userId) {
+  console.log("getUserNamen : userId : ", userId);
   try {
     const result = await pool.query(
       "SELECT nickname FROM users WHERE id = $1",
       [userId]
     );
-
+console.log("getUserNamen : result.rows : ", result.rows);
     if (result.rows.length === 0) {
       return "Unknown"; // fallback
     }
