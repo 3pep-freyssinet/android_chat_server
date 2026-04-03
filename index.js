@@ -410,17 +410,14 @@ const messages = [
 
         //format the message
         const preview = formatMessagePreview(savedMessage);
-        
+        const profileImageUrl = null;
         await admin.messaging().send({
           token: fcmToken,
-          notification: {
-            title: "New message from: " + senderName,
-            body: preview
-          },
-          android: {
-            notification: {
-              //channelId: "chat_channel" // 🔥 must match Android
-            }
+          data: {// the client: 'MyFirebaseMessagingService.onMessageReceived' is called to buil notication.
+            senderName: senderName,
+            message: preview,
+            senderId: String(fromUserId),
+            profileImageUrl: profileImageUrl
           }
         });
 
