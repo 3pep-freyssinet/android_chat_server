@@ -410,10 +410,12 @@ const messages = [
 
         //format the message
         const preview = formatMessagePreview(savedMessage);
-        const profileImageUrl = null;
+        
+        const profileImageUrl = 'null';
+        // with 'data', the client: 'MyFirebaseMessagingService.onMessageReceived' is called to buil notication.
         await admin.messaging().send({
           token: fcmToken,
-          data: {// the client: 'MyFirebaseMessagingService.onMessageReceived' is called to buil notication.
+          data: {
             senderName: senderName,
             message: preview,
             senderId: String(fromUserId),
