@@ -648,7 +648,7 @@ async function getUserName(userId) {
   if (!message) return "";
 
   if (message.message.length <= maxLength) {
-    return message;
+    return message.message;
   }
   console.log("formatMessagePreview : message : ", message.message);
   return message.message.substring(0, maxLength) + "...";
