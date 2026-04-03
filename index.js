@@ -644,7 +644,7 @@ async function getUserName(userId) {
   }
 }
 //////////////////////////////////////////////////////////////////
-  function formatMessagePreview(message, maxLength = 32) { //32 + ... = 35
+  function formatMessagePreview(message, maxLength = 37) { //37 + ... = 40
   if (!message) return "";
 
   if (message.message.length <= maxLength) {
