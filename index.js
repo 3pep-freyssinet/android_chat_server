@@ -650,7 +650,7 @@ async function getUserName(userId) {
   if (message.length <= maxLength) {
     return message;
   }
-
+  console.log("formatMessagePreview : message : ", message);
   return message.substring(0, maxLength) + "...";
 }
 //////////////////////////////////////////////////////////////////////
