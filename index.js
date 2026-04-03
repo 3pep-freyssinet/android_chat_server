@@ -647,11 +647,11 @@ async function getUserName(userId) {
   function formatMessagePreview(message, maxLength = 40) {
   if (!message) return "";
 
-  if (message.length <= maxLength) {
+  if (message.message.length <= maxLength) {
     return message;
   }
-  console.log("formatMessagePreview : message : ", message);
-  return message.substring(0, maxLength) + "...";
+  console.log("formatMessagePreview : message : ", message.message);
+  return message.message.substring(0, maxLength) + "...";
 }
 //////////////////////////////////////////////////////////////////////
 async function getUsersWithUnread(socket, userId) {
