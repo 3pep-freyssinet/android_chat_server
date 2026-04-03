@@ -430,7 +430,7 @@ const messages = [
       console.log("No FCM token found for user");
     }
 
-  } catch (err) {
+  } catch (error) {
     console.error("Error sending FCM:", error);
 
     if (error.code === 'messaging/registration-token-not-registered') {
