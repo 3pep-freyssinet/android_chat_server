@@ -419,6 +419,7 @@ const messages = [
             senderName: senderName,
             message: preview,
             senderId: String(fromUserId),
+            messageId: String(savedMessage.id),
             profileImageUrl: profileImageUrl
           }
         });
