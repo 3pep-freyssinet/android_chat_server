@@ -46,7 +46,7 @@
     }
   }
 
-  // 🔴 CASE 3: Reject if no valid identifiers
+  // 🔴 CASE 3: Reject if no valid identifiers 
   console.log('Requires: Authorization header OR androidId/firebaseId');
   return res.status(400).json({ 
     error: "Requires: Authorization header OR androidId/firebaseId" 
