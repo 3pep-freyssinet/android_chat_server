@@ -1,1 +1,56 @@
+  require('dotenv').config();
+  const jwt  = require('jsonwebtoken');
+  const pool = require('../db'); 
 
+  // resolveUserIdMiddleware.js
+  const resolveUserId = async (req, res, next) => {
+  const { androidId, firebaseId } = req.body;
+
+  //console.log('resolveUserIdMiddleware : androidId : ', androidId, ' firebaseId : ', firebaseId);
+  //console.log('resolveUserIdMiddleware : req.user : ', JSON.stringify(req.user));
+  //console.log('resolveUserIdMiddleware : resolvedUserId : ', req.user.userId);
+
+  // 🔴 CASE 1: Authenticated user (JWT)
+  if (req.authType === 'user') {
+   console.log('resolveUserIdMiddleware : CASE 1 ');
+    req.resolvedUserId = req.user.userId; // Attach to req
+    //console.log('resolveUserIdMiddleware : req.user : ', JSON.stringify(req.user));
+    console.log('resolveUserIdMiddleware : CASE 1: resolvedUserId : ', resolvedUserId);
+    return next();
+  }
+
+  // 🔴 CASE 2: Guest (androidId or firebaseId)
+  if (androidId || firebaseId) {
+    console.log('resolveUserIdMiddleware : CASE 2 ');
+    try {
+      const identifier = androidId 
+        ? { column: 'android_id', value: androidId }
+        : { column: 'firebase_id', value: firebaseId };
+
+      const result = await pool.query( `SELECT id FROM users_notification WHERE ${identifier.column} = $1`, [identifier.value]);
+      //console.log('resolveUserIdMiddleware : result : ', JSON.stringify(result));
+      
+      if (result.rows.length === 0) {
+          console.log('resolveUserIdMiddleware : CASE 2 : User not found with');
+          return res.status(404).json({ 
+          error: `User not found with ${identifier.column.replace('_', '')}: ${identifier.value}`
+        });
+      }
+
+      req.resolvedUserId = result.rows[0].id; // Attach to req
+      console.log('resolveUserIdMiddleware : CASE 2 : resolvedUserId : ', req.resolvedUserId);
+      return next();
+    } catch (err) {
+      console.log('resolveUserIdMiddleware : Failed to resolve use');
+      return res.status(500).json({ error: "Failed to resolve user" });
+    }
+  }
+
+  // 🔴 CASE 3: Reject if no valid identifiers
+  console.log('Requires: Authorization header OR androidId/firebaseId');
+  return res.status(400).json({ 
+    error: "Requires: Authorization header OR androidId/firebaseId" 
+  });
+};
+
+module.exports = resolveUserId;
