@@ -8,7 +8,7 @@
 404 Not Found: Used when the requested resource cannot be found.
 	Example: "User not found"	
 500 Internal Server Error: Used when there is a server-side error (e.g., a bug or unhandled exception).
-	Example: "Something went wrong on the server"
+	Example: "Something went wrong on the server" 
 */
 
 require('dotenv').config();
