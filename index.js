@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 5000;
 
-// HTTP server
+// HTTP server 
 const httpServer = createServer(app);
 
 const { Pool } = require('pg');
