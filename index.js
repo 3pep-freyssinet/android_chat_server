@@ -460,20 +460,22 @@ const messages = [
   console.log("chat:get_users_with_unread in send_message : toUserId : ", toUserId);
 
     const query_ = `
-      SELECT u.id,
-             u.nickname,
-             u.status,
-             u.connected_at,
-             u.last_seen_at,
-             COALESCE(COUNT(c.id), 0) AS unread_count
-      FROM chat.users u
-      LEFT JOIN chat.conversations c
-             ON c.id_from = u.id
-             AND c.id_to = $1
-             AND c.status != 'seen'
-      WHERE u.id != $1
-      GROUP BY u.id
-      ORDER BY u.nickname
+      SELECT 
+        u.id,
+        u.nickname,
+        u.status,
+        u.connected_at,
+        u.last_seen_at,
+    COUNT(c.id) AS unread_count
+    FROM public.user_friends f
+    JOIN chat.users u ON u.id = f.friend_id
+    LEFT JOIN chat.conversations c
+       ON c.id_from = u.id
+    AND c.id_to = $1
+    AND c.status != 'seen'
+    WHERE f.user_id = $1
+    GROUP BY u.id
+    ORDER BY u.nickname
     `;
 
     //const { rows_ } = await pool.query(query_, [currentUserId]);
