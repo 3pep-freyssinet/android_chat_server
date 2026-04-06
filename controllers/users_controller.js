@@ -87,7 +87,7 @@ exports.loadUserFriends = async (req, res) => {
     );
 	*/
     const result = await pool.query(
-		SELECT DISTINCT
+	  ` SELECT DISTINCT
     		u.id AS friend_id,
     		u.nickname,
     		u.status
@@ -97,7 +97,7 @@ exports.loadUserFriends = async (req, res) => {
         WHEN uf.user_id = $1 THEN uf.friend_id
         ELSE uf.user_id
     	END
-		WHERE uf.user_id = $1 OR uf.friend_id = $1; `,
+		WHERE uf.user_id = $1 OR uf.friend_id = $1 `,
 		[userId]
      );
 
