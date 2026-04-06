@@ -87,7 +87,7 @@ exports.loadUserFriends = async (req, res) => {
     );
 	*/
     const result = await pool.query(
-		 `SELECT 
+		SELECT DISTINCT
     		u.id AS friend_id,
     		u.nickname,
     		u.status
