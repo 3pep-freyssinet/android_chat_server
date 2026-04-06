@@ -80,10 +80,22 @@ exports.loadUserFriends = async (req, res) => {
   }
 
   try {
-    const result = await pool.query(
+    /*
+	const result = await pool.query(
       `SELECT * FROM user_friends WHERE user_id = $1`,
       [userId]
     );
+	*/
+    const result = await pool.query(
+		 `SELECT 
+    		uf.friend_id,
+    		u.nickname,
+    		u.status
+		FROM user_friends uf
+		JOIN chat.users u ON u.id = uf.friend_id
+		WHERE uf.user_id = $1 `,
+		[userId]
+     );
 
     if (!result.rows.length) {
       console.log('loadUserFriends : user not found');
