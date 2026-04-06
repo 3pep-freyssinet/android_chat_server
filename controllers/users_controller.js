@@ -81,7 +81,7 @@ exports.loadUserFriends = async (req, res) => {
 
   try {
     const result = await pool.query(
-      `SELECT * FROM chat.users WHERE user_id = $1`,
+      `SELECT * FROM user_friends WHERE user_id = $1`,
       [userId]
     );
 
