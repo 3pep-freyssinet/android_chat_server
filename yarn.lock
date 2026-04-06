@@ -2171,6 +2171,11 @@ node-gyp@8.x:
     tar "^6.1.2"
     which "^2.0.2"
 
+nodemailer@^8.0.4:
+  version "8.0.4"
+  resolved "https://registry.npmjs.org/nodemailer/-/nodemailer-8.0.4.tgz"
+  integrity sha512-k+jf6N8PfQJ0Fe8ZhJlgqU5qJU44Lpvp2yvidH3vp1lPnVQMgi4yEEMPXg5eJS1gFIJTVq1NHBk7Ia9ARdSBdQ==
+
 nodemon@^3.1.1:
   version "3.1.1"
   resolved "https://registry.npmjs.org/nodemon/-/nodemon-3.1.1.tgz"
