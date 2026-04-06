@@ -67,6 +67,42 @@ if (decoded && decoded.exp) {
 }
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//get user friends
+exports.loadUserFriends = async (req, res) => {
+  console.log('loadUserFriends : start...');
+
+  const userId = req.user.userId; // ✅ FIXED
+
+  console.log('loadUserFriends : userId : ', userId);
+
+  if (!userId) {
+    return res.status(400).json({ error: "userId is required" });
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT * FROM chat.users WHERE user_id = $1`,
+      [userId]
+    );
+
+    if (!result.rows.length) {
+      console.log('loadUserFriends : user not found');
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    console.log('loadUserFriends : successful : rows:', result.rows.length);
+
+    return res.status(200).json(result.rows); // ✅ FIXED
+
+  } catch (error) {
+    console.error("loadUserFriends failed:", error);
+    return res.status(500).json({
+      code: "SERVER_ERROR",
+      error: "Server error during userFriends attempt report"
+    });
+  }
+};
+
 //send email to admin when there is exception in android client
 exports.sendEmail = async (req, res) => {
    console.log('sendEmail : start...');
