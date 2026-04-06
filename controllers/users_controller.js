@@ -13,7 +13,7 @@
 
 require('dotenv').config();
 const pool       = require('../db'); // Assuming you use a database pool for Postgres or MySQL
-const bcrypt     = require('bcryptjs');
+const bcrypt     = require('bcrypt');
 const jwt        = require('jsonwebtoken');
 const crypto     = require('crypto');
 const axios      = require('axios');
