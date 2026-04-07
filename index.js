@@ -103,6 +103,7 @@ io.use((socket, next) => {
 
 // users manager
 const onlineUsers = new Map();
+const activeChats = new Map(); // userId → friendId
 
 function isUserOnline(userId) {
   return onlineUsers.has(Number(userId));
@@ -491,7 +492,7 @@ const messages = [
   } catch (err) {
     console.error("❌ send_message error", err);
   }
-});
+});//end send_message
 
   //receive an image message
   socket.on("chat:send_image", async ({ toUserId, image_url, message, localId }) => {
@@ -625,6 +626,16 @@ socket.on("chat:get_conversation", async ({ withUserId }) => {
   } catch (err) {
     console.error("❌ get_conversation error:", err);
   }
+});
+
+socket.on("chat:open", (friendId) => {
+    const userId = socket.userId;
+    activeChats.set(userId, friendId);
+});
+
+socket.on("chat:close", () => {
+    const userId = socket.userId;
+    activeChats.delete(userId);
 });
   
   //io.to(socket.id).emit("chat:get_users_with_unread",
