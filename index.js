@@ -783,7 +783,7 @@ async function sendNotification(token, title, body) {
     }
 }
 /////////////////////////////////
-function isUserOnline(userId) {
+function isUserOnline_(userId) {
   return onlineUsers.has(String(userId));
 }
 ///////////////////////////////
