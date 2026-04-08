@@ -392,7 +392,7 @@ const messages = [
       io.to(onlineUsers.get(String(toUserId))) .emit("chat:new_message", savedMessage);
     }
     */
-
+    console.log("Send message : map isUserOnline : ", isUserOnline);
     console.log("Send message : toUserId : ", Number(toUserId), " isUserOnline(toUserId) : ", isUserOnline(Number(toUserId)));
     if (isUserOnline(Number(toUserId))){
       // ✅ Send via Socket.io
