@@ -397,41 +397,46 @@ const messages = [
       console.log("User offline → sending FCM");
 
     try {
-      //get 'fcm_token'
-      const result = await pool.query(
-        'SELECT fcm_token FROM fcm_tokens WHERE user_id = $1',
-        [toUserId]
-      );
+     
+      const isOnline = onlineUsers.has(toUserId);
+      const isInSameChat = activeChats.get(toUserId) === fromUserId;
 
-      if (result.rows.length > 0) {
-        const fcmToken = result.rows[0].fcm_token;
-
-        //Get the sender name
-        const senderName = await getUserName(fromUserId);
-
-        //format the message
-        const preview = formatMessagePreview(savedMessage);
+      if (!isOnline || !isInSameChat) {
+      
+        //get 'fcm_token' of 'toUserId'.
+        const result = await pool.query(
+          'SELECT fcm_token FROM fcm_tokens WHERE user_id = $1',
+          [toUserId]
+        );
+      
+        if (result.rows.length > 0) {
+          //fcm token found
+          const fcmToken = result.rows[0].fcm_token;
+  
+          //Get the sender name
+          const senderName = await getUserName(fromUserId);
+  
+          //format the message
+          const preview = formatMessagePreview(savedMessage);
         
-        const profileImageUrl = 'null';
-        // with 'data', the client: 'MyFirebaseMessagingService.onMessageReceived' is called to buil notication.
-        await admin.messaging().send({
-          token: fcmToken,
-          data: {
-            senderName: senderName,
-            message: preview,
-            senderId: String(fromUserId),
-            messageId: String(savedMessage.id),
-            profileImageUrl: profileImageUrl
-          }
-        });
-
-      console.log("FCM notification sent");
-
-    } else {
+          const profileImageUrl = 'null';
+          // with 'data', the client: 'MyFirebaseMessagingService.onMessageReceived' is called to built notication.
+          await admin.messaging().send({
+            token: fcmToken,
+            data: {
+              senderName: senderName,
+              message: preview,
+              senderId: String(fromUserId),
+              messageId: String(savedMessage.id),
+              profileImageUrl: profileImageUrl
+            }
+          });
+          console.log("FCM notification sent");
+      } else {
       console.log("No FCM token found for user");
-    }
-
-  } catch (error) {
+      }
+  }
+} catch (error) {
     console.error("Error sending FCM:", error);
 
     if (error.code === 'messaging/registration-token-not-registered') {
