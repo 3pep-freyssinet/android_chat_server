@@ -637,11 +637,13 @@ socket.on("chat:get_conversation", async ({ withUserId }) => {
 });
 
 socket.on("chat:open", (friendId) => {
+    console.log("chat:open : Start ...");
     const userId = socket.userId;
     activeChats.set(userId, friendId);
 });
 
 socket.on("chat:close", () => {
+    console.log("chat:close : Start ...");
     const userId = socket.userId;
     activeChats.delete(userId);
 });
