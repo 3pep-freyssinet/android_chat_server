@@ -207,6 +207,9 @@ for (const msg of rows) {
     const userId = socket.user.userId;
 
      console.log("user disconnect : userId : ", userId);
+
+    //remove the user from the map
+    activeChats.delete(userId);
     
     if (!userId) return;
     const userId_ = Number(socket.user.userId);
