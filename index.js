@@ -645,7 +645,7 @@ socket.on("chat:get_conversation", async ({ withUserId }) => {
 socket.on("chat:open", (friendId) => {
     console.log("chat:open : Start ...");
     const userId = socket.user.userId;
-    activeChats.set(userId, friendId);
+    activeChats.set(String(userId), friendId);//friendId is sent by android as a string.
 });
 
 socket.on("chat:close", () => {
