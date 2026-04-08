@@ -401,7 +401,7 @@ const messages = [
 
     try {
      
-      const isOnline = onlineUsers.has(toUserId);
+      const isOnline     = onlineUsers.has(Number(toUserId));
       const isInSameChat = activeChats.get(toUserId) === fromUserId;
       
       console.log("Notification :  onlineUsers map", onlineUsers);
