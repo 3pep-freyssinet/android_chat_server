@@ -403,7 +403,10 @@ const messages = [
      
       const isOnline = onlineUsers.has(toUserId);
       const isInSameChat = activeChats.get(toUserId) === fromUserId;
-
+      
+      console.log("Notification :  ", toUserId, " isOnline : ", isOnline);
+       console.log("Notification :  ", toUserId, "  ", fromUserId, " are in the same chat ", isInSameChat);
+      
       if (!isOnline || !isInSameChat) {
       
         //get 'fcm_token' of 'toUserId'.
