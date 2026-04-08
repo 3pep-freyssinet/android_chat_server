@@ -644,7 +644,7 @@ socket.on("chat:get_conversation", async ({ withUserId }) => {
 
 socket.on("chat:open", (friendId) => {
     console.log("chat:open : Start ...");
-    const userId = socket.userId;
+    const userId = socket.user.userId;
     activeChats.set(userId, friendId);
 });
 
