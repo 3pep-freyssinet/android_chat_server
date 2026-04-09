@@ -86,26 +86,30 @@ exports.loadUserFriends = async (req, res) => {
       [userId]
     );
 	*/
-    const result = await pool.query(
-	  ` SELECT 
-    		u.id AS friend_id,
-    		u.nickname,
-    		u.status
-			FROM user_friends uf
-		JOIN chat.users u 
-    		ON u.id = uf.friend_id
-		WHERE uf.user_id = $1
-		UNION
-		SELECT 
-    		u.id AS friend_id,
-    		u.nickname,
-    		u.status
-		FROM user_friends uf
-		JOIN chat.users u 
-    		ON u.id = uf.user_id
-		WHERE uf.friend_id = $1; `,
-		[userId]
-     );
+	  console.log("loadUserFriends: userId before query :", userId);
+	const result = await pool.query(`
+	(
+    SELECT 
+        u.id AS friend_id,
+        u.nickname,
+        u.status
+    FROM user_friends uf
+    JOIN chat.users u 
+        ON u.id = uf.friend_id
+    WHERE uf.user_id = $1
+	)
+	UNION
+	(
+    SELECT 
+        u.id AS friend_id,
+        u.nickname,
+        u.status
+    FROM user_friends uf
+    JOIN chat.users u 
+        ON u.id = uf.user_id
+    WHERE uf.friend_id = $1
+	)
+`, [userId]);
 
     if (!result.rows.length) {
       console.log('loadUserFriends : user not found');
