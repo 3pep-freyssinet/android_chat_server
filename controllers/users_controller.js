@@ -87,17 +87,23 @@ exports.loadUserFriends = async (req, res) => {
     );
 	*/
     const result = await pool.query(
-	  ` SELECT DISTINCT
+	  ` SELECT 
+    		u.id AS friend_id,
+    		u.nickname,
+    		u.status
+			FROM user_friends uf
+		JOIN chat.users u 
+    		ON u.id = uf.friend_id
+		WHERE uf.user_id = $1
+		UNION
+		SELECT 
     		u.id AS friend_id,
     		u.nickname,
     		u.status
 		FROM user_friends uf
 		JOIN chat.users u 
-    	ON u.id = CASE 
-        WHEN uf.user_id = $1 THEN uf.friend_id
-        ELSE uf.user_id
-    	END
-		WHERE uf.user_id = $1 OR uf.friend_id = $1 `,
+    		ON u.id = uf.user_id
+		WHERE uf.friend_id = $1; `,
 		[userId]
      );
 
