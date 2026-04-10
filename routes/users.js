@@ -20,6 +20,7 @@ router.post('/check-user-profile',   usersController.checkUserProfile);         
 router.get('/get-email',          authMiddleware, usersController.getUserEmail);     // GET /users/get-email?username=
 router.get('/get-user-profile',   authMiddleware, usersController.getUserProfile);   // GET /users/get-user-profile?username=
 router.post('/load-user-friends', authMiddleware, usersController.loadUserFriends);  // POST /users/load-user-friends
+router.post('/load-all-users',    authMiddleware, usersController.loadAllUsers);     // POST /users/load-all-users
 
 router.post('/change-password',   authMiddleware, usersController.changePassword);   // POST /users/change-password
 router.post('/check-credentials', authMiddleware, usersController.checkCredentials); // POST /users/check-credentials
