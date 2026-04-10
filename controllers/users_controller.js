@@ -67,6 +67,35 @@ if (decoded && decoded.exp) {
 }
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//get all users
+exports.loadAllUsers = async (req, res) => {
+  console.log('loadAllUsers : start...');
+
+  try {
+    
+	const result = await pool.query(
+      `SELECT * FROM chat.users`
+    );
+	
+    if (!result.rows.length) {
+      console.log('loadAllUsers : users not found');
+      return res.status(404).json({ error: "Users not found" });
+    }
+
+    console.log('loadAllUsers : successful : rows:', result.rows.length);
+
+    return res.status(200).json(result.rows); // ✅ FIXED
+
+  } catch (error) {
+    console.error("loadAllUsers failed:", error);
+    return res.status(500).json({
+      code: "SERVER_ERROR",
+      error: "Server error during userFriends attempt report"
+    });
+  }
+};
+
+
 //get user friends
 exports.loadUserFriends = async (req, res) => {
   console.log('loadUserFriends : start...');
