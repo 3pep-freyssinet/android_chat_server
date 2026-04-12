@@ -142,7 +142,8 @@ exports.loadUserFriends = async (req, res) => {
 
     if (!result.rows.length) {
       console.log('loadUserFriends : user not found');
-      return res.status(404).json({ error: "User not found" });
+      //return res.status(404).json({ error: "User not found" });
+	  return res.status(200).json('[]'); 
     }
 
     console.log('loadUserFriends : successful : rows:', result.rows.length);
