@@ -79,7 +79,8 @@ exports.loadAllUsers = async (req, res) => {
 	
     if (!result.rows.length) {
       console.log('loadAllUsers : users not found');
-      return res.status(404).json({ error: "Users not found" });
+      //return res.status(404).json({ error: "Users not found" });
+	  return res.status(200).json([]); 
     }
 
     console.log('loadAllUsers : successful : rows:', result.rows.length);
