@@ -96,7 +96,7 @@ exports.friendRequest = async (req, res) => {
     console.error(err);
     res.status(500).send("Error");
   }
-});
+};
 
 //Accept friendship
 exports.friendAccept = async (req, res) => {
@@ -126,7 +126,7 @@ exports.friendAccept = async (req, res) => {
     console.error(err);
     res.status(500).send("Error");
   }
-});
+};
 
 //friend reject
 exports.friendReject = async (req, res) => {
@@ -147,7 +147,7 @@ exports.friendReject = async (req, res) => {
     console.error(err);
     res.status(500).send("Error");
   }
-});
+};
 
 //Get friends for a user id
 exports.friendsUserId = async (req, res) => {
@@ -170,7 +170,7 @@ exports.friendsUserId = async (req, res) => {
     console.error(err);
     res.status(500).send("Error");
   }
-});
+};
 
 //Get friends pending by user id
 exports.friendsPendingUserId = async (req, res) => {
@@ -193,7 +193,7 @@ exports.friendsPendingUserId = async (req, res) => {
     console.error(err);
     res.status(500).send("Error");
   }
-});
+};
 
 //get all users
 exports.loadAllUsers = async (req, res) => {
