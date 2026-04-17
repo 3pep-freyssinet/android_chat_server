@@ -67,6 +67,134 @@ if (decoded && decoded.exp) {
 }
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Request friendship
+exports.friendRequest = async (req, res) => {
+  console.log('friendRequest : start...');
+  const { fromUserId, toUserId } = req.body;
+
+  try {
+    // check if already exists
+    const existing = await pool.query(
+      `SELECT * FROM user_friends 
+       WHERE user_id = $1 AND friend_id = $2`,
+      [fromUserId, toUserId]
+    );
+
+    if (existing.rows.length > 0) {
+      return res.json({ message: "Already exists" });
+    }
+
+    await pool.query(
+      `INSERT INTO user_friends (user_id, friend_id, status)
+       VALUES ($1, $2, 'pending')`,
+      [fromUserId, toUserId]
+    );
+
+    res.json({ message: "Request sent" });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error");
+  }
+});
+
+//Accept friendship
+exports.friendAccept = async (req, res) => {
+	console.log('friendAccept : start...');
+  const { fromUserId, toUserId } = req.body;
+
+  try {
+    // update request
+    await pool.query(
+      `UPDATE user_friends
+       SET status = 'accepted'
+       WHERE user_id = $1 AND friend_id = $2`,
+      [fromUserId, toUserId]
+    );
+
+    // create reverse relation
+    await pool.query(
+      `INSERT INTO user_friends (user_id, friend_id, status)
+       VALUES ($1, $2, 'accepted')
+       ON CONFLICT DO NOTHING`,
+      [toUserId, fromUserId]
+    );
+
+    res.json({ message: "Friend accepted" });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error");
+  }
+});
+
+//friend reject
+exports.friendReject = async (req, res) => {
+	console.log('friendReject : start...');
+  const { fromUserId, toUserId } = req.body;
+
+  try {
+    await pool.query(
+      `UPDATE user_friends
+       SET status = 'rejected'
+       WHERE user_id = $1 AND friend_id = $2`,
+      [fromUserId, toUserId]
+    );
+
+    res.json({ message: "Request rejected" });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error");
+  }
+});
+
+//Get friends for a user id
+exports.friendsUserId = async (req, res) => {
+	console.log('friendsUserId : start...');
+  const userId = req.params.userId;
+
+  try {
+    const result = await pool.query(
+      `SELECT u.id, u.nickname, u.status
+       FROM user_friends uf
+       JOIN chat.users u ON u.id = uf.friend_id
+       WHERE uf.user_id = $1
+       AND uf.status = 'accepted'`,
+      [userId]
+    );
+
+    res.json(result.rows);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error");
+  }
+});
+
+//Get friends pending by user id
+exports.friendsPendingUserId = async (req, res) => {
+	console.log('friendsPendingUserId : start...');
+  const userId = req.params.userId;
+
+  try {
+    const result = await pool.query(
+      `SELECT u.id, u.nickname
+       FROM user_friends uf
+       JOIN chat.users u ON u.id = uf.user_id
+       WHERE uf.friend_id = $1
+       AND uf.status = 'pending'`,
+      [userId]
+    );
+
+    res.json(result.rows);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error");
+  }
+});
+
 //get all users
 exports.loadAllUsers = async (req, res) => {
   console.log('loadAllUsers : start...');
