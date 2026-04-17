@@ -22,6 +22,12 @@ router.get('/get-user-profile',   authMiddleware, usersController.getUserProfile
 router.post('/load-user-friends', authMiddleware, usersController.loadUserFriends);  // POST /users/load-user-friends
 router.post('/load-all-users',    authMiddleware, usersController.loadAllUsers);     // POST /users/load-all-users
 
+router.post('/friend-request',    authMiddleware, usersController.friendRequest);     // POST /users/friend-request
+router.post('/friend-accept',     authMiddleware, usersController.friendAccept);     // POST /users/friend-accept
+router.post('/friend-reject',     authMiddleware, usersController.friendReject);     // POST /users/friend-reject
+router.post('/friends-userid',    authMiddleware, usersController.friendsUserId);     // POST /users/friends-userid
+router.post('/friends-pending-userid',    authMiddleware, usersController.friendsPendingUserId);     // POST /users/friends-pending-userid
+
 router.post('/change-password',   authMiddleware, usersController.changePassword);   // POST /users/change-password
 router.post('/check-credentials', authMiddleware, usersController.checkCredentials); // POST /users/check-credentials
 router.post('/match-password',    authMiddleware, usersController.matchPassword);    // POST /users/match-password
