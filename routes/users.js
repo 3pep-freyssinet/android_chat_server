@@ -26,7 +26,7 @@ router.post('/friend-request',    authMiddleware, usersController.friendRequest)
 router.post('/friend-accept',     authMiddleware, usersController.friendAccept);     // POST /users/friend-accept
 router.post('/friend-reject',     authMiddleware, usersController.friendReject);     // POST /users/friend-reject
 router.post('/friends-userid',    authMiddleware, usersController.friendsUserId);     // POST /users/friends-userid
-router.post('/friends-pending-userid',    authMiddleware, usersController.friendsPendingUserId);     // POST /users/friends-pending-userid
+router.get('/friends-pending',    authMiddleware, usersController.friendsPending);    // POST /users/friends-pending?userid=
 
 router.post('/change-password',   authMiddleware, usersController.changePassword);   // POST /users/change-password
 router.post('/check-credentials', authMiddleware, usersController.checkCredentials); // POST /users/check-credentials
