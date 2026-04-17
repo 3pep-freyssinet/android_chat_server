@@ -94,6 +94,11 @@ exports.friendRequest = async (req, res) => {
 
     res.json({ message: "Request sent" });
     console.log('friendRequest : fromUserId : Request sent');
+
+	socket.to(toUserId).emit("friend:request_received", {
+    	fromUserId: fromUserId
+    });
+	  
   } catch (err) {
     console.error(err);
 	console.log('friendRequest : Error : ', Error);
