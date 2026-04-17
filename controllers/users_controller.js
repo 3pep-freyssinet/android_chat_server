@@ -71,6 +71,7 @@ if (decoded && decoded.exp) {
 exports.friendRequest = async (req, res) => {
   console.log('friendRequest : start...');
   const { fromUserId, toUserId } = req.body;
+  console.log('friendRequest : fromUserId : ', fromUserId, ' toUserId : ', toUserId);
 
   try {
     // check if already exists
@@ -81,6 +82,7 @@ exports.friendRequest = async (req, res) => {
     );
 
     if (existing.rows.length > 0) {
+	  console.log('friendRequest : fromUserId : Already exists');
       return res.json({ message: "Already exists" });
     }
 
@@ -91,9 +93,10 @@ exports.friendRequest = async (req, res) => {
     );
 
     res.json({ message: "Request sent" });
-
+    console.log('friendRequest : fromUserId : Request sent');
   } catch (err) {
     console.error(err);
+	console.log('friendRequest : Error : ', Error);
     res.status(500).send("Error");
   }
 };
