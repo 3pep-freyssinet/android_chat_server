@@ -175,8 +175,8 @@ exports.friendsUserId = async (req, res) => {
 //Get friends pending by user id
 exports.friendsPending = async (req, res) => {
   console.log('friendsPending : start...');
+  const userId = req.query.userId;
   console.log('friendsPending : userId : ', userId);
-  const userId = req.params.userId;
 
   try {
     const result = await pool.query(
