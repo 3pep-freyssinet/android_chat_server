@@ -95,8 +95,19 @@ exports.friendRequest = async (req, res) => {
     res.json({ message: "Request sent" });
     console.log('friendRequest : fromUserId : Request sent');
 
-	const io = req.app.get("io");
+    //✅ 3. fetch nickname from users table
+    const userResult = await pool.query(
+      `SELECT nickname FROM chat.users WHERE id = $1`,
+      [fromUserId]
+    );
 
+    let fromNickname = "Unknown";
+
+    if (userResult.rows.length > 0) {
+      fromNickname = userResult.rows[0].nickname;
+    }
+	  
+	const io = req.app.get("io");
 	io.to(String(toUserId)).emit("friend:request_received", {
     	fromUserId: fromUserId,
 		nickname: fromNickname
