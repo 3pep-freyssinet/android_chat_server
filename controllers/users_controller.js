@@ -98,7 +98,8 @@ exports.friendRequest = async (req, res) => {
 	const io = req.app.get("io");
 
 	io.to(String(toUserId)).emit("friend:request_received", {
-    	fromUserId: fromUserId
+    	fromUserId: fromUserId,
+		nickname: fromNickname
 	});
 	
 	//socket.to(toUserId).emit("friend:request_received", {
