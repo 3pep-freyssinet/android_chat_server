@@ -202,23 +202,10 @@ exports.loadAllUsers = async (req, res) => {
 
   try {
     
-	//const result = await pool.query(
-    //  `SELECT * FROM chat.users`
-    //);
-	  const result = await pool.query(
-      `SELECT 
-    		u.id,
-    		u.nickname,
-    		u.status AS online_status,
-    		uf.status AS relation_status
-		FROM chat.users u
-		LEFT JOIN user_friends uf
-    	ON uf.friend_id = u.id
-    	AND uf.user_id = $1
-	  `
-	   , [userId]);
-
-	
+	const result = await pool.query(
+      `SELECT * FROM chat.users`
+    );
+	 
     if (!result.rows.length) {
       console.log('loadAllUsers : users not found');
       //return res.status(404).json({ error: "Users not found" });
@@ -259,6 +246,8 @@ exports.loadUserFriends = async (req, res) => {
     );
 	*/
 	  console.log("loadUserFriends: userId before query :", userId);
+
+	/*
 	const result = await pool.query(`
 	(
     SELECT 
@@ -282,6 +271,20 @@ exports.loadUserFriends = async (req, res) => {
     WHERE uf.friend_id = $1
 	)
 `, [userId]);
+ */
+
+   const result = await pool.query(
+      `SELECT 
+    		u.id,
+    		u.nickname,
+    		u.status AS online_status,
+    		uf.status AS relation_status
+		FROM chat.users u
+		LEFT JOIN user_friends uf
+    	ON uf.friend_id = u.id
+    	AND uf.user_id = $1
+	  `
+	   , [userId]);
 
     if (!result.rows.length) {
       console.log('loadUserFriends : user not found');
