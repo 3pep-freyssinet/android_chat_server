@@ -85,6 +85,9 @@ const io = new Server(httpServer, {
   pingInterval: 25000
 });
 
+// 👇 make it globally accessible
+app.set("io", io);
+
 // Middleware: JWT auth 
 io.use((socket, next) => {
   console.log("Socket handshake auth:", socket.handshake.auth);
