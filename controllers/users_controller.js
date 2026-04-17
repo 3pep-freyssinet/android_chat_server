@@ -173,8 +173,9 @@ exports.friendsUserId = async (req, res) => {
 };
 
 //Get friends pending by user id
-exports.friendsPendingUserId = async (req, res) => {
-	console.log('friendsPendingUserId : start...');
+exports.friendsPending = async (req, res) => {
+  console.log('friendsPending : start...');
+  console.log('friendsPending : userId : ', userId);
   const userId = req.params.userId;
 
   try {
