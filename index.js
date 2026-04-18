@@ -143,7 +143,7 @@ io.on("connection", async (socket) => {
 
   const userId_ = String(socket.handshake.query.userId);
   console.log("******************** JOIN ROOM:", userId, "TYPE: ", typeof userId_);
-  console.log("******************** JOIN ROOM:", currently used myUserId, "TYPE: ", typeof myUserId);
+  console.log("******************** JOIN ROOM: currently used myUserId : TYPE: ", typeof myUserId);
   socket.join(String(myUserId))
 
   // store presence
