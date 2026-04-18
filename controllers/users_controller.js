@@ -170,7 +170,8 @@ exports.friendReject = async (req, res) => {
 	
 	// 🔥 notify the requester (Fanny)
     const io = req.app.get("io");
-
+    console.log('friendReject : io : ', io);
+	  
     io.to(String(toUserId)).emit("friend:request_rejected", {
       fromUserId: fromUserId
     });
