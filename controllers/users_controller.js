@@ -175,8 +175,8 @@ exports.friendReject = async (req, res) => {
 	  
 	console.log("EMIT TO: ", String(toUserId), "TYPE: ", typeof toUserId);
 	  
-    //io.to(String(toUserId)).emit("friend:request_rejected", { //original
-	io.to(String(fromUserId)).emit("friend:request_rejected", { 
+    io.to(String(toUserId)).emit("friend:request_rejected", { //original
+	//io.to(String(fromUserId)).emit("friend:request_rejected", { 
       fromUserId: fromUserId
     });
 	  
