@@ -126,9 +126,10 @@ exports.friendRequest = async (req, res) => {
 
 //Accept friendship
 exports.friendAccept = async (req, res) => {
-	console.log('friendAccept : start...');
+  console.log('friendAccept : start...');
   const { fromUserId, toUserId } = req.body;
-
+  console.log('friendAccept : fromUserId : ', fromUserId, ' toUserId : ', toUserId);
+	
   try {
     // update request
     await pool.query(
@@ -149,6 +150,7 @@ exports.friendAccept = async (req, res) => {
     res.json({ message: "Friend accepted" });
 	
 	const targetId = String(fromUserId); // Fanny
+	console.log('friendAccept : targetId : ', targetId);
     io.to(targetId).emit("friend:request_accepted", {
     fromUserId: String(toUserId) // Alice
   });
