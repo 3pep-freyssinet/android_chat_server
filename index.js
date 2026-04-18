@@ -141,6 +141,9 @@ io.on("connection", async (socket) => {
   //send users list, done in unread messages.
   //getUsersList();
 
+  const userId = String(socket.handshake.query.userId);
+  console.log("******************** JOIN ROOM:", userId, "TYPE: ", typeof userId);
+  console.log("******************** JOIN ROOM:", currently used myUserId, "TYPE: ", typeof myUserId);
   socket.join(String(myUserId))
 
   // store presence
