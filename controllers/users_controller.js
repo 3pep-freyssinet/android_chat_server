@@ -156,9 +156,10 @@ exports.friendAccept = async (req, res) => {
 
 //friend reject
 exports.friendReject = async (req, res) => {
-	console.log('friendReject : start...');
+  console.log('friendReject : start...');
   const { fromUserId, toUserId } = req.body;
-
+  console.log('friendReject : fromUserId : ', fromUserId, ' toUserId : ', toUserId);
+  
   try {
     await pool.query(
       `UPDATE user_friends
@@ -167,7 +168,7 @@ exports.friendReject = async (req, res) => {
       [fromUserId, toUserId]
     );
 	
-	  // 🔥 notify the requester (Fanny)
+	// 🔥 notify the requester (Fanny)
     const io = req.app.get("io");
 
     io.to(String(toUserId)).emit("friend:request_rejected", {
