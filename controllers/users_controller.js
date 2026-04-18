@@ -147,7 +147,12 @@ exports.friendAccept = async (req, res) => {
     );
 
     res.json({ message: "Friend accepted" });
-
+	
+	const targetId = String(fromUserId); // Fanny
+    io.to(targetId).emit("friend:request_accepted", {
+    fromUserId: String(toUserId) // Alice
+  });
+	  
   } catch (err) {
     console.error(err);
     res.status(500).send("Error");
