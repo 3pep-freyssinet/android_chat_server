@@ -166,7 +166,13 @@ exports.friendReject = async (req, res) => {
        WHERE user_id = $1 AND friend_id = $2`,
       [fromUserId, toUserId]
     );
+	
+	  // 🔥 notify the requester (Fanny)
+    const io = req.app.get("io");
 
+    io.to(String(toUserId)).emit("friend:request_rejected", {
+      fromUserId: fromUserId
+    });
     res.json({ message: "Request rejected" });
 
   } catch (err) {
