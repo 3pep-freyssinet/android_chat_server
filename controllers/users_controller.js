@@ -151,6 +151,8 @@ exports.friendAccept = async (req, res) => {
 	
 	const targetId = String(fromUserId); // Fanny
 	console.log('friendAccept : targetId : ', targetId);
+	  
+	const io = req.app.get("io");
     io.to(targetId).emit("friend:request_accepted", {
     fromUserId: String(toUserId) // Alice
   });
