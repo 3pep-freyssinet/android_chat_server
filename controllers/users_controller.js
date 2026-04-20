@@ -106,6 +106,7 @@ exports.friendRequest = async (req, res) => {
     if (userResult.rows.length > 0) {
       fromNickname = userResult.rows[0].nickname;
     }
+	console.log('friendRequest : emit : fromUserId : ', fromUserId, ' fromNickname : ', fromNickname);
 	  
 	const io = req.app.get("io");
 	io.to(String(toUserId)).emit("friend:request_received", {
@@ -151,10 +152,25 @@ exports.friendAccept = async (req, res) => {
 	
 	const targetId = String(fromUserId); // Fanny
 	console.log('friendAccept : targetId : ', targetId);
+
+	 //✅ 3. fetch nickname from users table
+    const userResult = await pool.query(
+      `SELECT nickname FROM chat.users WHERE id = $1`,
+      [fromUserId]
+    );
+
+    let fromNickname = "Unknown";
+
+    if (userResult.rows.length > 0) {
+      fromNickname = userResult.rows[0].nickname;
+    }
+	
+	console.log('friendAccept : emit : fromUserId : ', fromUserId, ' String(toUserId) : ', fromNickname);  
 	  
 	const io = req.app.get("io");
     io.to(targetId).emit("friend:request_accepted", {
-    fromUserId: String(toUserId) // Alice
+    fromUserId: String(toUserId), // Alice
+	nickname: fromNickname
   });
 	  
   } catch (err) {
@@ -183,10 +199,25 @@ exports.friendReject = async (req, res) => {
 	const toId   = String(toUserId);
 	  
 	console.log("EMIT TO: ", String(toUserId), "TYPE: ", typeof toUserId);
-	  
+
+     //✅ 3. fetch nickname from users table
+    const userResult = await pool.query(
+      `SELECT nickname FROM chat.users WHERE id = $1`,
+      [fromUserId]
+    );
+
+    let fromNickname = "Unknown";
+
+    if (userResult.rows.length > 0) {
+      fromNickname = userResult.rows[0].nickname;
+    }
+	
+	console.log('friendReject : emit : fromUserId : ', fromUserId, ' String(toUserId) : ', fromNickname); 
+	
     io.to(String(toUserId)).emit("friend:request_rejected", { //original 
 	//io.to(String(fromUserId)).emit("friend:request_rejected", { 
-      fromUserId: fromUserId
+      fromUserId: fromUserId,
+	  nickname: fromNickname
     });
 	  
     res.json({ message: "Request rejected" });
