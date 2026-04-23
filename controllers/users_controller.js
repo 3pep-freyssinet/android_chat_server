@@ -190,7 +190,7 @@ exports.friendReject = async (req, res) => {
       `UPDATE user_friends
        SET status = 'rejected'
        WHERE user_id = $1 AND friend_id = $2`,
-      [fromUserId, toUserId]
+      [toUserId, fromUserId]
     );
 	
 	// 🔥 notify the requester (Fanny)
