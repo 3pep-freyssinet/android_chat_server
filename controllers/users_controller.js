@@ -136,7 +136,7 @@ exports.friendRequest = async (req, res) => {
     );
 
     res.json({ message: "Request sent" });
-    console.log('friendRequest : fromUserId : Request sent');
+    console.log('friendRequest : Request sent : fromUserId : ', fromUserId, ' toUserId : ', toUserId);
 
     //✅ 3. fetch nickname from users table
     const userResult = await pool.query(
