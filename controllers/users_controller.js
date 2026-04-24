@@ -129,7 +129,11 @@ exports.friendRequest = async (req, res) => {
 	}//end existing.rows.length > 0
 
 	//here no row found
-    await pool.query(
+	//is the receiver of the request online?
+	const isOnline = onlineUsers.has(toUserId);
+    console.log('friendRequest : is : ', toUserId, ' online : ', isOnline);
+	  
+	  await pool.query(
       `INSERT INTO user_friends (user_id, friend_id, status)
        VALUES ($1, $2, 'pending')`,
       [fromUserId, toUserId]
