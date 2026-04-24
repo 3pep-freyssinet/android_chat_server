@@ -130,7 +130,7 @@ exports.friendRequest = async (req, res) => {
 
 	//here no row found
 	//is the receiver of the request online?
-	const { onlineUsers, activeChats } = require('../socketState');
+	const { onlineUsers, activeChats } = require('../socket_state');
 	const isOnline = onlineUsers.has(toUserId);
     console.log('friendRequest : is : ', toUserId, ' online : ', isOnline);
 	  
