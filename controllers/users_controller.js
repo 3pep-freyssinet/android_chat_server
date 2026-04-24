@@ -82,10 +82,41 @@ exports.friendRequest = async (req, res) => {
     );
 
     if (existing.rows.length > 0) {
-	  console.log('friendRequest : fromUserId : Already exists');
-      return res.json({ message: "Already exists" });
-    }
+  		const status = existing.rows[0].status;
+  		// ❌ Already pending → block
+  		if (status === "pending") {
+    		return res.json({ message: "Request already pending" });
+  		}
 
+  		// ❌ Already friends → block
+  		if (status === "accepted") {
+    		return res.json({ message: "Already friends" });
+  		}
+
+  		// ✅ Was rejected → allow retry
+  			if (status === "rejected") {
+
+		    await pool.query(
+		      `UPDATE user_friends
+		       SET status = 'pending',
+		           created_at = NOW()
+		       WHERE user_id = $1 AND friend_id = $2`,
+		      [fromUserId, toUserId]
+		    );
+
+    		// 🔥 emit event again
+    		const io = req.app.get("io");
+
+    		io.to(String(toUserId)).emit("friend:request_received", {
+      			fromUserId,
+      			nickname: fromNickname
+    		});
+
+    		return res.json({ message: "Request sent again" });
+  		}//end status
+	}//end existing.rows.length > 0
+
+	//here no row found
     await pool.query(
       `INSERT INTO user_friends (user_id, friend_id, status)
        VALUES ($1, $2, 'pending')`,
