@@ -105,8 +105,10 @@ io.use((socket, next) => {
 });
 
 // users manager
-const onlineUsers = new Map();
-const activeChats = new Map(); // userId → friendId
+//const onlineUsers = new Map();
+//const activeChats = new Map(); // userId → friendId
+
+const { onlineUsers, activeChats } = require('./socket_state');
 
 function isUserOnline(userId) {
   return onlineUsers.has(Number(userId));
