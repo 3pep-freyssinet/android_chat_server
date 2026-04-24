@@ -104,6 +104,18 @@ exports.friendRequest = async (req, res) => {
 		      [fromUserId, toUserId]
 		    );
 
+			//✅ 3. fetch nickname from users table
+    		const userResult_ = await pool.query(
+      			`SELECT nickname FROM chat.users WHERE id = $1`,
+      				[fromUserId]
+    		);
+
+    		let fromNickname = "Unknown";
+
+    		if (userResult_.rows.length > 0) {
+      			fromNickname = userResult_.rows[0].nickname;
+    		}
+
     		// 🔥 emit event again
     		const io = req.app.get("io");
 
