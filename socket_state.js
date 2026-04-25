@@ -37,6 +37,6 @@ async function getUserName(userId) {
 module.exports = {
   onlineUsers,
   activeChats,
-  admin,
+  //admin,
   getUserName
 };
