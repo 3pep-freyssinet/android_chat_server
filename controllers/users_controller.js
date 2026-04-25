@@ -134,7 +134,7 @@ exports.friendRequest = async (req, res) => {
 	const isOnline = onlineUsers.has(toUserId);
     console.log('friendRequest : is : ', toUserId, ' online : ', isOnline);
 	  
-	if (!isOnline){
+	if (isOnline){
       // ✅ Send request via Socket.io
 	  // update db
 	  console.log('friendRequest : update db : fromUserId : ',  fromUserId, ' toUserId : ', toUserId);
