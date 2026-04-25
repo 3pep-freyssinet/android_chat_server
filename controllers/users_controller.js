@@ -133,41 +133,93 @@ exports.friendRequest = async (req, res) => {
 	const { onlineUsers, activeChats } = require('../socket_state');
 	const isOnline = onlineUsers.has(toUserId);
     console.log('friendRequest : is : ', toUserId, ' online : ', isOnline);
-	  
-	  await pool.query(
-      `INSERT INTO user_friends (user_id, friend_id, status)
-       VALUES ($1, $2, 'pending')`,
-      [fromUserId, toUserId]
-    );
 
-    res.json({ message: "Request sent" });
-    console.log('friendRequest : Request sent : fromUserId : ', fromUserId, ' toUserId : ', toUserId);
+	if (isUserOnline(Number(toUserId))){
+      // ✅ Send request via Socket.io
+      await pool.query(
+      	`INSERT INTO user_friends (user_id, friend_id, status)
+       	VALUES ($1, $2, 'pending')`,
+      	[fromUserId, toUserId]
+    	);
 
-    //✅ 3. fetch nickname from users table
-    const userResult = await pool.query(
-      `SELECT nickname FROM chat.users WHERE id = $1`,
-      [fromUserId]
-    );
+    	res.json({ message: "Request sent" });
+    	console.log('friendRequest : Request sent : fromUserId : ', fromUserId, ' toUserId : ', toUserId);
 
-    let fromNickname = "Unknown";
+    	//✅ 3. fetch nickname from users table
+    	const userResult = await pool.query(
+      		`SELECT nickname FROM chat.users WHERE id = $1`,
+      		[fromUserId]
+    	);
 
-    if (userResult.rows.length > 0) {
-      fromNickname = userResult.rows[0].nickname;
-    }
-	console.log('friendRequest : emit : fromUserId : ', fromUserId, ' fromNickname : ', fromNickname);
-	  
-	const io = req.app.get("io");
-	io.to(String(toUserId)).emit("friend:request_received", {
-    	fromUserId: fromUserId,
-		nickname: fromNickname
-	});
+	    let fromNickname = "Unknown";
 	
-	//socket.to(toUserId).emit("friend:request_received", {
-    //	fromUserId: fromUserId
-    //});
+	    if (userResult.rows.length > 0) {
+	      fromNickname = userResult.rows[0].nickname;
+	    }
+		console.log('friendRequest : emit : fromUserId : ', fromUserId, ' fromNickname : ', fromNickname);
 	  
+		const io = req.app.get("io");
+		io.to(String(toUserId)).emit("friend:request_received", {
+	    	fromUserId: fromUserId,
+			nickname: fromNickname
+		});
+	
+      	console.log("friendRequest : Sent request via socket");
+    }else{
+      	console.log("friendRequest : User offline → sending FCM");
+      	try {
+     
+          const isOnline     = onlineUsers.has(Number(toUserId));
+          //const isInSameChat = activeChats.get(Number(toUserId) === Number(fromUserId));
+          const isInSameChat = activeChats.get(String(toUserId)) === String(fromUserId);
+          
+          console.log("friendRequest : Notification :  onlineUsers map", onlineUsers);
+          console.log("friendRequest : Notification :  activeChats map", activeChats);
+          
+          console.log("friendRequest : Notification :  ", toUserId, " isOnline : ", isOnline);
+          console.log("friendRequest : Notification :  ", toUserId, "  ", fromUserId, " are in the same chat ", isInSameChat);
+        
+          if (!isOnline || !isInSameChat) {
+      
+            //get 'fcm_token' of 'toUserId'.
+            const result = await pool.query(
+              'SELECT fcm_token FROM fcm_tokens WHERE user_id = $1',
+              [toUserId]
+            );
+      
+            if (result.rows.length > 0) {
+                //fcm token found
+                const fcmToken = result.rows[0].fcm_token;
+        
+                //Get the sender name
+                const senderName = await getUserName(fromUserId);
+        
+                //format the message
+                const preview = formatMessagePreview(savedMessage);
+        
+              const profileImageUrl = 'null';
+              // with 'data', the client: 'MyFirebaseMessagingService.onMessageReceived' is called to built notication.
+              await admin.messaging().send({
+                token: fcmToken,
+                data: {
+                  senderName: senderName,
+                  message: preview,
+                  senderId: String(fromUserId),
+                  messageId: String(savedMessage.id),
+                  profileImageUrl: profileImageUrl
+                }
+               });
+              console.log("friendRequest : Request FCM notification sent");
+
+              //send the message
+              //io.to(String(to)).emit("chat:new_message", savedMessage);
+              //console.log("friendRequest : message sent");
+          } else {
+              console.log("friendRequest : No FCM token found for user");
+          }
+      }
   } catch (err) {
-    console.error(err);
+    console.error(Error);
 	console.log('friendRequest : Error : ', Error);
     res.status(500).send("Error");
   }
