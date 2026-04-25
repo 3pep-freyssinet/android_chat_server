@@ -167,7 +167,6 @@ exports.friendRequest = async (req, res) => {
       	console.log("friendRequest : Sent request via socket");
     }else{
       	console.log("friendRequest : User offline → sending FCM");
-      	try {
      
           const isOnline     = onlineUsers.has(Number(toUserId));
           //const isInSameChat = activeChats.get(Number(toUserId) === Number(fromUserId));
@@ -218,12 +217,12 @@ exports.friendRequest = async (req, res) => {
               console.log("friendRequest : No FCM token found for user");
           }
       }
+	}//end if (isUserOnline(Number(toUserId)
   } catch (err) {
     console.error(Error);
 	console.log('friendRequest : Error : ', Error);
     res.status(500).send("Error");
   }
- }
 };
 
 //Accept friendship
