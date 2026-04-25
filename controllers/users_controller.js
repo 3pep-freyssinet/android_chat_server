@@ -22,6 +22,7 @@ const nodemailer = require('nodemailer');
 const validator  = require('validator');
 
 const admin       = require('firebase-admin');
+
 //const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 //admin.initializeApp({
 //  credential: admin.credential.cert(serviceAccount),
@@ -200,8 +201,10 @@ exports.friendRequest = async (req, res) => {
                 console.log("friendRequest : fcm_token :  ", result.rows[0].fcm_token);
                 
 				//Get the sender name
-                const senderName = await getUserName(fromUserId);
-                console.log("friendRequest : senderName :  ", senderName);
+				const { getUserName } = require('../socket_state');
+				const senderName = await getUserName(fromUserId);
+                
+				console.log("friendRequest : senderName :  ", senderName);
 				
                 //format the message
                 //const preview = formatMessagePreview(savedMessage);
