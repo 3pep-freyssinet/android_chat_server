@@ -187,14 +187,16 @@ exports.friendRequest = async (req, res) => {
               'SELECT fcm_token FROM fcm_tokens WHERE user_id = $1',
               [toUserId]
             );
-      
-            if (result.rows.length > 0) {
+            
+			if (result.rows.length > 0) {
                 //fcm token found
                 const fcmToken = result.rows[0].fcm_token;
-        
-                //Get the sender name
+                console.log("friendRequest : fcm_token :  ", result.rows[0].fcm_token);
+                
+				//Get the sender name
                 const senderName = await getUserName(fromUserId);
-        
+                console.log("friendRequest : senderName :  ", senderName);
+				
                 //format the message
                 //const preview = formatMessagePreview(savedMessage);
         
