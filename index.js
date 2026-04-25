@@ -18,11 +18,11 @@ const url      = require('url');
 const utf8     = require('utf8');
 const crypto   = require('crypto');
 
-const admin = require('firebase-admin');
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+//const admin = require('firebase-admin');
+//const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+//admin.initializeApp({
+//  credential: admin.credential.cert(serviceAccount),
+//});
 
 //Render + Aiven + env
 const pool = new Pool({
