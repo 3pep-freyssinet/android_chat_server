@@ -223,6 +223,7 @@ exports.friendRequest = async (req, res) => {
 	console.log('friendRequest : Error : ', Error);
     res.status(500).send("Error");
   }
+ }
 };
 
 //Accept friendship
