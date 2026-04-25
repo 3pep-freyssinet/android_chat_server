@@ -10,7 +10,7 @@ const activeChats = new Map();
 
 //const admin = require('firebase-admin');
 const pool  = require('./db');
-
+console.log('pool : ', pool);
 //const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 //admin.initializeApp({
 //  credential: admin.credential.cert(serviceAccount),
