@@ -8,7 +8,7 @@ admin.initializeApp({
 const onlineUsers = new Map();
 const activeChats = new Map();
 
-const admin = require('firebase-admin');
+//const admin = require('firebase-admin');
 const pool  = require('./db');
 
 //const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
