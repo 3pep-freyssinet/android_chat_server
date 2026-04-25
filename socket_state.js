@@ -8,6 +8,8 @@ admin.initializeApp({
 const onlineUsers = new Map();
 const activeChats = new Map();
 
+const pool = require('../db'); 
+
 async function getUserName(userId) {
   try {
     const result = await pool.query(
