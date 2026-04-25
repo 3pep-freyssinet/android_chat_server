@@ -188,10 +188,18 @@ exports.friendRequest = async (req, res) => {
           console.log("friendRequest : Notification :  ", toUserId, "  ", fromUserId, " are in the same chat ", isInSameChat);
         
           if (!isOnline || !isInSameChat) {
-      
-            //get 'fcm_token' of 'toUserId'.
-            const result = await pool.query(
-              'SELECT fcm_token FROM fcm_tokens WHERE user_id = $1',
+		      // update db
+			  console.log('friendRequest : user offline : update db : fromUserId : ',  fromUserId, ' toUserId : ', toUserId);
+		      await pool.query(
+		      	`INSERT INTO user_friends (user_id, friend_id, status)
+		       	VALUES ($1, $2, 'pending')`,
+		      	[fromUserId, toUserId]
+		    	);
+			  
+			 //Notify the offline user by FCM 
+             //get 'fcm_token' of 'toUserId'.
+             const result = await pool.query(
+              	'SELECT fcm_token FROM fcm_tokens WHERE user_id = $1',
               [toUserId]
             );
             
