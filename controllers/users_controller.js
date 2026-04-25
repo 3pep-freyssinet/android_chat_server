@@ -136,6 +136,8 @@ exports.friendRequest = async (req, res) => {
 
 	if (isUserOnline(Number(toUserId))){
       // ✅ Send request via Socket.io
+	  // update db
+	  console.log('friendRequest : update db : fromUserId : ',  fromUserId, ' toUserId : ', toUserId);
       await pool.query(
       	`INSERT INTO user_friends (user_id, friend_id, status)
        	VALUES ($1, $2, 'pending')`,
