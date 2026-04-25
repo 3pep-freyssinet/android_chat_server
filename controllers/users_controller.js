@@ -196,18 +196,18 @@ exports.friendRequest = async (req, res) => {
                 const senderName = await getUserName(fromUserId);
         
                 //format the message
-                const preview = formatMessagePreview(savedMessage);
+                //const preview = formatMessagePreview(savedMessage);
         
-              const profileImageUrl = 'null';
-              // with 'data', the client: 'MyFirebaseMessagingService.onMessageReceived' is called to built notication.
-              await admin.messaging().send({
-                token: fcmToken,
-                data: {
-                  senderName: senderName,
-                  message: preview,
-                  senderId: String(fromUserId),
-                  messageId: String(savedMessage.id),
-                  profileImageUrl: profileImageUrl
+                const profileImageUrl = 'null';
+                // with 'data', the client: 'MyFirebaseMessagingService.onMessageReceived' is called to built notication.
+                await admin.messaging().send({
+                  token: fcmToken,
+                  data: {
+	                  senderName: senderName,
+	                  //message: preview,
+	                  senderId: String(fromUserId),
+	                  //messageId: String(savedMessage.id),
+	                  //profileImageUrl: profileImageUrl
                 }
                });
               console.log("friendRequest : Request FCM notification sent");
