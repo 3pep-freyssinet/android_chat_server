@@ -22,10 +22,10 @@ const nodemailer = require('nodemailer');
 const validator  = require('validator');
 
 const admin       = require('firebase-admin');
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+//const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+//admin.initializeApp({
+//  credential: admin.credential.cert(serviceAccount),
+//});
 
 const JWT_SECRET 		= process.env.JWT_SECRET;
 const REFRESH_TOKEN_SECRET 	= process.env.REFRESH_TOKEN_SECRET;
