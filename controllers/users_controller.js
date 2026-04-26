@@ -374,8 +374,11 @@ exports.friendsUserId = async (req, res) => {
 //fetch-pending-requests
 exports.fetchPendingRequests = async (req, res) => {
   console.log('fetchPendingRequests : start...');
-  console.log('fetchPendingRequests : req.query : ', req.query);
-  const userId = req.query.userId;
+  //console.log('fetchPendingRequests : req.query : ', req.query);
+  //const userId = req.query.userId;
+  
+  const userId = req.user.userId
+ 
   console.log('fetchPendingRequests : userId : ', userId);
 
   try {
