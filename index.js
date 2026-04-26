@@ -445,6 +445,7 @@ const messages = [
                 data: {
                   senderName: senderName,
                   message: preview,
+                  type:'message,
                   senderId: String(fromUserId),
                   messageId: String(savedMessage.id),
                   profileImageUrl: profileImageUrl
