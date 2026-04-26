@@ -371,6 +371,35 @@ exports.friendsUserId = async (req, res) => {
   }
 };
 
+//fetch-pending-requests
+exports.fetchPendingRequests = async (req, res) => {
+  console.log('fetchPendingRequests : start...');
+  const userId = req.query.userId;
+  console.log('fetchPendingRequests : userId : ', userId);
+
+  try {
+    const result = await pool.query(
+      `SELECT 
+    		uf.user_id      AS "userId",
+    		u.nickname      AS "nickname",
+    		u.status AS "onlineStatus",
+    		uf.status       AS "relationStatus"
+	   FROM user_friends uf
+	   JOIN chat.users u ON u.id = uf.user_id
+	   WHERE uf.friend_id = $1
+	   AND uf.status = 'pending'`,
+      [userId]
+    );
+    
+    res.json(result.rows);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error");
+  }
+};
+
+
 //Get friends pending by user id
 exports.friendsPending = async (req, res) => {
   console.log('friendsPending : start...');
