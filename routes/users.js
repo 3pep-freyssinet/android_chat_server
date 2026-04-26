@@ -23,11 +23,12 @@ router.post('/load-user-friends', authMiddleware, usersController.loadUserFriend
 router.post('/load-all-users',    authMiddleware, usersController.loadAllUsers);     // POST /users/load-all-users
 
 router.post('/friend-request',    authMiddleware, usersController.friendRequest);     // POST /users/friend-request
-router.post('/friend-accept',     authMiddleware, usersController.friendAccept);     // POST /users/friend-accept
-router.post('/friend-reject',     authMiddleware, usersController.friendReject);     // POST /users/friend-reject
+router.post('/friend-accept',     authMiddleware, usersController.friendAccept);      // POST /users/friend-accept
+router.post('/friend-reject',     authMiddleware, usersController.friendReject);      // POST /users/friend-reject
 router.post('/friends-userid',    authMiddleware, usersController.friendsUserId);     // POST /users/friends-userid
-router.get('/friends-pending',    authMiddleware, usersController.friendsPending);    // POST /users/friends-pending?userid=
-
+router.get('/friends-pending',    authMiddleware, usersController.friendsPending);    // GET /users/friends-pending?userid=
+router.post('/fetch-pending-requests authMiddleware, usersController.fetchPendingRequests);    // POST /users/fetch-pending-requests
+            
 router.post('/change-password',   authMiddleware, usersController.changePassword);   // POST /users/change-password
 router.post('/check-credentials', authMiddleware, usersController.checkCredentials); // POST /users/check-credentials
 router.post('/match-password',    authMiddleware, usersController.matchPassword);    // POST /users/match-password
