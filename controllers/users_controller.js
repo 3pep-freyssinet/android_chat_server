@@ -222,8 +222,9 @@ exports.friendRequest = async (req, res) => {
                   token: fcmToken,
                   data: {
 	                  senderName: senderName,
-	                  //message: preview,
+	                  message: senderName + ', wants a friend request', 
 	                  senderId: String(fromUserId),
+					  type:'friend_request',
 	                  //messageId: String(savedMessage.id),
 	                  //profileImageUrl: profileImageUrl
                 }
