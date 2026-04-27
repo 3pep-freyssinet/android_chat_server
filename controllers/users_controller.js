@@ -80,10 +80,17 @@ exports.friendRequest = async (req, res) => {
   console.log('friendRequest : fromUserId : ', fromUserId, ' toUserId : ', toUserId);
 
   try {
-    // check if already exists
+    // check if already exists:WHERE user_id = $1 AND friend_id = $2
     const existing = await pool.query(
-      `SELECT * FROM user_friends 
-       WHERE user_id = $1 AND friend_id = $2`,
+      `	SELECT 
+    		uf.user_id			 AS "userId",
+    		uf.friend_id		 AS "friendId",
+    		u.nickname			 AS "nickname",
+		    u.status			 AS "onlineStatus",
+    		uf.status 			 AS "relation_status"
+		FROM user_friends uf
+		JOIN chat.users u ON u.id = uf.user_id
+		WHERE user_id = $1 AND friend_id = $2`,
       [fromUserId, toUserId]
     );
 
