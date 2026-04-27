@@ -349,6 +349,22 @@ exports.friendReject = async (req, res) => {
   }
 };
 
+//Cancel request friendship
+//Request friendship
+exports.friendCancel = async (req, res) => {
+  	console.log('friendCancel : start...');
+  	const { fromUserId, toUserId } = req.body;
+  	console.log('friendCancel : fromUserId : ', fromUserId, ' toUserId : ', toUserId);
+	
+	await pool.query(
+    `DELETE FROM user_friends
+     WHERE user_id = $1 AND friend_id = $2
+     AND status = 'pending'`,
+    [fromUserId, toUserId]
+  );
+  res.json({ message: "Request cancelled" });
+};
+
 //Get friends for a user id
 exports.friendsUserId = async (req, res) => {
 	console.log('friendsUserId : start...');
