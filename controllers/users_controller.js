@@ -357,19 +357,34 @@ exports.friendReject = async (req, res) => {
 };
 
 //Cancel request friendship
-//Request friendship
 exports.friendCancel = async (req, res) => {
-  	console.log('friendCancel : start...');
-  	const { fromUserId, toUserId } = req.body;
-  	console.log('friendCancel : fromUserId : ', fromUserId, ' toUserId : ', toUserId);
+  console.log('friendCancel : start ...'); 
+  const { fromUserId, toUserId } = req.body;
+  console.log('friendCancel : fromUserId : ', fromUserId, ' toUserId : ', toUserId); 
 	
-	await pool.query(
-    `DELETE FROM user_friends
-     WHERE user_id = $1 AND friend_id = $2
-     AND status = 'pending'`,
+  // Only cancel if still pending
+  const result = await pool.query(
+    `UPDATE user_friends
+     SET status = 'canceled'
+     WHERE user_id = $1
+       AND friend_id = $2
+       AND status = 'pending'
+     RETURNING *`,
     [fromUserId, toUserId]
   );
-  res.json({ message: "Request cancelled" });
+
+  if (result.rowCount === 0) {
+	console.log('friendCancel : Cannot cancel'); 
+    return res.status(400).json({ message: "Cannot cancel" });
+  }
+
+  // Notify receiver (optional but recommended)
+  const io = req.app.get("io");
+  io.to(String(toUserId)).emit("friend:request_canceled", {
+    fromUserId
+  });
+  console.log('friendCancel : cancel success'); 
+  return res.json({ success: true });
 };
 
 //Get friends for a user id
