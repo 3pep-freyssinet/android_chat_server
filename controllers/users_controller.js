@@ -80,7 +80,7 @@ exports.friendRequest = async (req, res) => {
   console.log('friendRequest : fromUserId : ', fromUserId, ' toUserId : ', toUserId);
 
   try {
-    // check if already exists:WHERE user_id = $1 AND friend_id = $2
+    // check if already exists.
     const existing = await pool.query(
       `	SELECT 
     		uf.user_id			 AS "userId",
