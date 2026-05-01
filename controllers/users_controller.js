@@ -103,7 +103,7 @@ exports.friendRequest = async (req, res) => {
 
   		// ❌ Already friends → block
   		if (status === "accepted") {
-    		return res.json({ message: "Already friends" });
+    		return res.json({ message: "Already accepted (friends)" });
   		}
 
   		// ✅ Was rejected → allow retry
@@ -141,11 +141,8 @@ exports.friendRequest = async (req, res) => {
   		}//end status
 	}//end existing.rows.length > 0
 
-	//here no row found
-	//is the receiver of the request online?
-	const { onlineUsers, activeChats } = require('../socket_state');
-	const isOnline = onlineUsers.has(toUserId);
-    console.log('friendRequest : is : ', toUserId, ' online : ', isOnline);
+	//here no row found--> first request --> status 'pending'.
+	
 	  
 	  //✅ 3. fetch nickname, status online/offline of the sender from 'chat.users' table.
       const userResult = await pool.query(
@@ -177,7 +174,12 @@ exports.friendRequest = async (req, res) => {
     	);
 	  
       console.log('friendRequest : fromUserId : ', fromUserId, ' fromNickname : ', fromNickname, ' online/offline status : ', fromStatus);
-
+      
+	  //is the receiver of the request online?
+	  const { onlineUsers, activeChats } = require('../socket_state');
+	  const isOnline = onlineUsers.has(toUserId);
+      console.log('friendRequest : is : ', toUserId, ' online : ', isOnline);
+	  
 	  if (isOnline){ //the receiver isOline
       // ✅ Send request via Socket.io
 	  
