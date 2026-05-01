@@ -147,8 +147,27 @@ exports.friendRequest = async (req, res) => {
 	const isOnline = onlineUsers.has(toUserId);
     console.log('friendRequest : is : ', toUserId, ' online : ', isOnline);
 	  
-	if (isOnline){
-      // ✅ Send request via Socket.io
+	  //✅ 3. fetch nickname, status online/offline of the sender from 'chat.users' table.
+      const userResult = await pool.query(
+    	`SELECT nickname, status FROM chat.users WHERE id = $1`,
+      	[fromUserId]
+      );
+	  
+	  if (userResult.rows.length == 0) {
+	      res.json({ message: "user not found" });
+	  }
+	  
+	  const fromNickname = userResult.rows[0].nickname;
+	  const fromStatus   = userResult.rows[0].status;
+	  
+      res.json({  
+			   fromUserId: fromUserId,
+			   toUserId: toUserId,
+			   fromNickname: fromNickname,
+			   fromStatus: fromStatus,
+	           relationStatus: 'pending'
+	  });
+
 	  // update db
 	  console.log('friendRequest : update db : fromUserId : ',  fromUserId, ' toUserId : ', toUserId);
       await pool.query(
@@ -156,22 +175,11 @@ exports.friendRequest = async (req, res) => {
        	VALUES ($1, $2, 'pending')`,
       	[fromUserId, toUserId]
     	);
+	  
+      console.log('friendRequest : fromUserId : ', fromUserId, ' fromNickname : ', fromNickname, ' online/offline status : ', fromStatus);
 
-    	res.json({ message: "Request sent" });
-    	console.log('friendRequest : Request sent : fromUserId : ', fromUserId, ' toUserId : ', toUserId);
-
-    	//✅ 3. fetch nickname from users table
-    	const userResult = await pool.query(
-      		`SELECT nickname FROM chat.users WHERE id = $1`,
-      		[fromUserId]
-    	);
-
-	    let fromNickname = "Unknown";
-	
-	    if (userResult.rows.length > 0) {
-	      fromNickname = userResult.rows[0].nickname;
-	    }
-		console.log('friendRequest : emit : fromUserId : ', fromUserId, ' fromNickname : ', fromNickname);
+	  if (isOnline){ //the receiver isOline
+      // ✅ Send request via Socket.io
 	  
 		const io = req.app.get("io");
 		io.to(String(toUserId)).emit("friend:request_received", {
@@ -194,13 +202,6 @@ exports.friendRequest = async (req, res) => {
           console.log("friendRequest : Notification :  ", toUserId, "  ", fromUserId, " are in the same chat ", isInSameChat);
         
           if (!isOnline || !isInSameChat) {
-		      // update db
-			  console.log('friendRequest : user offline : update db : fromUserId : ',  fromUserId, ' toUserId : ', toUserId);
-		      await pool.query(
-		      	`INSERT INTO user_friends (user_id, friend_id, status)
-		       	VALUES ($1, $2, 'pending')`,
-		      	[fromUserId, toUserId]
-		    	);
 			  
 			 //Notify the offline user by FCM 
              //get 'fcm_token' of 'toUserId'.
