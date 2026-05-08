@@ -53,7 +53,7 @@ const EMAIL_TO   = process.env.EMAIL_TO;   //super
 
 //console.log('process.env.DATABASE_URL = ' + process.env.DATABASE_URL);
 
-console.log('pool = ' + pool);
+//console.log('pool = ' + pool);
 
 /* get expiry date from jwt token ****************
 const jwt = require('jsonwebtoken');
