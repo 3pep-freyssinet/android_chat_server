@@ -36,7 +36,7 @@ const CAPTCHA_SITE_KEY = process.env.CAPTCHA_SITE_KEY;
 
 //console.log('process.env.DATABASE_URL = ' + process.env.DATABASE_URL);
 
-console.log('pool = ' + pool);
+//console.log('pool = ' + pool);
 
 console.log('fcm_tokens_controler');
 
