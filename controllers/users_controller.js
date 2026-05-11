@@ -98,25 +98,31 @@ exports.friendRequest = async (req, res) => {
   		const status = existing.rows[0].status;
   		// ❌ Already pending → block
   		if (status === "pending") {
+			console.log('friendRequest : Request already pending');
     		return res.json({ message: "Request already pending" });
   		}
 
   		// ❌ Already friends → block
   		if (status === "accepted") {
+			console.log('friendRequest : Already accepted (friends)');
     		return res.json({ message: "Already accepted (friends)" });
   		}
 
   		// ✅ Was rejected → allow retry
   			if (status === "rejected") {
+                console.log('friendRequest : rejected');
+    			const rejectedAt = existing.rows[0].updated_at;
+    			const diff = Date.now() - new Date(rejectedAt).getTime();
 
-		    await pool.query(
-		      `UPDATE user_friends
-		       SET status = 'pending',
-		           created_at = NOW()
-		       WHERE user_id = $1 AND friend_id = $2`,
-		      [fromUserId, toUserId]
-		    );
-
+    			if (diff < 60_000) {
+                    console.log('friendRequest : still rejected');
+        			return res.status(429).json({
+            			success: false,
+            			message: "Try again later"
+        			});
+    			}
+            //here retry is allowed, send another request
+			console.log('friendRequest : retry is allowed');
 			//✅ 3. fetch nickname from users table
     		const userResult_ = await pool.query(
       			`SELECT nickname FROM chat.users WHERE id = $1`,
@@ -136,7 +142,7 @@ exports.friendRequest = async (req, res) => {
       			fromUserId,
       			nickname: fromNickname
     		});
-
+            console.log('friendRequest : Request sent again');
     		return res.json({ message: "Request sent again" });
   		}//end status
 	}//end existing.rows.length > 0
