@@ -87,7 +87,8 @@ exports.friendRequest = async (req, res) => {
     		uf.friend_id		 AS "friendId",
     		u.nickname			 AS "nickname",
 		    u.status			 AS "onlineStatus",
-    		uf.status 			 AS "relation_status"
+    		uf.status 			 AS "relation_status",
+			uf.created_at 		 AS "created_at"
 		FROM user_friends uf
 		JOIN chat.users u ON u.id = uf.user_id
 		WHERE user_id = $1 AND friend_id = $2`,
@@ -111,7 +112,7 @@ exports.friendRequest = async (req, res) => {
   		// ✅ Was rejected → allow retry
   			if (status === "rejected") {
                 console.log('friendRequest : rejected');
-    			const rejectedAt = existing.rows[0].updated_at;
+    			const rejectedAt = existing.rows[0].created_at;
     			const diff = Date.now() - new Date(rejectedAt).getTime();
 
     			if (diff < 60_000) {
