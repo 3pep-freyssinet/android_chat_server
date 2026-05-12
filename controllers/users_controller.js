@@ -97,6 +97,8 @@ exports.friendRequest = async (req, res) => {
 
     if (existing.rows.length > 0) {
   		const status = existing.rows[0].status;
+		console.log('friendRequest : status : ', status);
+		
   		// ❌ Already pending → block
   		if (status === "pending") {
 			console.log('friendRequest : Request already pending');
