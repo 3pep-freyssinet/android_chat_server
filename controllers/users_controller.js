@@ -377,12 +377,9 @@ exports.friendCancel = async (req, res) => {
 	
   // Only cancel if still pending
   const result = await pool.query(
-    `UPDATE user_friends
-     SET status = 'canceled'
-     WHERE user_id = $1
-       AND friend_id = $2
-       AND status = 'pending'
-     RETURNING *`,
+    `DELETE FROM user_friends
+		WHERE user_id = $1
+		AND friend_id = $2`,
     [fromUserId, toUserId]
   );
 
