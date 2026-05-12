@@ -145,7 +145,10 @@ exports.friendRequest = async (req, res) => {
     		});
             console.log('friendRequest : Request sent again');
     		return res.json({ message: "Request sent again" });
-  		}//end status
+  		}else{
+			console.log('friendRequest : Unexpected case');
+    		return res.json({ message: "Unexpected case" });
+		}//end status
 	}//end existing.rows.length > 0
 
 	//here no row found--> first request --> status 'pending'.
