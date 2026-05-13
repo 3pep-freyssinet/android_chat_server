@@ -399,9 +399,14 @@ exports.friendCancel = async (req, res) => {
   return res.json({ success: true });
 };
 
+//block friends
+exports.friendsBlock = async (req, res) => {
+	console.log('friendsBlock : start...');
+  const userId = req.params.userId;
+
 //Get friends for a user id
 exports.friendsUserId = async (req, res) => {
-	console.log('friendsUserId : start...');
+  console.log('friendsUserId : start...');
   const userId = req.params.userId;
 
   try {
