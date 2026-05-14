@@ -638,6 +638,7 @@ exports.loadAllUsers = async (req, res) => {
 		    u.status
 		FROM chat.users u
 		WHERE u.id != $1
+		ORDER BY u.nickname ASC
 		
 		-- hide users I blocked
 		AND NOT EXISTS (
