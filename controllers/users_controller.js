@@ -626,7 +626,8 @@ exports.friendsPending = async (req, res) => {
 //get all users
 exports.loadAllUsers = async (req, res) => {
   console.log('loadAllUsers : start...');
-
+  const currentUserId = req.user.userId;
+  console.log('loadAllUsers : currentUserId : ', currentUserId);
   try {
     //SELECT * FROM chat.users
 	const result = await pool.query( 
@@ -662,7 +663,7 @@ exports.loadAllUsers = async (req, res) => {
 		    )
 		)
 	  `, 
-      [userId]
+      [currentUserId]
     );
 	 
     if (!result.rows.length) {
