@@ -438,7 +438,7 @@ AND (
     OR expires_at > NOW()
 )
 `,
-[toUserId, fromUserId]
+ [blockerId, blockedId]
 );
 
 if (blocked.rows.length > 0) {
