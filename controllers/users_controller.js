@@ -401,8 +401,117 @@ exports.friendCancel = async (req, res) => {
 
 //block friends
 exports.friendsBlock = async (req, res) => {
-	console.log('friendsBlock : start...');
-  const userId = req.params.userId;
+  try {
+    const {
+      blockerId,
+      blockedId,
+      durationMs
+    } = req.body;
+
+    // -----------------------------------
+    // validation
+    // -----------------------------------
+
+    if (!blockerId || !blockedId) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing ids"
+      });
+    }
+
+    // -----------------------------------
+    // compute expiration
+    // -----------------------------------
+
+    let expiresAt = null;
+
+    // -1 = permanent block
+    if (parseInt(durationMs) > 0) {
+      expiresAt = new Date(
+        Date.now() + parseInt(durationMs)
+      );
+    }
+
+    // -----------------------------------
+    // remove existing block first
+    // (avoid duplicates)
+    // -----------------------------------
+
+    await pool.query(
+      `DELETE FROM user_blocks
+      WHERE blocker_id = $1
+      AND blocked_id = $2
+      `,
+      [blockerId, blockedId]
+    );
+
+    // -----------------------------------
+    // insert new block
+    // -----------------------------------
+
+    await pool.query(
+      `INSERT INTO user_blocks (
+        blocker_id,
+        blocked_id,
+        expires_at,
+        created_at
+      )
+      VALUES ($1, $2, $3, NOW())
+      `,
+      [
+        blockerId,
+        blockedId,
+        expiresAt
+      ]
+    );
+
+    // -----------------------------------
+    // remove friendship relation BOTH ways
+    // -----------------------------------
+
+    await pool.query(
+      `DELETE FROM user_friends
+      WHERE
+      (
+        user_id = $1
+        AND friend_id = $2
+      )
+      OR
+      (
+        user_id = $2
+        AND friend_id = $1
+      )
+      `,
+      [blockerId, blockedId]
+    );
+
+    // -----------------------------------
+    // socket notify blocked user
+    // -----------------------------------
+
+    const io = req.app.get("io");
+    io.to(String(blockedId)).emit("friend:blocked",
+      {
+        fromUserId: blockerId
+      }
+    );
+
+    // -----------------------------------
+    // response
+    // -----------------------------------
+
+    return res.json({
+      success: true
+    });
+  }
+  catch (e) {
+    console.error("friendsBlock", e);
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
 
 //Get friends for a user id
 exports.friendsUserId = async (req, res) => {
