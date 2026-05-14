@@ -628,9 +628,40 @@ exports.loadAllUsers = async (req, res) => {
   console.log('loadAllUsers : start...');
 
   try {
-    
-	const result = await pool.query(
-      `SELECT * FROM chat.users`
+    //SELECT * FROM chat.users
+	const result = await pool.query( 
+      `
+		SELECT
+		    u.id,
+		    u.nickname,
+		    u.status
+		FROM chat.users u
+		WHERE u.id != $1
+		
+		-- hide users I blocked
+		AND NOT EXISTS (
+		    SELECT 1
+		    FROM user_blocks ub
+		    WHERE ub.blocker_id = $1
+		    AND ub.blocked_id = u.id
+		    AND (
+		        ub.expires_at IS NULL
+		        OR ub.expires_at > NOW()
+		    )
+		)
+		
+		-- hide users who blocked me
+		AND NOT EXISTS (
+		    SELECT 1
+		    FROM user_blocks ub
+		    WHERE ub.blocker_id = u.id
+		    AND ub.blocked_id = $1
+		    AND (
+		        ub.expires_at IS NULL
+		        OR ub.expires_at > NOW()
+		    )
+		)
+	  `
     );
 	 
     if (!result.rows.length) {
