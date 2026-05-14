@@ -661,7 +661,8 @@ exports.loadAllUsers = async (req, res) => {
 		        OR ub.expires_at > NOW()
 		    )
 		)
-	  `
+	  `, 
+      [userId]
     );
 	 
     if (!result.rows.length) {
