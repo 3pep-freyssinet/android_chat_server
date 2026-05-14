@@ -407,18 +407,48 @@ exports.friendsBlock = async (req, res) => {
       blockedId,
       durationMs
     } = req.body;
-
+	  
+   console.log('friendsBlock : start...');
+	  
     // -----------------------------------
     // validation
     // -----------------------------------
-
-    if (!blockerId || !blockedId) {
+    
+	console.log('friendsBlock : blockerId : ', blockerId, ' blockedId : ', blockedId, ' durationMs : ', durationMs);
+    
+	if (!blockerId || !blockedId) {
+	  console.log('friendsBlock : Missing ids');
       return res.status(400).json({
         success: false,
         message: "Missing ids"
       });
     }
 
+// -----------------------------------
+// check active block
+// -----------------------------------
+
+const blocked = await pool.query(
+`SELECT *
+FROM user_blocks
+WHERE blocker_id = $1
+AND blocked_id = $2
+AND (
+    expires_at IS NULL
+    OR expires_at > NOW()
+)
+`,
+[toUserId, fromUserId]
+);
+
+if (blocked.rows.length > 0) {
+	console.log('friendsBlock : User unavailable');
+    return res.status(403).json({
+        success: false,
+        message: "User unavailable"
+    });
+}
+	  
     // -----------------------------------
     // compute expiration
     // -----------------------------------
@@ -499,13 +529,13 @@ exports.friendsBlock = async (req, res) => {
     // -----------------------------------
     // response
     // -----------------------------------
-
+    console.log('friendsBlock : User blocked successfully');
     return res.json({
       success: true
     });
   }
   catch (e) {
-    console.error("friendsBlock", e);
+    console.error("friendsBlock : ", e);
     return res.status(500).json({
       success: false,
       message: "Server error"
