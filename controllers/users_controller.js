@@ -157,6 +157,8 @@ exports.friendRequest = async (req, res) => {
 
 	//here no row found--> first request --> status 'pending'.
 	
+	  console.log('friendRequest : no row found--> first request');
+	  
 	  //✅ 3. fetch nickname, status online/offline of the sender from 'chat.users' table.
       const userResult = await pool.query(
     	`SELECT nickname, status FROM chat.users WHERE id = $1`,
