@@ -165,6 +165,8 @@ exports.friendRequest = async (req, res) => {
       	[fromUserId]
       );
 	  
+	  console.log('friendRequest : nickname rows.length : ', userResult.rows.length);
+	  
 	  if (userResult.rows.length == 0) {
 	      res.json({ message: "user not found" });
 	  }
@@ -182,6 +184,8 @@ exports.friendRequest = async (req, res) => {
 	           relationStatus: 'pending'
 	  });
 
+	  if(true) return;
+	  
 	  // update db
 	  console.log('friendRequest : update db : fromUserId : ',  fromUserId, ' toUserId : ', toUserId);
       await pool.query(
