@@ -507,20 +507,22 @@ if (blocked.rows.length > 0) {
     // socket notify blocked user
     // -----------------------------------
 
-    const io = req.app.get("io");
     io.to(String(blockedId)).emit("friend:blocked",
-      {
-        fromUserId: blockerId
-      }
+  		{
+    		fromUserId: blockerId,
+    		expiresAt: expiresAt ? expiresAt.getTime() : 0
+        }
     );
 
     // -----------------------------------
     // response
     // -----------------------------------
     console.log('friendsBlock : User blocked successfully');
-    return res.json({
-      success: true
-    });
+    return res.json(
+		{
+  			success: true,
+  			blockedUntil: expiresAt ? expiresAt.getTime() : 0
+        });
   }
   catch (e) {
     console.error("friendsBlock : ", e);
