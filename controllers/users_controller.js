@@ -396,7 +396,7 @@ exports.friendCancel = async (req, res) => {
   );
 
   if (result.rowCount === 0) {
-	console.log('friendCancel : Cannot cancel'); 
+	console.log('friendCancel : No pending user found, cannot cancel'); 
     return res.status(400).json({ message: "Cannot cancel" });
   }
 
