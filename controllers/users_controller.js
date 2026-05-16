@@ -506,7 +506,7 @@ if (blocked.rows.length > 0) {
     // -----------------------------------
     // socket notify blocked user
     // -----------------------------------
-
+    const io = req.app.get("io");
     io.to(String(blockedId)).emit("friend:blocked",
   		{
     		fromUserId: blockerId,
