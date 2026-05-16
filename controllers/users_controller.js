@@ -184,8 +184,6 @@ exports.friendRequest = async (req, res) => {
 			   fromStatus: fromStatus,
 	           relationStatus: 'pending'
 	  });
-
-	  if(true) return;
 	  
 	  // update db
 	  console.log('friendRequest : update db : fromUserId : ',  fromUserId, ' toUserId : ', toUserId);
