@@ -504,26 +504,6 @@ if (blocked.rows.length > 0) {
     );
 
     // -----------------------------------
-    // remove friendship relation BOTH ways
-    // -----------------------------------
-
-    await pool.query(
-      `DELETE FROM user_friends
-      WHERE
-      (
-        user_id = $1
-        AND friend_id = $2
-      )
-      OR
-      (
-        user_id = $2
-        AND friend_id = $1
-      )
-      `,
-      [blockerId, blockedId]
-    );
-
-    // -----------------------------------
     // socket notify blocked user
     // -----------------------------------
 
