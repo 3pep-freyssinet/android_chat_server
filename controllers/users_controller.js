@@ -625,33 +625,32 @@ exports.loadAllUsers = async (req, res) => {
 		SELECT
 		    u.id,
 		    u.nickname,
-		    u.status
+		    u.status,
+		
+		    ub.blocker_id,
+		    ub.expires_at
+		
 		FROM chat.users u
+		
+		LEFT JOIN user_blocks ub
+		ON (
+		    (
+		        ub.blocker_id = $1
+		        AND ub.blocked_id = u.id
+		    )
+		    OR
+		    (
+		        ub.blocker_id = u.id
+		        AND ub.blocked_id = $1
+		    )
+		)
+		AND (
+		    ub.expires_at IS NULL
+		    OR ub.expires_at > NOW()
+		)
+		
 		WHERE u.id != $1
 		
-		-- hide users I blocked
-		AND NOT EXISTS (
-		    SELECT 1
-		    FROM user_blocks ub
-		    WHERE ub.blocker_id = $1
-		    AND ub.blocked_id = u.id
-		    AND (
-		        ub.expires_at IS NULL
-		        OR ub.expires_at > NOW()
-		    )
-		)
-		
-		-- hide users who blocked me
-		AND NOT EXISTS (
-		    SELECT 1
-		    FROM user_blocks ub
-		    WHERE ub.blocker_id = u.id
-		    AND ub.blocked_id = $1
-		    AND (
-		        ub.expires_at IS NULL
-		        OR ub.expires_at > NOW()
-		    )
-		)
 		ORDER BY u.nickname ASC
 	  `, 
       [currentUserId]
