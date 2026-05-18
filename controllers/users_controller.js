@@ -626,19 +626,17 @@ exports.loadAllUsers = async (req, res) => {
 		    u.id,
 		    u.nickname,
 		    u.status,
-		
 		    ub.blocker_id,
 		    ub.expires_at
-		
+
 		FROM chat.users u
-		
 		LEFT JOIN user_blocks ub
 		ON (
-		    (
+    		(
 		        ub.blocker_id = $1
 		        AND ub.blocked_id = u.id
-		    )
-		    OR
+    		)
+    	OR
 		    (
 		        ub.blocker_id = u.id
 		        AND ub.blocked_id = $1
@@ -647,9 +645,8 @@ exports.loadAllUsers = async (req, res) => {
 		AND (
 		    ub.expires_at IS NULL
 		)
-		
 		WHERE u.id != $1
-		
+		AND ub.blocker_id IS NULL
 		ORDER BY u.nickname ASC
 	  `, 
       [currentUserId]
