@@ -517,7 +517,7 @@ if (blocked.rows.length > 0) {
     // -----------------------------------
     // response
     // -----------------------------------
-    console.log('friendsBlock : User blocked successfully');
+    console.log('friendsBlock : blockedId : ', blockedId, ' blocked successfully: blockedUntil : ', expiresAt ? expiresAt.getTime() : 0 );
     return res.json(
 		{
   			success: true,
