@@ -646,7 +646,6 @@ exports.loadAllUsers = async (req, res) => {
 		)
 		AND (
 		    ub.expires_at IS NULL
-		    OR ub.expires_at > NOW()
 		)
 		
 		WHERE u.id != $1
