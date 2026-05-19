@@ -515,12 +515,15 @@ VALUES ($1, $2, $3, $4, NOW())
     // socket notify blocked user
     // -----------------------------------
     const io = req.app.get("io");
-    io.to(String(blockedId)).emit("friend:blocked",
-  		{
-    		fromUserId: blockerId,
-    		expiresAt: expiresAt ? expiresAt.getTime() : 0
-        }
-    );
+	  
+    io.to(String(blockedId)).emit( "friend:blocked",
+	    {
+	        fromUserId: blockerId,
+	        temporary: expiresAt != null,
+	        expiresAt: expiresAt ? expiresAt.getTime() : 0,
+	        graceExpiresAt: graceExpiresAt ? graceExpiresAt.getTime() : 0
+	    }
+	);
 
     // -----------------------------------
     // response
