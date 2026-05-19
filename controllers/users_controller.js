@@ -449,26 +449,31 @@ AND (
  [blockerId, blockedId]
 );
 
-if (blocked.rows.length > 0) {
-	console.log('friendsBlock : User unavailable');
-    return res.status(403).json({
-        success: false,
-        message: "User unavailable"
-    });
-}
+	if (blocked.rows.length > 0) {
+		console.log('friendsBlock : User unavailable');
+	    return res.status(403).json({
+	        success: false,
+	        message: "User unavailable"
+	    });
+	}
 	  
     // -----------------------------------
     // compute expiration
     // -----------------------------------
 
     let expiresAt = null;
+	let graceExpiresAt = null;
 
-    // -1 = permanent block
-    if (parseInt(durationMs) > 0) {
-      expiresAt = new Date(
-        Date.now() + parseInt(durationMs)
-      );
-    }
+	// temporary block
+	if (parseInt(durationMs) > 0) {
+	
+	    expiresAt = new Date(Date.now() + parseInt(durationMs));
+	}
+
+	// permanent block
+	else {
+	    graceExpiresAt = new Date( Date.now() + (24 * 60 * 60 * 1000) );
+	}
 
     // -----------------------------------
     // remove existing block first
@@ -488,20 +493,23 @@ if (blocked.rows.length > 0) {
     // -----------------------------------
 
     await pool.query(
-      `INSERT INTO user_blocks (
-        blocker_id,
-        blocked_id,
-        expires_at,
-        created_at
-      )
-      VALUES ($1, $2, $3, NOW())
-      `,
-      [
-        blockerId,
-        blockedId,
-        expiresAt
-      ]
-    );
+`
+INSERT INTO user_blocks (
+    blocker_id,
+    blocked_id,
+    expires_at,
+    grace_expires_at,
+    created_at
+)
+VALUES ($1, $2, $3, $4, NOW())
+`,
+[
+    blockerId,
+    blockedId,
+    expiresAt,
+    graceExpiresAt
+]
+);
 
     // -----------------------------------
     // socket notify blocked user
