@@ -461,7 +461,7 @@ AND (
     // compute expiration
     // -----------------------------------
 
-    let expiresAt = null;
+    let expiresAt      = null;
 	let graceExpiresAt = null;
 
 	// temporary block
@@ -472,7 +472,8 @@ AND (
 
 	// permanent block
 	else {
-	    graceExpiresAt = new Date( Date.now() + (24 * 60 * 60 * 1000) );
+	    // grace period NOT started yet
+    	graceExpiresAt = null;
 	}
 
     // -----------------------------------
@@ -521,7 +522,7 @@ VALUES ($1, $2, $3, $4, NOW())
 	        fromUserId: blockerId,
 	        temporary: expiresAt != null,
 	        expiresAt: expiresAt ? expiresAt.getTime() : 0,
-	        graceExpiresAt: graceExpiresAt ? graceExpiresAt.getTime() : 0
+	        requiresAcknowledgment:expiresAt == null
 	    }
 	);
 
@@ -537,6 +538,90 @@ VALUES ($1, $2, $3, $4, NOW())
   }
   catch (e) {
     console.error("friendsBlock : ", e);
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
+
+//aknowledge block friends
+exports.acknowledgedFriendsBlock = async (req, res) => {
+
+  try {
+
+    const {
+      blockerId,
+      blockedId,
+      graceDurationMs
+    } = req.body;
+
+    console.log(
+      'acknowledgedFriendsBlock : start...'
+    );
+
+    // -----------------------------------
+    // compute dates
+    // -----------------------------------
+
+    const now = new Date();
+
+    const graceExpiresAt =
+      new Date(
+        now.getTime() + parseInt(graceDurationMs)
+      );
+
+    // -----------------------------------
+    // update block row
+    // -----------------------------------
+
+    await pool.query(
+`
+UPDATE user_blocks
+SET
+    acknowledged_at  = $3,
+    grace_expires_at = $4
+WHERE
+    blocker_id = $1
+AND blocked_id = $2
+AND acknowledged_at IS NULL
+`,
+[
+    blockerId,
+    blockedId,
+    now,
+    graceExpiresAt
+]
+);
+
+    // -----------------------------------
+    // notify blocker user
+    // -----------------------------------
+    const io = req.app.get("io");
+
+    io.to(String(blockerId)).emit(
+      "friend:acknowledge-block",
+      {
+        blockedUserId: blockedId,
+        acknowledgedAt:now.getTime(),
+        graceExpiresAt:graceExpiresAt.getTime()
+      }
+    );
+
+    // -----------------------------------
+    // response
+    // -----------------------------------
+
+    console.log('acknowledgedFriendsBlock : blockedId : ', blockedId, ' graceExpiresAt : ', graceExpiresAt );
+
+    return res.json({
+      success: true,
+      acknowledgedAt:now.getTime(),
+      graceExpiresAt:graceExpiresAt.getTime()
+    });
+  }
+  catch(e) {
+    console.error("acknowledgedFriendsBlock : ", e );
     return res.status(500).json({
       success: false,
       message: "Server error"
