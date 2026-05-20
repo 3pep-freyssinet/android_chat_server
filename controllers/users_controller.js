@@ -545,7 +545,7 @@ VALUES ($1, $2, $3, $4, NOW())
 };
 
 //cancel block friends
-exports.friendsBlockCancel = async (req, res) => {
+exports.friendsBlockCancel = async (req, res) => { 
   try {
     const {
       blockerId,
