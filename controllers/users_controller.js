@@ -544,6 +544,22 @@ VALUES ($1, $2, $3, $4, NOW())
   }
 };
 
+//cancel block friends
+exports.friendsBlockCancel = async (req, res) => {
+  try {
+    const {
+      blockerId,
+      blockedId,
+      durationMs
+    } = req.body;
+	  
+   console.log('friendsBlock : start...');
+
+  }catch{
+
+  }
+}
+
 //Get friends for a user id
 exports.friendsUserId = async (req, res) => {
   console.log('friendsUserId : start...');
