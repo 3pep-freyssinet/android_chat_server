@@ -556,43 +556,39 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
       graceDurationMs
     } = req.body;
 
-    console.log(
-      'acknowledgedFriendsBlock : start...'
-    );
-
+    console.log('acknowledgedFriendsBlock : start...' );
+    console.log('acknowledgedFriendsBlock : blockerId : ', blockerId, ' blockedId : ', blockedId, ' graceDurationMs : ', graceDurationMs );
     // -----------------------------------
     // compute dates
     // -----------------------------------
 
     const now = new Date();
 
-    const graceExpiresAt =
-      new Date(
-        now.getTime() + parseInt(graceDurationMs)
-      );
-
+    const graceExpiresAt = new Date(now.getTime() + parseInt(graceDurationMs));
+    console.log('acknowledgedFriendsBlock : graceExpiresAt : ', graceExpiresAt );
+	  
     // -----------------------------------
     // update block row
     // -----------------------------------
 
     await pool.query(
-`
-UPDATE user_blocks
-SET
-    acknowledged_at  = $3,
-    grace_expires_at = $4
-WHERE
-    blocker_id = $1
-AND blocked_id = $2
-AND acknowledged_at IS NULL
-`,
-[
-    blockerId,
-    blockedId,
-    now,
-    graceExpiresAt
-]
-);
+	`
+	UPDATE user_blocks
+	SET
+	    acknowledged_at  = $3,
+	    grace_expires_at = $4
+	WHERE
+	    blocker_id = $1
+	AND blocked_id = $2
+	AND acknowledged_at IS NULL
+	`,
+	[
+	    blockerId,
+	    blockedId,
+	    now,
+	    graceExpiresAt
+	]
+	);
 
     // -----------------------------------
     // notify blocker user
