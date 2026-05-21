@@ -632,16 +632,43 @@ AND acknowledged_at IS NULL
 //cancel block friends
 exports.friendsBlockCancel = async (req, res) => { 
   try {
-    const {
-      blockerId,
-      blockedId,
-      durationMs
-    } = req.body;
+    const {blockerId, blockedId } = req.body;
 	  
-   console.log('friendsBlock : start...');
+   console.log('friendsBlockCancel : start...');
+	const result = await pool.query(
+      `
+	  	DELETE FROM user_blocks
+	 	WHERE blocker_id = $1
+		AND blocked_id   = $2
+		AND grace_expires_at > NOW()
+	  `,
+      [blockerId, blockedId]
+    );
 
+	const io = req.app.get("io");
+	  
+	if (result.rows.length > 0) {
+		console.log('friendsBlockCancel : Cancel block successful');
+    	io.to(String(blockerId)).emit("friend:acknowledge-block",
+	      {
+	        blockedUserId: blockedId,
+	        success: true
+	      }
+    	);
+	    return res.json({success: true, message: "Cancel block successful" } );      
+	}else{
+		console.log('friendsBlockCancel : Cancel block fail');
+		io.to(String(blockerId)).emit("friend:acknowledge-block",
+	      {
+	        blockedUserId: blockedId,
+	        success: false
+	      }
+    	);
+	    return res.json({success: false, message: "Cancel block fail" } )
+	}
   }catch{
-
+	console.error(err);
+    res.status(500).send("Error : ", err);
   }
 }
 
