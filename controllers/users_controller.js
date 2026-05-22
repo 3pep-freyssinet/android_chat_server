@@ -608,7 +608,7 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
     // response
     // -----------------------------------
 
-    console.log('acknowledgedFriendsBlock : blockedId : ', blockedId, ' graceExpiresAt : ', graceExpiresAt );
+    console.log('acknowledgedFriendsBlock : blockedId : ', blockedId, ' graceExpiresAt : ', graceExpiresAt.getTime() );
 
     return res.json({
       success: true,
