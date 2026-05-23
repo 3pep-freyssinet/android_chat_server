@@ -533,6 +533,7 @@ VALUES ($1, $2, $3, $4, NOW())
     return res.json(
 		{
   			success: true,
+			temporary: expiresAt != null,
   			blockedUntil: expiresAt ? expiresAt.getTime() : 0
         });
   }
