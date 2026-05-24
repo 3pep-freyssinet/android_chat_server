@@ -534,12 +534,13 @@ VALUES ($1, $2, $3, $4, $5)
     // response
     // -----------------------------------
     console.log('friendsBlock : blockedId : ', blockedId, ' blocked successfully: temporary : ', (expiresAt != null), ' blockedUntil : ', expiresAt ? expiresAt : 0 );
-    return res.json(
+    
+	  return res.json(
 		{
   			success: true,
 			temporary: expiresAt != null,
 			//createdAt:now,
-  			blockedUntil: expiresAt ? expiresAt.getTime() : 0
+  			blockedUntil: expiresAt ? expiresAt : 0
         });
   }
   catch (e) {
