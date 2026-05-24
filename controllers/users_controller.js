@@ -509,8 +509,8 @@ VALUES ($1, $2, $3, $4, $5)
 [
     blockerId,
     blockedId,
-    expiresAt,
-    graceExpiresAt,
+    new Date(expiresAt),//stamp
+    new Date(graceExpiresAt),//stamp
 	new Date(now) //stamp
 ]
 );
