@@ -467,8 +467,7 @@ AND (
 	  
 	// temporary block
 	if (parseInt(durationMs) > 0) {
-	
-	    expiresAt = now + parseInt(durationMs));
+	    expiresAt = now + parseInt(durationMs);
 	}
 
 	// permanent block
