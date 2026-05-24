@@ -463,11 +463,12 @@ AND (
 
     let expiresAt      = null;
 	let graceExpiresAt = null;
-
+    const now          = new Date(Date.now());
+	  
 	// temporary block
 	if (parseInt(durationMs) > 0) {
 	
-	    expiresAt = new Date(Date.now() + parseInt(durationMs));
+	    expiresAt = now + parseInt(durationMs));
 	}
 
 	// permanent block
@@ -502,13 +503,14 @@ INSERT INTO user_blocks (
     grace_expires_at,
     created_at
 )
-VALUES ($1, $2, $3, $4, NOW())
+VALUES ($1, $2, $3, $4, $5)
 `,
 [
     blockerId,
     blockedId,
     expiresAt,
-    graceExpiresAt
+    graceExpiresAt,
+	now
 ]
 );
 
@@ -521,6 +523,7 @@ VALUES ($1, $2, $3, $4, NOW())
 	    {
 	        fromUserId: blockerId,
 	        temporary: expiresAt != null,
+			createdAt:now,
 	        expiresAt: expiresAt ? expiresAt.getTime() : 0,
 	        requiresAcknowledgment:expiresAt == null
 	    }
@@ -534,6 +537,7 @@ VALUES ($1, $2, $3, $4, NOW())
 		{
   			success: true,
 			temporary: expiresAt != null,
+			createdAt:now,
   			blockedUntil: expiresAt ? expiresAt.getTime() : 0
         });
   }
