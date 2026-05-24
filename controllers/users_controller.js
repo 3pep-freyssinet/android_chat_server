@@ -463,7 +463,7 @@ AND (
 
     let expiresAt      = null;
 	let graceExpiresAt = null;
-    const now          = new Date(Date.now());
+    const now          = new Date(Date.now());//now.getTime()
 	  
 	// temporary block
 	if (parseInt(durationMs) > 0) {
