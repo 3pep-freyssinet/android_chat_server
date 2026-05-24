@@ -475,7 +475,9 @@ AND (
 	    // grace period NOT started yet
     	graceExpiresAt = null;
 	}
-
+	  
+    console.log('friendsBlock : now : ', now, ' expiresAt : ', expiresAt, ' new Date(now) : ', new Date(now));
+	  
     // -----------------------------------
     // remove existing block first
     // (avoid duplicates)
