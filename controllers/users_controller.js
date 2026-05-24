@@ -509,7 +509,7 @@ VALUES ($1, $2, $3, $4, $5)
     blockedId,
     expiresAt,
     graceExpiresAt,
-	now
+	new Date(now) //stamp
 ]
 );
 
