@@ -463,11 +463,11 @@ AND (
 
     let expiresAt      = null;
 	let graceExpiresAt = null;
-    const now          = new Date(Date.now());//now.getTime()
+    const now          = Date.now();// -- long
 	  
 	// temporary block
 	if (parseInt(durationMs) > 0) {
-	    expiresAt = now + parseInt(durationMs);
+	    expiresAt = now + parseInt(durationMs);//long
 	}
 
 	// permanent block
@@ -523,7 +523,7 @@ VALUES ($1, $2, $3, $4, $5)
 	        fromUserId: blockerId,
 	        temporary: expiresAt != null,
 			//createdAt:now,
-	        expiresAt: expiresAt ? expiresAt.getTime() : 0,
+	        expiresAt: expiresAt ? expiresAt : 0,
 	        requiresAcknowledgment:expiresAt == null
 	    }
 	);
@@ -553,7 +553,6 @@ VALUES ($1, $2, $3, $4, $5)
 exports.acknowledgedFriendsBlock = async (req, res) => {
 
   try {
-
     const {
       blockerId,
       blockedId,
