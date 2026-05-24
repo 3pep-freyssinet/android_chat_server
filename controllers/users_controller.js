@@ -522,7 +522,7 @@ VALUES ($1, $2, $3, $4, $5)
 	    {
 	        fromUserId: blockerId,
 	        temporary: expiresAt != null,
-			createdAt:now,
+			//createdAt:now,
 	        expiresAt: expiresAt ? expiresAt.getTime() : 0,
 	        requiresAcknowledgment:expiresAt == null
 	    }
@@ -536,7 +536,7 @@ VALUES ($1, $2, $3, $4, $5)
 		{
   			success: true,
 			temporary: expiresAt != null,
-			createdAt:now,
+			//createdAt:now,
   			blockedUntil: expiresAt ? expiresAt.getTime() : 0
         });
   }
