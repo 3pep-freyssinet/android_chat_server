@@ -529,7 +529,7 @@ VALUES ($1, $2, $3, $4, NOW())
     // -----------------------------------
     // response
     // -----------------------------------
-    console.log('friendsBlock : blockedId : ', blockedId, ' blocked successfully: blockedUntil : ', expiresAt ? expiresAt.getTime() : 0 );
+    console.log('friendsBlock : blockedId : ', blockedId, ' blocked successfully: temporary : ', (expiresAt != null), ' blockedUntil : ', expiresAt ? expiresAt.getTime() : 0 );
     return res.json(
 		{
   			success: true,
