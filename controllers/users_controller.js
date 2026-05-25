@@ -463,11 +463,11 @@ AND (
 
     let expiresAt      = null;
 	let graceExpiresAt = null;
-    const now          = Date.now();// -- long
+    const now          = new Date();;// -- stamp
 	  
 	// temporary block
 	if (parseInt(durationMs) > 0) {
-	    expiresAt = now + parseInt(durationMs);//long
+	    expiresAt = new Date( now.getTime() + parseInt(graceDurationMs));//stamp
 	}
 
 	// permanent block
@@ -509,9 +509,9 @@ VALUES ($1, $2, $3, $4, $5)
 [
     blockerId,
     blockedId,
-    new Date(expiresAt),//stamp
-    new Date(graceExpiresAt),//stamp
-	new Date(now) //stamp
+    expiresAt,		//stamp
+    graceExpiresAt,	//stamp
+	now 			//stamp
 ]
 );
 
@@ -525,7 +525,7 @@ VALUES ($1, $2, $3, $4, $5)
 	        fromUserId: blockerId,
 	        temporary: expiresAt != null,
 			//createdAt:now,
-	        expiresAt: expiresAt ? expiresAt : 0,
+	        expiresAt: expiresAt ? expiresAt.getTime() : 0,
 	        requiresAcknowledgment:expiresAt == null
 	    }
 	);
@@ -533,14 +533,14 @@ VALUES ($1, $2, $3, $4, $5)
     // -----------------------------------
     // response
     // -----------------------------------
-    console.log('friendsBlock : blockedId : ', blockedId, ' blocked successfully: temporary : ', (expiresAt != null), ' blockedUntil : ', expiresAt ? expiresAt : 0 );
+    console.log('friendsBlock : blockedId : ', blockedId, ' blocked successfully: temporary : ', (expiresAt != null), ' blockedUntil : ', expiresAt ? expiresAt.getTime() : 0 );
     
 	  return res.json(
 		{
   			success: true,
 			temporary: expiresAt != null,
 			//createdAt:now,
-  			blockedUntil: expiresAt ? expiresAt : 0
+  			blockedUntil: expiresAt ? expiresAt.getTime() : 0
         });
   }
   catch (e) {
