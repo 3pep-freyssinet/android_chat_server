@@ -525,9 +525,9 @@ VALUES ($1, $2, $3, $4, $5)
 	    {
 	        fromUserId: blockerId,
 	        temporary: expiresAt != null,
-			//createdAt:now,
-	        expiresAt: expiresAt ? expiresAt.getTime() : 0,
-	        requiresAcknowledgment:expiresAt == null
+			createdAt: now.getTime(),	//-- long
+	        //expiresAt: expiresAt ? expiresAt.getTime() : 0,
+	        //requiresAcknowledgment:expiresAt == null
 	    }
 	);
 
@@ -540,8 +540,8 @@ VALUES ($1, $2, $3, $4, $5)
 		{
   			success: true,
 			temporary: expiresAt != null,
-			//createdAt:now,
-  			blockedUntil: expiresAt ? expiresAt.getTime() : 0
+			createdAt: now.getTime(),	//-- long
+  			//blockedUntil: expiresAt ? expiresAt.getTime() : 0
         });
   }
   catch (e) {
