@@ -467,7 +467,7 @@ AND (
 	  
 	// temporary block
 	if (parseInt(durationMs) > 0) {
-	    expiresAt = new Date( now.getTime() + parseInt(graceDurationMs));//stamp
+	    expiresAt = new Date( now.getTime() + parseInt(durationMs));//stamp
 	}
 
 	// permanent block
