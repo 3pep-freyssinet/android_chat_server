@@ -467,7 +467,8 @@ AND (
 	  
 	// temporary block
 	if (parseInt(durationMs) > 0) {
-	    expiresAt = new Date( now.getTime() + parseInt(durationMs));//stamp
+	    //expiresAt = new Date( now.getTime() + parseInt(durationMs));//stamp
+		expiresAt   = null; //set in aknowledge.
 	}
 
 	// permanent block
