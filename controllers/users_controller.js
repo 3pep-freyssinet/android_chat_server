@@ -524,7 +524,7 @@ VALUES ($1, $2, $3, $4, $5)
     io.to(String(blockedId)).emit( "friend:blocked",
 	    {
 	        fromUserId: blockerId,
-	        temporary: expiresAt != null,
+	        temporary: expiresAt == null,
 			createdAt: now.getTime(),	//-- long
 	        //expiresAt: expiresAt ? expiresAt.getTime() : 0,
 	        //requiresAcknowledgment:expiresAt == null
