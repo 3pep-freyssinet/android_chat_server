@@ -559,13 +559,13 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
 
   try {
     const {
-      blockerId,
-      blockedId,
+      friendId,
+      meId,
       graceDurationMs
     } = req.body;
 
     console.log('acknowledgedFriendsBlock : start...' );
-    console.log('acknowledgedFriendsBlock : blockerId : ', blockerId, ' blockedId : ', blockedId, ' graceDurationMs : ', graceDurationMs );
+    console.log('acknowledgedFriendsBlock : friendId : ', friendId, ' meId : ', meId, ' graceDurationMs : ', graceDurationMs );
     // -----------------------------------
     // compute dates
     // -----------------------------------
@@ -591,8 +591,8 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
 	AND acknowledged_at IS NULL
 	`,
 	[
-	    blockerId,
-	    blockedId,
+	    friendId,
+	    meId,
 	    now,
 	    graceExpiresAt
 	]
@@ -603,10 +603,10 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
     // -----------------------------------
     const io = req.app.get("io");
 
-    io.to(String(blockedId)).emit(
+    io.to(String(friendId)).emit(
       "friend:acknowledge-block",
       {
-        blockedUserId: blockedId,
+        blockedUserId: meId,
         acknowledgedAt:now.getTime(),
         graceExpiresAt:graceExpiresAt.getTime()
       }
@@ -616,7 +616,7 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
     // response
     // -----------------------------------
 
-    console.log('acknowledgedFriendsBlock : blockedId : ', blockedId, ' graceExpiresAt : ', graceExpiresAt.getTime() );
+    console.log('acknowledgedFriendsBlock : blockedId : ', meId, ' graceExpiresAt : ', graceExpiresAt.getTime() );
 
     return res.json({
       success: true,
