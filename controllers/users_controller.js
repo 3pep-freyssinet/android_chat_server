@@ -603,7 +603,7 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
     // -----------------------------------
     const io = req.app.get("io");
 
-    io.to(String(blockerId)).emit(
+    io.to(String(blockedId)).emit(
       "friend:acknowledge-block",
       {
         blockedUserId: blockedId,
