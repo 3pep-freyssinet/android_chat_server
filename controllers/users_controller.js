@@ -413,7 +413,7 @@ exports.friendsBlock = async (req, res) => {
     const {
       blockerId,
       blockedId,
-      durationMs
+      durationMs //-1=permanent
     } = req.body;
 	  
    console.log('friendsBlock : start...');
@@ -527,6 +527,7 @@ VALUES ($1, $2, $3, $4, $5)
 			blockedId: blockedId,
 	        temporary: expiresAt == null,
 			createdAt: now.getTime(),	//-- long
+			durationMs: durationMs,     //-- long
 	        //expiresAt: expiresAt ? expiresAt.getTime() : 0,
 	        //requiresAcknowledgment:expiresAt == null
 	    }
