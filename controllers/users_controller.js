@@ -525,7 +525,7 @@ VALUES ($1, $2, $3, $4, $5)
 	    {
 	        blockerId: blockerId,
 			blockedId: blockedId,
-	        temporary: expiresAt == null,
+	        temporary: (durationMs != -1),
 			createdAt: now.getTime(),	//-- long
 			durationMs: durationMs,     //-- long
 	        //expiresAt: expiresAt ? expiresAt.getTime() : 0,
