@@ -31,7 +31,8 @@ router.post('/fetch-pending-requests', authMiddleware, usersController.fetchPend
 router.post('/friend-cancel',     authMiddleware, usersController.friendCancel);      // POST /friend-cancel
 router.post('/friends-block',     authMiddleware, usersController.friendsBlock);      // POST /friends-block
 router.post('/acknowledged-friends-block', authMiddleware, usersController.acknowledgedFriendsBlock);// POST /acknowledged-friends-block
-            
+router.post('/friends-block-Cancel', authMiddleware, usersController.friendsBlockCancel);// POST /friends-block-Cancel            
+
 router.post('/change-password',   authMiddleware, usersController.changePassword);   // POST /users/change-password
 router.post('/check-credentials', authMiddleware, usersController.checkCredentials); // POST /users/check-credentials
 router.post('/match-password',    authMiddleware, usersController.matchPassword);    // POST /users/match-password
