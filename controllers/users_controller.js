@@ -654,7 +654,7 @@ exports.friendsBlockCancel = async (req, res) => {
 	  
 	if (result.rows.length > 0) {
 		console.log('friendsBlockCancel : Cancel block successful');
-    	io.to(String(blockerId)).emit("friend:acknowledge-block",
+    	io.to(String(blockedId)).emit("friend:cancel-block",
 	      {
 	        blockedUserId: blockedId,
 	        success: true
@@ -663,16 +663,16 @@ exports.friendsBlockCancel = async (req, res) => {
 	    return res.json({success: true, message: "Cancel block successful" } );      
 	}else{
 		console.log('friendsBlockCancel : Cancel block fail');
-		io.to(String(blockerId)).emit("friend:acknowledge-block",
+		io.to(String(blockedId)).emit("friend:cancel-block",
 	      {
 	        blockedUserId: blockedId,
 	        success: false
 	      }
     	);
-	    return res.json({success: false, message: "Cancel block fail" } )
+	    return res.json({success: false, message: "Cancel block fails" } )
 	}
   }catch{
-	console.error(err);
+	console.error('friendsBlockCancel : Cancel block fail : error : ', err);
     res.status(500).send("Error : ", err);
   }
 }
