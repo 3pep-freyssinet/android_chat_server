@@ -536,7 +536,7 @@ VALUES ($1, $2, $3, $4, $5)
     // -----------------------------------
     // response
     // -----------------------------------
-    console.log('friendsBlock : blockedId : ', blockedId, ' blocked successfully: temporary : ', (expiresAt == null), ' blockedUntil : ', expiresAt ? expiresAt.getTime() : 0 );
+    console.log('friendsBlock : blockedId : ', blockedId, ' blocked successfully: temporary : ', (durationMs != -1), ' blockedUntil : ', expiresAt ? expiresAt.getTime() : 0 );
     
 	  return res.json(
 		{
