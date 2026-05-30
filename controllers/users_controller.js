@@ -640,7 +640,7 @@ exports.friendsBlockCancel = async (req, res) => {
     const {blockerId, blockedId } = req.body;
 	  
     console.log('friendsBlockCancel : start...');
-	console.log('friendsBlockCancel : blockerId : ', blockerId, ' blockerId : ', blockerId);
+	console.log('friendsBlockCancel : blockerId : ', blockerId, ' blockedId : ', blockedId);
 	  
 	const result = await pool.query(
       `
@@ -653,8 +653,8 @@ exports.friendsBlockCancel = async (req, res) => {
     );
 
 	const io = req.app.get("io");
+	console.log('friendsBlockCancel : (result.rows.length) : ', result.rows.length); 
 	console.log('friendsBlockCancel : io.to : ', blockedId); 
-	  
 	if (result.rows.length > 0) {
 		console.log('friendsBlockCancel : Cancel block successful');
     	io.to(String(blockedId)).emit("friend:cancel-block",
