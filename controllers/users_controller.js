@@ -653,27 +653,27 @@ exports.friendsBlockCancel = async (req, res) => {
     );
 
 	const io = req.app.get("io");
-	console.log('friendsBlockCancel : (result.rows.length) : ', result.rows.length); 
+	console.log('friendsBlockCancel : (result.rowCount === 0 ) : ',result.rowCount === 0); 
 	console.log('friendsBlockCancel : io.to : ', blockedId); 
-	if (result.rows.length > 0) {
-		console.log('friendsBlockCancel : Cancel block successful');
+	if (result.rowCount === 0)  {
+		console.log('friendsBlockCancel : Cancel block fails');
     	io.to(String(blockedId)).emit("friend:cancel-block",
-	      {
-	        blockerUserId: blockerId,
-	        success: true
-	      }
-    	);
-	    return res.json({success: true, message: "Cancel block successful" } );      
-	}else{
-		console.log('friendsBlockCancel : Cancel block fail');
-		io.to(String(blockedId)).emit("friend:cancel-block",
 	      {
 	        blockerUserId: blockerId,
 	        success: false
 	      }
     	);
-	    return res.json({success: false, message: "Cancel block fails" } )
+	    return res.json({success: true, false: "Cancel block fails" } );      
 	}
+	console.log('friendsBlockCancel : Cancel block successfull');
+	io.to(String(blockedId)).emit("friend:cancel-block",
+		{
+			blockerUserId: blockerId,
+			success: true
+		}
+	);
+	return res.json({success: true, message: "Cancel block successfull" } )
+	
   }catch{
 	console.error('friendsBlockCancel : Cancel block fail : error : ', err);
     res.status(500).send("Error : ", err);
