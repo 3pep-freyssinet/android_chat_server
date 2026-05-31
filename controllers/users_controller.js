@@ -600,7 +600,7 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
 	);
 
     // -----------------------------------
-    // notify blocker user
+    // notify blocker user 
     // -----------------------------------
     const io = req.app.get("io");
 
