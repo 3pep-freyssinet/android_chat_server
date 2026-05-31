@@ -608,6 +608,8 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
       "friend:acknowledge-block",
       {
         blockedUserId: meId,
+		blocked: (graceDurationMs != -1),				//temporary block
+        permanentBlockPending: (graceDurationMs == -1),	//permanent block
         acknowledgedAt:now.getTime(),
         graceExpiresAt:graceExpiresAt.getTime()
       }
@@ -621,6 +623,8 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
 
     return res.json({
       success: true,
+	  blocked: (graceDurationMs != -1),					//temporary block
+      permanentBlockPending: (graceDurationMs == -1),	//permanent block
       acknowledgedAt:now.getTime(),
       graceExpiresAt:graceExpiresAt.getTime()
     });
