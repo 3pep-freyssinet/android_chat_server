@@ -564,7 +564,9 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
       meId,
       graceDurationMs  //-1= permanent block
     } = req.body;
-
+    
+	const graceDurationMs_ = 24 * 60 * 60 * 1000;
+	  
     console.log('acknowledgedFriendsBlock : start...' );
     console.log('acknowledgedFriendsBlock : friendId : ', friendId, ' meId : ', meId, ' graceDurationMs : ', graceDurationMs );
     // -----------------------------------
@@ -573,7 +575,7 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
 
     const now = new Date();
 
-    const graceExpiresAt = new Date(now.getTime() + parseInt(graceDurationMs));
+    const graceExpiresAt = (graceDurationMs != -1) ? new Date(now.getTime() + parseInt(graceDurationMs)) : new Date(now.getTime() + graceDurationMs_));
     console.log('acknowledgedFriendsBlock : graceExpiresAt : ', graceExpiresAt );
 	  
     // -----------------------------------
