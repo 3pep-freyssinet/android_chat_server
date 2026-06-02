@@ -32,6 +32,7 @@ router.post('/friend-cancel',     authMiddleware, usersController.friendCancel);
 router.post('/friends-block',     authMiddleware, usersController.friendsBlock);      // POST /friends-block
 router.post('/acknowledged-friends-block', authMiddleware, usersController.acknowledgedFriendsBlock);// POST /acknowledged-friends-block
 router.post('/friends-block-Cancel', authMiddleware, usersController.friendsBlockCancel);// POST /friends-block-Cancel            
+router.post('/friends-block-reset', authMiddleware, usersController.friendsBlockReset);// POST /friends-block-reset  
 
 router.post('/change-password',   authMiddleware, usersController.changePassword);   // POST /users/change-password
 router.post('/check-credentials', authMiddleware, usersController.checkCredentials); // POST /users/check-credentials
