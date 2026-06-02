@@ -575,7 +575,7 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
 
     const now = new Date();
 
-    const graceExpiresAt = (graceDurationMs != -1) ? new Date(now.getTime() + parseInt(graceDurationMs)) : new Date(now.getTime() + graceDurationMs_));
+    const graceExpiresAt = (graceDurationMs != -1) ? new Date(now.getTime() + parseInt(graceDurationMs)) : new Date(now.getTime() + graceDurationMs_);
     console.log('acknowledgedFriendsBlock : graceExpiresAt : ', graceExpiresAt );
 	  
     // -----------------------------------
