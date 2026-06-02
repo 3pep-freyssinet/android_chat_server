@@ -407,6 +407,42 @@ exports.friendCancel = async (req, res) => {
   return res.json({ success: true });
 };
 
+//friends-block-reset
+exports.friendsBlockReset = async (req, res) => {
+  console.log('\n friendsBlockReset : start ...'); 
+  const { blockerId, blockedId} = req.body;
+  console.log('friendsBlockReset : blockerId : ', blockerId, ' blockedId : ', blockedId); 
+	
+  // Only cancel if still blocked
+  try {
+	  const result = await pool.query(
+	    `DELETE FROM user_friends
+			WHERE user_id = $1
+			AND friend_id = $2`,
+	    [blockerId, blockedId]
+	  );
+	
+	  if (result.rowCount === 0) {
+		console.log('friendsBlockReset : No reseting user found, cannot reset block'); 
+	    return res.status(400).json({ success: false, message: "cannot reset block" });
+	  }
+
+	  // Notify receiver (optional but recommended)
+	  const io = req.app.get("io");
+	  io.to(String(blockerId)).emit("friend:block_reset", {
+	    blockedId
+	  });
+	  console.log('friendsBlockReset : reset block success'); 
+	  return res.json({ success: true, message: "reset block successful" });
+  }catch (e) {
+    console.error("friendsBlockReset : ", e);
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
+
 //block friends
 exports.friendsBlock = async (req, res) => {
   try {
