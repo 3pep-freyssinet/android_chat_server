@@ -565,7 +565,7 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
       graceDurationMs  //-1= permanent block
     } = req.body;
     
-	const graceDurationMs_ = 24 * 60 * 60 * 1000;
+	const graceDurationMs_ = 3 * 60 * 1000; //24 * 60 * 60 * 1000;
 	  
     console.log('acknowledgedFriendsBlock : start...' );
     console.log('acknowledgedFriendsBlock : friendId : ', friendId, ' meId : ', meId, ' graceDurationMs : ', graceDurationMs );
