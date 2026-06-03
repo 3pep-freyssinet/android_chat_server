@@ -507,7 +507,7 @@ exports.friendsBlock = async (req, res) => {
 
     let expiresAt      = null;
 	let graceExpiresAt = null;
-	let graceExpiresAt = null;
+	//let graceExpiresAt = null; //used also in 'routes'
 	  
     const now          = new Date();;// -- stamp
 	  
