@@ -512,7 +512,7 @@ exports.friendsBlock = async (req, res) => {
 	  
 	// temporary block
 	if (parseInt(durationMs) > 0) {
-	    expiresAt = new Date( now.getTime() + parseInt(durationMs));	//stamp
+	    expiresAt = 0; //new Date( now.getTime() + parseInt(durationMs));	//stamp
 		//expiresAt   = null; 
 	}
 
@@ -573,7 +573,7 @@ VALUES ($1, $2, $3, $4, $5)
 	        temporary: (durationMs != -1),
 			createdAt: now.getTime(),	//-- long
 			durationMs: durationMs,     //-- long
-	        expiresAt: expiresAt ? expiresAt.getTime() : 0,
+	        //expiresAt: expiresAt ? expiresAt.getTime() : 0, //set in 'acknowledgedFriendsBlock' function
 			//graceExpiresAt: graceExpiresAt
 	        //requiresAcknowledgment:expiresAt == null
 	    }
@@ -589,7 +589,7 @@ VALUES ($1, $2, $3, $4, $5)
   			success: true,
 			//temporary: expiresAt == null,
 			createdAt: now.getTime(),	//-- long
-  			expiresAt: expiresAt ? expiresAt.getTime() : 0
+  			//expiresAt: expiresAt ? expiresAt.getTime() : 0 //set in 'acknowledgedFriendsBlock' function
         });
   }
   catch (e) {
