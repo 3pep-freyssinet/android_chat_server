@@ -621,9 +621,10 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
     // -----------------------------------
 
     const now = new Date();
-
-    const graceExpiresAt = (graceDurationMs != -1) ? new Date(now.getTime() + parseInt(graceDurationMs)) : new Date(now.getTime() + graceDurationMs_);
-    console.log('acknowledgedFriendsBlock : graceExpiresAt : ', graceExpiresAt );
+    const expiresAt = (graceDurationMs != -1) ? new Date(now.getTime() + parseInt(graceDurationMs)) : null;		//stamp
+    const graceExpiresAt = (graceDurationMs != -1) ? null : new Date(now.getTime() + parseInt(graceDurationMs));//stamp
+    
+	  console.log('acknowledgedFriendsBlock : graceExpiresAt : ', graceExpiresAt, '  expiresAt : ', expiresAt);
 	  
     // -----------------------------------
     // update block row
@@ -635,6 +636,7 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
 	SET
 	    acknowledged_at  = $3,
 	    grace_expires_at = $4
+		expires_at       = $5
 	WHERE
 	    blocker_id = $1
 	AND blocked_id = $2
@@ -644,7 +646,8 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
 	    friendId,
 	    meId,
 	    now,
-	    graceExpiresAt
+	    graceExpiresAt,
+		expiresAt
 	]
 	);
 
@@ -660,7 +663,8 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
 		blocked: (graceDurationMs != -1),				//temporary block
         permanentBlockPending: (graceDurationMs == -1),	//permanent block
         acknowledgedAt:now.getTime(),
-        graceExpiresAt:graceExpiresAt.getTime()
+        graceExpiresAt:(graceExpiresAt != null)? graceExpiresAt.getTime() : 0,
+		expiresAt: (expiresAt != null)? expiresAt.getTime() : 0
       }
     );
 
@@ -675,7 +679,8 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
 	  blocked: (graceDurationMs != -1),					//temporary block
       permanentBlockPending: (graceDurationMs == -1),	//permanent block
       acknowledgedAt:now.getTime(),
-      graceExpiresAt:graceExpiresAt.getTime()
+      graceExpiresAt:(graceExpiresAt != null)? graceExpiresAt.getTime() : 0,
+	  expiresAt: (expiresAt != null)? expiresAt.getTime() : 0
     });
   }
   catch(e) {
