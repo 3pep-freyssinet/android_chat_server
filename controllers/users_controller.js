@@ -512,10 +512,10 @@ exports.friendsBlock = async (req, res) => {
     const now          = new Date();;// -- stamp
 	  
 	// temporary block
-	//if (parseInt(durationMs) > 0) {
+	if (parseInt(durationMs) > 0) {
 	    //expiresAt = 0; //new Date( now.getTime() + parseInt(durationMs));	//stamp
 		//expiresAt   = null; 
-	//}
+	}
 
 	// permanent block since durationMs=-1
 	else {
