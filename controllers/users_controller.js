@@ -487,7 +487,6 @@ exports.friendsBlock = async (req, res) => {
 		    -- active permanent block workflow
 		    (
 		        expires_at IS NULL
-		        AND permanent_block = TRUE
 		    )
          )
       `,
