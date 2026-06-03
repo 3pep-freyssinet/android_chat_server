@@ -473,15 +473,15 @@ exports.friendsBlock = async (req, res) => {
 // -----------------------------------
 
 const blocked = await pool.query(
-`SELECT *
-FROM user_blocks
-WHERE blocker_id = $1
-AND blocked_id = $2
-AND (
-    expires_at IS NULL
-    OR expires_at > NOW()
-)
-`,
+	`SELECT *
+	 FROM user_blocks
+	 WHERE blocker_id = $1
+	 AND blocked_id = $2
+	AND (
+    	expires_at IS NULL
+    	OR expires_at > NOW()
+	)
+   `,
  [blockerId, blockedId]
 );
 
