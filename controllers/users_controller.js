@@ -672,7 +672,7 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
     // response
     // -----------------------------------
 
-    console.log('acknowledgedFriendsBlock : blockedId : ', meId, ' graceExpiresAt : ', (graceExpiresAt != null) ? graceExpiresAt.getTime() : 0 );
+    console.log('acknowledgedFriendsBlock : blockedId : ', meId, ' graceExpiresAt : ', (graceExpiresAt != null) ? graceExpiresAt.getTime() : 0, ' expiresAt : ', (expiresAt != null) ? expiresAt.getTime() : 0 );
 
     return res.json({
       success: true,
