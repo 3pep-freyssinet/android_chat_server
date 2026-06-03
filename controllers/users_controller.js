@@ -635,7 +635,7 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
 	UPDATE user_blocks
 	SET
 	    acknowledged_at  = $3,
-	    grace_expires_at = $4
+	    grace_expires_at = $4,
 		expires_at       = $5
 	WHERE
 	    blocker_id = $1
