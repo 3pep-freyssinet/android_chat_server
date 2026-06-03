@@ -468,22 +468,31 @@ exports.friendsBlock = async (req, res) => {
       });
     }
 
-// -----------------------------------
-// check active block
-// -----------------------------------
-
-const blocked = await pool.query(
+	// -----------------------------------
+	// check active block
+	// -----------------------------------
+	
+	const blocked = await pool.query(
 	`SELECT *
-	 FROM user_blocks
-	 WHERE blocker_id = $1
-	 AND blocked_id = $2
-	AND (
-    	expires_at IS NULL
-    	OR expires_at > NOW()
-	)
-   `,
- [blockerId, blockedId]
-);
+		FROM user_blocks
+		WHERE blocker_id = $1
+		AND blocked_id = $2
+		AND (
+		    -- active temporary block
+		    (
+		        expires_at IS NOT NULL
+		        AND expires_at > NOW()
+		    )
+		    OR
+		    -- active permanent block workflow
+		    (
+		        expires_at IS NULL
+		        AND permanent_block = TRUE
+		    )
+         )
+      `,
+ 		[blockerId, blockedId]
+     );
 
 	if (blocked.rows.length > 0) {
 		console.log('friendsBlock : User unavailable');
@@ -503,17 +512,17 @@ const blocked = await pool.query(
 	  
 	// temporary block
 	if (parseInt(durationMs) > 0) {
-	    //expiresAt = new Date( now.getTime() + parseInt(durationMs));//stamp
-		expiresAt   = null; //set in aknowledge.
+	    expiresAt = new Date( now.getTime() + parseInt(durationMs));	//stamp
+		//expiresAt   = null; 
 	}
 
-	// permanent block
+	// permanent block since durationMs=-1
 	else {
-	    // grace period NOT started yet
+	    // grace period NOT started yet. It is started in 'acknowledgedFriendsBlock' function.
     	graceExpiresAt = null;
 	}
 	  
-    console.log('friendsBlock : now : ', now, ' expiresAt : ', expiresAt, ' new Date(now) : ', new Date(now));
+    console.log('friendsBlock : now : ', now, ' expiresAt : ', expiresAt, ' graceExpiresAt : ', graceExpiresAt);
 	  
     // -----------------------------------
     // remove existing block first
@@ -564,7 +573,8 @@ VALUES ($1, $2, $3, $4, $5)
 	        temporary: (durationMs != -1),
 			createdAt: now.getTime(),	//-- long
 			durationMs: durationMs,     //-- long
-	        //expiresAt: expiresAt ? expiresAt.getTime() : 0,
+	        expiresAt: expiresAt ? expiresAt.getTime() : 0,
+			//graceExpiresAt: graceExpiresAt
 	        //requiresAcknowledgment:expiresAt == null
 	    }
 	);
@@ -579,7 +589,7 @@ VALUES ($1, $2, $3, $4, $5)
   			success: true,
 			//temporary: expiresAt == null,
 			createdAt: now.getTime(),	//-- long
-  			//blockedUntil: expiresAt ? expiresAt.getTime() : 0
+  			expiresAt: expiresAt ? expiresAt.getTime() : 0
         });
   }
   catch (e) {
