@@ -624,7 +624,7 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
     const expiresAt = (graceDurationMs != -1) ? new Date(now.getTime() + parseInt(graceDurationMs)) : null;		//stamp
     const graceExpiresAt = (graceDurationMs != -1) ? null : new Date(now.getTime() + parseInt(graceDurationMs));//stamp
     
-	  console.log('acknowledgedFriendsBlock : graceExpiresAt : ', graceExpiresAt, '  expiresAt : ', expiresAt);
+	  console.log('acknowledgedFriendsBlock : graceExpiresAt : ', graceExpiresAt, '  expiresAt : ', expiresAt, ' now : ', now);
 	  
     // -----------------------------------
     // update block row
@@ -672,7 +672,7 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
     // response
     // -----------------------------------
 
-    console.log('acknowledgedFriendsBlock : blockedId : ', meId, ' graceExpiresAt : ', (graceExpiresAt != null) ? graceExpiresAt.getTime() : 0, ' expiresAt : ', (expiresAt != null) ? expiresAt.getTime() : 0 );
+    console.log('acknowledgedFriendsBlock : blockedId : ', meId, ' graceExpiresAt : ', (graceExpiresAt != null) ? graceExpiresAt.getTime() : 0, ' expiresAt : ', (expiresAt != null) ? expiresAt.getTime() : 0, ' now : ', now.getTime() );
 
     return res.json({
       success: true,
