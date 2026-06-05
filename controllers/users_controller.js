@@ -413,9 +413,10 @@ exports.friendsBlockReset = async (req, res) => {
   const { blockerId, blockedId} = req.body;
   console.log('friendsBlockReset : blockerId : ', blockerId, ' blockedId : ', blockedId); 
 
-  /*
+  
   // Only delete if still blocked
   try {
+  /*
 	  const result = await pool.query(
 	    `DELETE FROM user_friends
 			WHERE user_id = $1
