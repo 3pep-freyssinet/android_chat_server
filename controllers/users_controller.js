@@ -611,16 +611,17 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
 
   try {
     const {
-      friendId,
-      meId,
+      blockerId,
+      blockedId,
       graceDurationMs  //-1= permanent block
     } = req.body;
     
 	const graceDurationMs_ = 3 * 60 * 1000; //24 * 60 * 60 * 1000;
 	  
     console.log('acknowledgedFriendsBlock : start...' );
-    console.log('acknowledgedFriendsBlock : friendId : ', friendId, ' meId : ', meId, ' graceDurationMs : ', graceDurationMs );
-    // -----------------------------------
+    console.log('acknowledgedFriendsBlock : blockerId : ', blockerId, ' blockedId : ', blockedId, ' graceDurationMs : ', graceDurationMs );
+   
+	// -----------------------------------
     // compute dates
     // -----------------------------------
 
@@ -647,8 +648,8 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
 	AND acknowledged_at IS NULL
 	`,
 	[
-	    friendId,
-	    meId,
+	    blockerId,
+	    blockedId,
 	    now,
 	    graceExpiresAt,
 		expiresAt
@@ -660,10 +661,10 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
     // -----------------------------------
     const io = req.app.get("io");
 
-    io.to(String(friendId)).emit(
+    io.to(String(blockerId)).emit(
       "friend:acknowledge-block",
       {
-        blockedUserId: meId,
+        blockedUserId: blockedId,
 		blocked: (graceDurationMs != -1),				//temporary block
         permanentBlockPending: (graceDurationMs == -1),	//permanent block
         acknowledgedAt:now.getTime(),
@@ -676,7 +677,7 @@ exports.acknowledgedFriendsBlock = async (req, res) => {
     // response
     // -----------------------------------
 
-    console.log('acknowledgedFriendsBlock : blockedId : ', meId, ' graceExpiresAt : ', (graceExpiresAt != null) ? graceExpiresAt.getTime() : 0, ' expiresAt : ', (expiresAt != null) ? expiresAt.getTime() : 0, ' now : ', now.getTime() );
+    console.log('acknowledgedFriendsBlock : blockedId : ', blockedId, ' graceExpiresAt : ', (graceExpiresAt != null) ? graceExpiresAt.getTime() : 0, ' expiresAt : ', (expiresAt != null) ? expiresAt.getTime() : 0, ' now : ', now.getTime() );
 
     return res.json({
       success: true,
