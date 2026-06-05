@@ -412,8 +412,9 @@ exports.friendsBlockReset = async (req, res) => {
   console.log('\n friendsBlockReset : start ...'); 
   const { blockerId, blockedId} = req.body;
   console.log('friendsBlockReset : blockerId : ', blockerId, ' blockedId : ', blockedId); 
-	
-  // Only cancel if still blocked
+
+  /*
+  // Only delete if still blocked
   try {
 	  const result = await pool.query(
 	    `DELETE FROM user_friends
@@ -426,7 +427,8 @@ exports.friendsBlockReset = async (req, res) => {
 		console.log('friendsBlockReset : No reseting user found, cannot reset block'); 
 	    return res.status(400).json({ success: false, message: "cannot reset block" });
 	  }
-
+      */
+	
 	  // Notify receiver (optional but recommended)
 	  const io = req.app.get("io");
 	  io.to(String(blockerId)).emit("friend:block-reset", {
