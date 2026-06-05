@@ -429,8 +429,9 @@ exports.friendsBlockReset = async (req, res) => {
 
 	  // Notify receiver (optional but recommended)
 	  const io = req.app.get("io");
-	  io.to(String(blockerId)).emit("friend:block_reset", {
-	    blockedId
+	  io.to(String(blockerId)).emit("friend:block-reset", {
+	    blockedId:blockedId,
+		success:true
 	  });
 	  console.log('friendsBlockReset : reset block success'); 
 	  return res.json({ success: true, message: "reset block successful" });
